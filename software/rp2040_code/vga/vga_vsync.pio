@@ -1,0 +1,42 @@
+.program vsync
+.side_set 1 opt
+
+pull block
+.wrap_target
+
+mov x, osr
+activefront:
+    wait 1 irq 0
+    irq 1
+    jmp x-- activefront
+
+set y, 9
+frontporch:
+    wait 1 irq 0
+    jmp y-- frontporch
+
+set pins, 0
+wait 1 irq 0
+wait 1 irq 0
+
+set y, 31
+backporch:
+    wait 1 irq 0   side 1
+    jmp y-- backporch
+
+.wrap
+
+
+
+% c-sdk {
+static inline void vsync_program_init(PIO pio, uint sm, uint offset, uint pin) 
+{
+    pio_sm_config c = vsync_program_get_default_config(offset);
+    sm_config_set_set_pins(&c, pin, 1);
+    sm_config_set_sideset_pins(&c, pin);
+    sm_config_set_clkdiv(&c, 5);
+    pio_gpio_init(pio, pin);
+    pio_sm_set_consecutive_pindirs(pio, sm, pin, 1, true);
+    pio_sm_init(pio, sm, offset, &c);
+}
+%}

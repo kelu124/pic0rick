@@ -1,0 +1,33 @@
+.program vga
+
+pull block
+mov y, osr
+.wrap_target
+
+set pins, 0
+mov x, y
+
+wait 1 irq 1 [3]
+
+colorout:
+	pull block
+	out pins, 3	[4]
+	out pins, 3	[2]
+	jmp x-- colorout
+
+.wrap
+
+% c-sdk {
+static inline void vga_program_init(PIO pio, uint sm, uint offset, uint pin) 
+{
+    pio_sm_config c = vga_program_get_default_config(offset);
+    sm_config_set_set_pins(&c, pin, 3);
+    sm_config_set_out_pins(&c, pin, 3);
+    pio_gpio_init(pio, pin);
+    pio_gpio_init(pio, pin+1);
+    pio_gpio_init(pio, pin+2);
+    pio_sm_set_consecutive_pindirs(pio, sm, pin, 3, true);
+    sm_config_set_fifo_join(&c, PIO_FIFO_JOIN_TX);
+    pio_sm_init(pio, sm, offset, &c);
+}
+%}
