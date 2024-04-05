@@ -1,7 +1,7 @@
 //!
 //! \file       vga_driver.h
-//! \author     Abdelrahman Ali
-//! \date       2024-01-31
+//! \author     kg
+//! \date       2024-04-05
 //!
 //! \brief      vga driver.
 //!
