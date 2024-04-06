@@ -16,8 +16,13 @@
 # the _pic0rick_ project
 
 	
+# Setup
 
+![](/documentation/images/20240406_153634.jpg)
 
+## Acquisitions 
+
+![](/python/imgs/pic0gain_at_8.jpg)
 
 # Thank you to ...
 
