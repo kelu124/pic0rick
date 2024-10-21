@@ -37,7 +37,7 @@ And if you want to discuss the project - [meet us on our slack](https://join.sla
 
 ## Example of acquisitions
 
-![](/python/imgs/pic0gain_at_8.jpg)
+![](/software/imgs/pico_shell/pic0gain_at_6.jpg)
 
 
 # TODO

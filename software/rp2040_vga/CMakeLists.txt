@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.13)
 
-include(~/projets/pico/pico/pico-sdk/pico_sdk_init.cmake)
+include(~/pico/pico-sdk/pico_sdk_init.cmake)
 
 project(pio_adc_dac_vga ASM C CXX)
 
