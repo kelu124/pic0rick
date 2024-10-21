@@ -40,10 +40,15 @@ And if you want to discuss the project - [meet us on our slack](https://join.sla
 ![](/software/imgs/pico_shell/pic0gain_at_6.jpg)
 
 
-# TODO
+# Scheduled changes
 
-* HW: Slight tweaks on the main board to allow more space for the PMODs
-* FW: Tie the pulses to the PIO code so that pulses strictly cohappen with the acquisition start
+## DONE
+
+* FW: Tie the pulses to the PIO code so that pulses strictly cohappen with the acquisition start (done)
+
+## TODO
+
+* HW: Slight tweaks on the main board to allow more space for the PMODs (Oct 21, 2024)
 
 # Thank you to
 
