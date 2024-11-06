@@ -39,6 +39,9 @@ And if you want to discuss the project - [meet us on our slack](https://join.sla
 
 ![](/software/imgs/pico_shell/pic0gain_at_6.jpg)
 
+# Along with the other boards
+
+![](/documentation/images/sister_boards.png)
 
 # Scheduled changes
 
