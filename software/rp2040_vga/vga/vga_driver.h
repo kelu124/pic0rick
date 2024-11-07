@@ -26,9 +26,9 @@
 // VGA DRIVER CONSTANTS
 //---------------------------------------------------------------------------
 
-#define HSYNC 20
-#define VSYNC 21
-#define VGA 22
+#define HSYNC 21
+#define VSYNC 28
+#define VGA 27
 
 #define GREEN 1
 
