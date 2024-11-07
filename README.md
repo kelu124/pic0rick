@@ -39,6 +39,19 @@ And if you want to discuss the project - [meet us on our slack](https://join.sla
 
 ![](/software/imgs/pico_shell/pic0gain_at_6.jpg)
 
+## Demo of output to VGA
+
+Only using the pico to setup gain and trigger acquisitions. The screen displays the gain value (0 to 9, with a 100x divider). Displays raw buffer of acquisition.
+
+![](/documentation/images/VGA_demo.gif)
+
+
+## Example of a compact assembly 
+
+Within a game card footprint
+
+![](/documentation/images/compact_assembly.jpg)
+
 # Along with the other boards
 
 ![](/documentation/images/sister_boards.png)
