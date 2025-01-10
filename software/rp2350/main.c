@@ -1,6 +1,6 @@
 //!
 //! \file       main.c
-//! \author     Abdelrahman Ali
+//! \author     pic0rick
 //! \date       2024-01-20
 //!
 //! \brief      adc dac vga main entry.
