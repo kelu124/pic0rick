@@ -1,6 +1,5 @@
 //!
 //! \file       max14866.h
-//! \author     pic0rick_v2
 //! \date       2025-01-06
 //!
 //! \brief      max14866 spi bit banging.
@@ -23,11 +22,11 @@
 // CONSTANTS
 //---------------------------------------------------------------------------
 
-#define MAX14866_SPI_DIN 22
-#define MAX14866_SPI_SCLK  26
-#define MAX14866_SPI_LE   27
-#define MAX14866_SPI_SET   28
-#define MAX14866_SPI_CLR   21
+#define MAX14866_SPI_DIN 18
+#define MAX14866_SPI_SCLK  19
+#define MAX14866_SPI_LE   20
+#define MAX14866_SPI_SET   21
+#define MAX14866_SPI_CLR   28
 
 //---------------------------------------------------------------------------
 // MAX INIT FUNCTION

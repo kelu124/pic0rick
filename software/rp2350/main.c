@@ -1,6 +1,5 @@
 //!
 //! \file       main.c
-//! \author     pic0rick
 //! \date       2024-01-20
 //!
 //! \brief      adc dac vga main entry.
@@ -29,6 +28,8 @@ command_t command_list[] = {
     {"start acq", pulse_adc_trigger},
     {"write dac", dac},
     {"write mux", max14866},
+    {"set mux", max14866_set},
+    {"clear mux", max14866_clear},
     {"read", adc},
 };
 
