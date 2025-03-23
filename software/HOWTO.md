@@ -57,7 +57,7 @@ The code today allows you to connect to the board via a COM port, that you can s
 
 It will give you data like below:
 
-![](software/imgs/rp2350/pic0gain_at_2.jpg)
+![](/software/imgs/rp2350/pic0gain_at_2.jpg)
 
 ### Using the CLI
 
