@@ -51,6 +51,11 @@ Options to compile:
 
 The code today allows you to connect to the board via a COM port, that you can see for example when typing "dmesg" in linux after plugging the board in (after you flashed it)
 
+### Video
+
+[![Video of pic0rick](https://img.youtube.com/vi/2a3_D-hZEio/0.jpg)](https://www.youtube.com/watch?v=2a3_D-hZEio)
+
+
 ### Using python
 
 [See this notebook as an example](software/4.PulserTests.ipynb): python runs along the lines "just" a wrapper around the CLI interface
