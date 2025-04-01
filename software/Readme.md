@@ -1,5 +1,9 @@
 # Content
 
+## Rapid practical intro 
+
+Read the [HOWTO](HOWTO.md)
+
 ## The `notebooks (*.ipynb)` files
 
 Contain the python code to talk with pic0rick
