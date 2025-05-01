@@ -1,5 +1,6 @@
 //!
-//! \file       max14866.c 
+//! \file       max14866.c
+//! \author     Abdelrahman Ali
 //! \date       2025-01-06
 //!
 //! \brief      max14866 spi bit banging.

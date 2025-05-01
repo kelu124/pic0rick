@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.13)
 
-include(${CMAKE_CURRENT_LIST_DIR}/../../pico2/pico-sdk/pico_sdk_init.cmake)
+include(/home/kelu/projets/pico-sdk/pico_sdk_init.cmake)
 
 project(pio_adc_max)
 

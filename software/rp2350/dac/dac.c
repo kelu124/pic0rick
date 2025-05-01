@@ -1,5 +1,6 @@
 //!
 //! \file       dac.c
+//! \author     Abdelrahman Ali
 //! \date       2024-01-24
 //!
 //! \brief      dac spi bit banging.

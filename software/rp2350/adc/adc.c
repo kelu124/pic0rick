@@ -1,5 +1,6 @@
 //!
 //! \file       adc.c
+//! \author     Abdelrahman Ali
 //! \date       2024-01-20
 //!
 //! \brief      adc dac pio.
