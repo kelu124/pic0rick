@@ -28,8 +28,8 @@
 
 #define PIN_BASE 0
 #define SAMPLE_COUNT 8000
-#define ADC_CLK 240000000
-#define PULSE_CLK 250000000
+#define ADC_CLK 120000000
+#define PULSE_CLK 125000000
 #define GPIO11 11
 #define GPIO16 16
 

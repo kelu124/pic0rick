@@ -90,7 +90,7 @@ void pulse_adc_trigger(const char *data)
     while (i < 3)
     {
         if (token != NULL)
-            numbers[i] = (atoi(token) / 4); // divide by 4 as one cycle is 4 nanoseconds
+            numbers[i] = (atoi(token) / 8); // divide by 8 as one cycle is 8 nanoseconds
         else
             numbers[i] = 125; // default value
         i++;

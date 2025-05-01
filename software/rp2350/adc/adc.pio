@@ -7,8 +7,7 @@ mov x, osr side 0
 wait 1 irq 0 side 0
 
 adc_loop:
-    in pins, 16 side 1 [1]
-    push block side 0
+    in pins, 16 side 1
     jmp x-- adc_loop side 0
 
 
@@ -33,7 +32,7 @@ adc_loop:
         pio_sm_set_consecutive_pindirs(pio, sm, pin, 1, true);
         sm_config_set_sideset_pins(&c, pin);
         gpio_put(pin, false);
-        sm_config_set_in_shift(&c, false, false, 16);
+        sm_config_set_in_shift(&c, false, true, 16);
         float div = (clock_get_hz(clk_sys) / freq);
         sm_config_set_clkdiv(&c, div);
         pio_sm_init(pio, sm, offset, &c);

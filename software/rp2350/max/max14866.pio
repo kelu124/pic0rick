@@ -1,0 +1,37 @@
+.program max14866
+.side_set 1
+
+.wrap_target
+    out pins, 1   side 0
+    nop           side 1
+.wrap
+
+% c-sdk {
+
+static inline void max14866_program_init(PIO pio, uint sm, uint offset, uint data_pin, uint clk_pin, float freq) {
+    pio_gpio_init(pio, data_pin);
+    pio_gpio_init(pio, clk_pin);
+    pio_sm_set_consecutive_pindirs(pio, sm, data_pin, 1, true);
+    pio_sm_set_consecutive_pindirs(pio, sm, clk_pin, 1, true);
+    pio_sm_config c = max14866_program_get_default_config(offset);
+    sm_config_set_sideset_pins(&c, clk_pin);
+    sm_config_set_out_pins(&c, data_pin, 1);
+    sm_config_set_fifo_join(&c, PIO_FIFO_JOIN_TX);
+    sm_config_set_out_shift(&c, false, true, 16);
+    float div = (clock_get_hz(clk_sys) / freq);
+    sm_config_set_clkdiv(&c, div);
+    pio_sm_init(pio, sm, offset, &c);
+    pio_sm_set_enabled(pio, sm, true);
+}
+
+static inline void max14866_put(PIO pio, uint sm, uint16_t x) {
+    while (pio_sm_is_tx_fifo_full(pio, sm));
+    *(volatile uint16_t*)&pio->txf[sm] = x;
+}
+
+static inline void max14866_wait_idle(PIO pio, uint sm) {
+    uint32_t sm_stall_mask = 1u << (sm + PIO_FDEBUG_TXSTALL_LSB);
+    pio->fdebug = sm_stall_mask;
+    while (!(pio->fdebug & sm_stall_mask));
+}
+%}

@@ -116,7 +116,6 @@ int main()
     {
         tight_loop_contents();
     }
-    set_sys_clock_khz(250000, true);
     sleep_ms(100);
     pio_adc_init();
     sleep_ms(100);

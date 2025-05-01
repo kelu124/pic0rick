@@ -16,6 +16,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "pico/stdlib.h"
+#include "hardware/pio.h"
 #include "hardware/gpio.h"
 #include "hardware/clocks.h"
 
@@ -29,15 +30,12 @@
 #define MAX14866_SPI_SET   21
 #define MAX14866_SPI_CLR   28
 
+#define MAX14866_CLK   2000000
+
 //---------------------------------------------------------------------------
 // MAX INIT FUNCTION
 //---------------------------------------------------------------------------
 void max14866_init();
-
-//---------------------------------------------------------------------------
-// MAX SPI WRITE FUNCTION
-//---------------------------------------------------------------------------
-void max14866_spi_write(uint16_t data);
 
 //---------------------------------------------------------------------------
 // MAX WRITE FUNCTION
