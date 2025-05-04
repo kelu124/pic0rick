@@ -26,6 +26,12 @@
 
 ![](/documentation/images/v2/20250323_114927.jpg)
 
+
+## Poweruse 
+
+* Around 90 mA 
+
+
 ## Programming
 
 ### Using the code as is (simpler)
