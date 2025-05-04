@@ -51,7 +51,7 @@ Only using the pico to setup gain and trigger acquisitions. The screen displays 
 Within a game card footprint
 
 ![](/documentation/images/compact_assembly.jpg)
-
+s
 # Along with the other boards
 
 ![](/documentation/images/sister_boards.png)
