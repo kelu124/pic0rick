@@ -47,7 +47,7 @@ class Pic0rick():
         B = self.ser.readline()
         C = self.ser.readline()
         D = self.ser.readline()
-        print(A,B,C,D)
+        #print(A,B,C,D)
 
     def set(self):
         self.ser.write(bytearray("set mux\n",'ascii'))
