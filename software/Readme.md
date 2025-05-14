@@ -38,7 +38,7 @@
 
 You will surely know how to program a pico, or pico2. Just keep the RESET button held down when plugging it in, then copy the uf2 file into the mass storage that will appear. It will reboot automatically once programmed.  
 
-This is the [uf2 file](rp2350_simple/rp2350_simple.uf2) that you will use.
+This is the [uf2 file for rp2040](rpXXXX-common_rp2040.uf2) and the [uf2 file for rp2350](rpXXXX-common_rp2350.uf2)  that you will use (these versions alleviate a former stalling issue).
 
 
 ### Using the source files
