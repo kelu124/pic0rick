@@ -1,4 +1,0 @@
-(fp_lib_table
-  (version 7)
-  (lib (name "PMOD_PULSER")(type "KiCad")(uri "${KIPRJMOD}/library/PMOD_PULSER.pretty")(options "")(descr ""))
-)

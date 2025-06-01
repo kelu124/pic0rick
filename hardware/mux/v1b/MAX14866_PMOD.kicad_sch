@@ -5,11 +5,10 @@
 	(uuid "7003f99c-ffc9-421a-9312-88116b1e6ed3")
 	(paper "A4")
 	(title_block
-		(title "MAX15866")
+		(title "PMOD for MAX14866 for pic0rick")
 		(date "2024-11-15")
-		(rev "R01")
-		(company "ICTAMKY.COM")
-		(comment 1 "By leevawns")
+		(rev "v1.b")
+		(company "https://un0rick.cc")
 	)
 	(lib_symbols
 		(symbol "Connector_Generic:Conn_01x02"
@@ -5739,7 +5738,6 @@
 	)
 	(label "CLR"
 		(at 73.66 38.1 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -5750,7 +5748,6 @@
 	)
 	(label "TR1"
 		(at 246.38 129.54 180)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -5761,7 +5758,6 @@
 	)
 	(label "CLR"
 		(at 73.66 69.85 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -5772,7 +5768,6 @@
 	)
 	(label "TR7"
 		(at 246.38 144.78 180)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -5783,7 +5778,6 @@
 	)
 	(label "*LE"
 		(at 48.26 67.31 180)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -5794,7 +5788,6 @@
 	)
 	(label "TR4"
 		(at 142.24 100.33 180)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -5805,7 +5798,6 @@
 	)
 	(label "TR4"
 		(at 246.38 137.16 180)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -5816,7 +5808,6 @@
 	)
 	(label "TR3"
 		(at 142.24 90.17 180)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -5827,7 +5818,6 @@
 	)
 	(label "CLK"
 		(at 48.26 64.77 180)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -5838,7 +5828,6 @@
 	)
 	(label "TR5"
 		(at 142.24 107.95 180)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -5849,7 +5838,6 @@
 	)
 	(label "TR8"
 		(at 245.11 97.79 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -5860,7 +5848,6 @@
 	)
 	(label "TR2"
 		(at 246.38 132.08 180)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -5871,7 +5858,6 @@
 	)
 	(label "TR1"
 		(at 142.24 64.77 180)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -5882,7 +5868,6 @@
 	)
 	(label "CLR"
 		(at 217.17 67.31 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -5893,7 +5878,6 @@
 	)
 	(label "DIN"
 		(at 48.26 30.48 180)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -5904,7 +5888,6 @@
 	)
 	(label "CLR"
 		(at 270.51 95.25 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -5915,7 +5898,6 @@
 	)
 	(label "*LE"
 		(at 48.26 35.56 180)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -5926,7 +5908,6 @@
 	)
 	(label "SET"
 		(at 48.26 38.1 180)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -5937,7 +5918,6 @@
 	)
 	(label "TR2"
 		(at 142.24 74.93 180)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -5948,7 +5928,6 @@
 	)
 	(label "TR5"
 		(at 246.38 139.7 180)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -5959,7 +5938,6 @@
 	)
 	(label "TR6"
 		(at 142.24 118.11 180)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -5970,7 +5948,6 @@
 	)
 	(label "TR6"
 		(at 246.38 142.24 180)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -5981,7 +5958,6 @@
 	)
 	(label "DOUT"
 		(at 217.17 87.63 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -5992,7 +5968,6 @@
 	)
 	(label "TR3"
 		(at 246.38 134.62 180)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6003,7 +5978,6 @@
 	)
 	(label "CLK"
 		(at 48.26 33.02 180)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6014,7 +5988,6 @@
 	)
 	(label "SET"
 		(at 217.17 69.85 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6025,7 +5998,6 @@
 	)
 	(label "SET"
 		(at 48.26 69.85 180)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6036,7 +6008,6 @@
 	)
 	(label "DOUT"
 		(at 48.26 62.23 180)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6047,7 +6018,6 @@
 	)
 	(label "*LE"
 		(at 217.17 90.17 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6058,7 +6028,6 @@
 	)
 	(label "TR7"
 		(at 245.11 107.95 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6069,7 +6038,6 @@
 	)
 	(label "CLK"
 		(at 217.17 72.39 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6080,7 +6048,6 @@
 	)
 	(label "DIN"
 		(at 217.17 74.93 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6091,7 +6058,6 @@
 	)
 	(label "SET"
 		(at 270.51 97.79 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6102,7 +6068,6 @@
 	)
 	(label "TR8"
 		(at 246.38 147.32 180)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)

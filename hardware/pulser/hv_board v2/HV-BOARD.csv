@@ -1,7 +1,0 @@
-"Reference","Value","Footprint","Qty","MPN"
-"B1","IAS0105D24","PMOD_PULSER:IAS0105D24","1","IAS0105D24"
-"C10,C11","4.7uF","Capacitor_SMD:C_1206_3216Metric","2",""
-"C12,C13","1uF","Capacitor_SMD:C_1206_3216Metric","2",""
-"J5","Conn_01x03_Socket","Connector_PinSocket_2.54mm:PinSocket_1x03_P2.54mm_Vertical","1",""
-"J7","Conn_01x02_Socket","Connector_PinSocket_2.54mm:PinSocket_1x02_P2.54mm_Vertical","1",""
-"L1","6.8uH","Inductor_SMD:L_1206_3216Metric","1","ILSB1206ER6R8K"
