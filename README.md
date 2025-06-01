@@ -33,7 +33,7 @@ And if you want to discuss the project - [meet us on our slack](https://join.sla
 
 ## The three boards assemble look like this
 
-![](/documentation/images/20240406_153634.jpg)
+![](/documentation/images/v2/20250323_114927.jpg)
 
 ## Example of acquisitions
 
