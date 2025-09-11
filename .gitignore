@@ -1,0 +1,4 @@
+pic0doc/*
+*.lck
+pic0doc*
+__pycache__
