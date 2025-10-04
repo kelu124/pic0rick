@@ -1,7 +1,6 @@
 //!
 //! \file       adc.h
-//! \author     kg
-//! \date       2024-04-05
+//! \date       2024-01-24
 //!
 //! \brief      adc pio.
 //!

@@ -1,7 +1,6 @@
 //!
 //! \file       vga.c
-//! \author     kg
-//! \date       2024-04-05
+//! \date       2024-01-31
 //!
 //! \brief      vga pio.
 //!

@@ -1,7 +1,6 @@
 //!
 //! \file       adc.c
-//! \author     kg
-//! \date       2024-04-05
+//! \date       2024-01-20
 //!
 //! \brief      adc dac pio.
 //!
@@ -95,10 +94,10 @@ void pulse_gpios_init()
     gpio_set_dir(GPIO12, GPIO_OUT);
     gpio_set_dir(GPIO16, GPIO_OUT);
     gpio_set_dir(GPIO17, GPIO_OUT);
-    gpio_put(GPIO11, 0); // P+
-    gpio_put(GPIO12, 0); // P- 
-    gpio_put(GPIO16, 0); // Pdamp
-    gpio_put(GPIO17, 1); // Activates OE for the pulser
+    gpio_put(GPIO11, 0);
+    gpio_put(GPIO12, 0);
+    gpio_put(GPIO16, 0);
+    gpio_put(GPIO17, 1);
 }
 
 //---------------------------------------------------------------------------
@@ -112,21 +111,15 @@ void core1_entry()
         uint32_t triggered = multicore_fifo_pop_blocking();
         if (triggered == 1)
         {
-       	    // waits 50ns
             delay_50ns();
-            // P-Positive for 140ns
             gpio_put(GPIO11, 1);
             delay_140ns();
             gpio_put(GPIO11, 0);
-       	    // waits 50ns
             delay_50ns();
-            // P-Negative for 140ns
             gpio_put(GPIO12, 1);
             delay_140ns();
             gpio_put(GPIO12, 0);
-            // Waits a bit
             delay_140ns();
-            // Damps signal
             gpio_put(GPIO16, 1);
             sleep_us(7);
             gpio_put(GPIO16, 0);

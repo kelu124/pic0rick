@@ -26,11 +26,16 @@
 // VGA DRIVER CONSTANTS
 //---------------------------------------------------------------------------
 
-#define HSYNC 21
-#define VSYNC 28
-#define VGA 27
+#define HSYNC 21 
+#define VSYNC 28 
+#define VGA   18
 
-#define GREEN 1
+#define BUS_R_BIT 0
+#define BUS_G_BIT 1
+#define BUS_B_BIT 2
+#define RED   (1u << BUS_R_BIT)
+#define GREEN (1u << BUS_G_BIT)
+#define BLUE  (1u << BUS_B_BIT)
 
 //---------------------------------------------------------------------------
 // VGA DRIVER INIT
