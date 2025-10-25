@@ -3,7 +3,7 @@
 ![GitHub top language](https://img.shields.io/github/languages/top/kelu124/pic0rick?style=plastic)
 ![GitHub last commit](https://img.shields.io/github/last-commit/kelu124/pic0rick?color=red&style=plastic)
 
-[![Slack](https://badgen.net/badge/icon/slack?icon=slack&label)](https://join.slack.com/t/usdevkit/shared_invite/zt-2g501obl-z53YHyGOOMZjeCXuXzjZow)
+[![Slack replacement](https://badgen.net/badge/icon/Matrix.org?icon=matrix&label)](https://matrix.to/#/!dEbJSiragnEvzVBdUa:matrix.org?via=matrix.org)
 [![made-with-Markdown](https://img.shields.io/badge/Made%20with-Markdown-1f425f.svg)](http://commonmark.org)
 
 
@@ -27,8 +27,7 @@ Published documents include:
 
 I _know_ the PMODs aren't strictly speaking PMODs, I needed to have 5V facility on the header =)
 
-And if you want to discuss the project - [meet us on our slack](https://join.slack.com/t/usdevkit/shared_invite/zt-2g501obl-z53YHyGOOMZjeCXuXzjZow).
-
+And if you want to discuss the project - [meet us on our chat](https://matrix.to/#/!dEbJSiragnEvzVBdUa:matrix.org?via=matrix.org).
 # Setup
 
 ## The three boards assemble look like this
