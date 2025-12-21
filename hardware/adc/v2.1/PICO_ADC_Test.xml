@@ -1,0 +1,1864 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<export version="E">
+  <design>
+    <source>E:\KICAD_PROJECT\58. PICO_ADC_Test\PICO_ADC_Test\PICO_ADC_Test.kicad_sch</source>
+    <date>1/31/2024 11:47:57 PM</date>
+    <tool>Eeschema 7.0.10</tool>
+    <sheet number="1" name="/" tstamps="/">
+      <title_block>
+        <title>PICO ADC TEST</title>
+        <company>ICTAMKY</company>
+        <rev>R0.1</rev>
+        <date>2024-01-29</date>
+        <source>PICO_ADC_Test.kicad_sch</source>
+        <comment number="1" value="Design by LEEVAWNS"/>
+        <comment number="2" value=""/>
+        <comment number="3" value=""/>
+        <comment number="4" value=""/>
+        <comment number="5" value=""/>
+        <comment number="6" value=""/>
+        <comment number="7" value=""/>
+        <comment number="8" value=""/>
+        <comment number="9" value=""/>
+      </title_block>
+    </sheet>
+  </design>
+  <components>
+    <comp ref="C1">
+      <value>100nF</value>
+      <footprint>Capacitor_SMD:C_1206_3216Metric</footprint>
+      <fields>
+        <field name="DATASHEET LINK">https://www.vishay.com/doc?28548</field>
+        <field name="Description">Multilayer Ceramic Capacitors MLCC - SMD/SMT 1206 0.1uF 10volts X7R 10%</field>
+        <field name="MPN">VJ1206Y104KXQCW1BC</field>
+        <field name="Size">1206</field>
+        <field name="Tolerance">10%</field>
+      </fields>
+      <libsource lib="Device" part="C_Small" description="Unpolarized capacitor, small symbol"/>
+      <property name="Size" value="1206"/>
+      <property name="Tolerance" value="10%"/>
+      <property name="DATASHEET LINK" value="https://www.vishay.com/doc?28548"/>
+      <property name="Description" value="Multilayer Ceramic Capacitors MLCC - SMD/SMT 1206 0.1uF 10volts X7R 10%"/>
+      <property name="MPN" value="VJ1206Y104KXQCW1BC"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="PICO_ADC_Test.kicad_sch"/>
+      <property name="ki_description" value="Unpolarized capacitor, small symbol"/>
+      <property name="ki_keywords" value="capacitor cap"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>bbeb79b7-bf49-4653-905b-95adc9804a72</tstamps>
+    </comp>
+    <comp ref="C2">
+      <value>100nF</value>
+      <footprint>Capacitor_SMD:C_1206_3216Metric</footprint>
+      <fields>
+        <field name="DATASHEET LINK">https://www.vishay.com/doc?28548</field>
+        <field name="Description">Multilayer Ceramic Capacitors MLCC - SMD/SMT 1206 0.1uF 10volts X7R 10%</field>
+        <field name="MPN">VJ1206Y104KXQCW1BC</field>
+        <field name="Size">1206</field>
+        <field name="Tolerance">10%</field>
+      </fields>
+      <libsource lib="Device" part="C_Small" description="Unpolarized capacitor, small symbol"/>
+      <property name="Size" value="1206"/>
+      <property name="Tolerance" value="10%"/>
+      <property name="DATASHEET LINK" value="https://www.vishay.com/doc?28548"/>
+      <property name="Description" value="Multilayer Ceramic Capacitors MLCC - SMD/SMT 1206 0.1uF 10volts X7R 10%"/>
+      <property name="MPN" value="VJ1206Y104KXQCW1BC"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="PICO_ADC_Test.kicad_sch"/>
+      <property name="ki_description" value="Unpolarized capacitor, small symbol"/>
+      <property name="ki_keywords" value="capacitor cap"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>b78531af-d256-481f-9dc9-aafba3d409f1</tstamps>
+    </comp>
+    <comp ref="C3">
+      <value>4.7uF</value>
+      <footprint>Capacitor_SMD:C_1206_3216Metric</footprint>
+      <fields>
+        <field name="DATASHEET LINK">https://www.mouser.vn/datasheet/2/40/cx5r_KGM-3223198.pdf</field>
+        <field name="Description">Multilayer Ceramic Capacitors MLCC - SMD/SMT NEW GLOBAL PN KGM31HR51A475KL 10V 4.7uF X5R 1206 10% Tol</field>
+        <field name="MPN">1206ZD475KAT4A</field>
+        <field name="Size">1206</field>
+        <field name="Tolerance">10%</field>
+      </fields>
+      <libsource lib="Device" part="C_Small" description="Unpolarized capacitor, small symbol"/>
+      <property name="Size" value="1206"/>
+      <property name="Tolerance" value="10%"/>
+      <property name="DATASHEET LINK" value="https://www.mouser.vn/datasheet/2/40/cx5r_KGM-3223198.pdf"/>
+      <property name="Description" value="Multilayer Ceramic Capacitors MLCC - SMD/SMT NEW GLOBAL PN KGM31HR51A475KL 10V 4.7uF X5R 1206 10% Tol"/>
+      <property name="MPN" value="1206ZD475KAT4A"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="PICO_ADC_Test.kicad_sch"/>
+      <property name="ki_description" value="Unpolarized capacitor, small symbol"/>
+      <property name="ki_keywords" value="capacitor cap"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>3ce44810-8a02-4ddc-a6d2-a12a21d77158</tstamps>
+    </comp>
+    <comp ref="C4">
+      <value>100nF</value>
+      <footprint>Capacitor_SMD:C_1206_3216Metric</footprint>
+      <fields>
+        <field name="Size">1206</field>
+        <field name="Tolerance">10%</field>
+      </fields>
+      <libsource lib="Device" part="C_Small" description="Unpolarized capacitor, small symbol"/>
+      <property name="Size" value="1206"/>
+      <property name="Tolerance" value="10%"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="PICO_ADC_Test.kicad_sch"/>
+      <property name="ki_description" value="Unpolarized capacitor, small symbol"/>
+      <property name="ki_keywords" value="capacitor cap"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>c6257e74-6d0d-410a-bb83-6442b51c4dbd</tstamps>
+    </comp>
+    <comp ref="C5">
+      <value>100nF</value>
+      <footprint>Capacitor_SMD:C_1206_3216Metric</footprint>
+      <fields>
+        <field name="DATASHEET LINK">https://www.vishay.com/doc?28548</field>
+        <field name="Description">Multilayer Ceramic Capacitors MLCC - SMD/SMT 1206 0.1uF 10volts X7R 10%</field>
+        <field name="MPN">VJ1206Y104KXQCW1BC</field>
+        <field name="Size">1206</field>
+        <field name="Tolerance">10%</field>
+      </fields>
+      <libsource lib="Device" part="C_Small" description="Unpolarized capacitor, small symbol"/>
+      <property name="Size" value="1206"/>
+      <property name="Tolerance" value="10%"/>
+      <property name="DATASHEET LINK" value="https://www.vishay.com/doc?28548"/>
+      <property name="Description" value="Multilayer Ceramic Capacitors MLCC - SMD/SMT 1206 0.1uF 10volts X7R 10%"/>
+      <property name="MPN" value="VJ1206Y104KXQCW1BC"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="PICO_ADC_Test.kicad_sch"/>
+      <property name="ki_description" value="Unpolarized capacitor, small symbol"/>
+      <property name="ki_keywords" value="capacitor cap"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>fff47182-bc01-4cca-b22f-ae60a641787e</tstamps>
+    </comp>
+    <comp ref="C6">
+      <value>18nF</value>
+      <footprint>Capacitor_SMD:C_1206_3216Metric</footprint>
+      <fields>
+        <field name="DATASHEET LINK">https://www.vishay.com/doc?45199</field>
+        <field name="Description">Multilayer Ceramic Capacitors MLCC - SMD/SMT .018uF 50volts 10%</field>
+        <field name="MPN">VJ1206Y183KXAAC</field>
+        <field name="Size">1206</field>
+        <field name="Tolerance">10%</field>
+      </fields>
+      <libsource lib="Device" part="C_Small" description="Unpolarized capacitor, small symbol"/>
+      <property name="Size" value="1206"/>
+      <property name="Tolerance" value="10%"/>
+      <property name="DATASHEET LINK" value="https://www.vishay.com/doc?45199"/>
+      <property name="Description" value="Multilayer Ceramic Capacitors MLCC - SMD/SMT .018uF 50volts 10%"/>
+      <property name="MPN" value="VJ1206Y183KXAAC"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="PICO_ADC_Test.kicad_sch"/>
+      <property name="ki_description" value="Unpolarized capacitor, small symbol"/>
+      <property name="ki_keywords" value="capacitor cap"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>b8a81b79-ae1f-490f-bdd7-905c85bc27b5</tstamps>
+    </comp>
+    <comp ref="C7">
+      <value>4.7uF</value>
+      <footprint>Capacitor_SMD:C_1206_3216Metric</footprint>
+      <fields>
+        <field name="DATASHEET LINK">https://www.mouser.vn/datasheet/2/40/cx5r_KGM-3223198.pdf</field>
+        <field name="Description">Multilayer Ceramic Capacitors MLCC - SMD/SMT NEW GLOBAL PN KGM31HR51A475KL 10V 4.7uF X5R 1206 10% Tol</field>
+        <field name="MPN">1206ZD475KAT4A</field>
+        <field name="Size">1206</field>
+        <field name="Tolerance">10%</field>
+      </fields>
+      <libsource lib="Device" part="C_Small" description="Unpolarized capacitor, small symbol"/>
+      <property name="Size" value="1206"/>
+      <property name="Tolerance" value="10%"/>
+      <property name="DATASHEET LINK" value="https://www.mouser.vn/datasheet/2/40/cx5r_KGM-3223198.pdf"/>
+      <property name="Description" value="Multilayer Ceramic Capacitors MLCC - SMD/SMT NEW GLOBAL PN KGM31HR51A475KL 10V 4.7uF X5R 1206 10% Tol"/>
+      <property name="MPN" value="1206ZD475KAT4A"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="PICO_ADC_Test.kicad_sch"/>
+      <property name="ki_description" value="Unpolarized capacitor, small symbol"/>
+      <property name="ki_keywords" value="capacitor cap"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>eaa7df98-070d-459d-a4f9-2daf5b6dda36</tstamps>
+    </comp>
+    <comp ref="C8">
+      <value>100nF</value>
+      <footprint>Capacitor_SMD:C_1206_3216Metric</footprint>
+      <fields>
+        <field name="Size">1206</field>
+        <field name="Tolerance">10%</field>
+      </fields>
+      <libsource lib="Device" part="C_Small" description="Unpolarized capacitor, small symbol"/>
+      <property name="Size" value="1206"/>
+      <property name="Tolerance" value="10%"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="PICO_ADC_Test.kicad_sch"/>
+      <property name="ki_description" value="Unpolarized capacitor, small symbol"/>
+      <property name="ki_keywords" value="capacitor cap"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>1c680aeb-3d48-4078-b8ee-3645f5779f10</tstamps>
+    </comp>
+    <comp ref="C9">
+      <value>100nF</value>
+      <footprint>Capacitor_SMD:C_1206_3216Metric</footprint>
+      <fields>
+        <field name="DATASHEET LINK">https://www.vishay.com/doc?28548</field>
+        <field name="Description">Multilayer Ceramic Capacitors MLCC - SMD/SMT 1206 0.1uF 10volts X7R 10%</field>
+        <field name="MPN">VJ1206Y104KXQCW1BC</field>
+        <field name="Size">1206</field>
+        <field name="Tolerance">10%</field>
+      </fields>
+      <libsource lib="Device" part="C_Small" description="Unpolarized capacitor, small symbol"/>
+      <property name="Size" value="1206"/>
+      <property name="Tolerance" value="10%"/>
+      <property name="DATASHEET LINK" value="https://www.vishay.com/doc?28548"/>
+      <property name="Description" value="Multilayer Ceramic Capacitors MLCC - SMD/SMT 1206 0.1uF 10volts X7R 10%"/>
+      <property name="MPN" value="VJ1206Y104KXQCW1BC"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="PICO_ADC_Test.kicad_sch"/>
+      <property name="ki_description" value="Unpolarized capacitor, small symbol"/>
+      <property name="ki_keywords" value="capacitor cap"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>647ca317-2d6c-4cd9-8201-290cf11401fe</tstamps>
+    </comp>
+    <comp ref="C10">
+      <value>100nF</value>
+      <footprint>Capacitor_SMD:C_1206_3216Metric</footprint>
+      <fields>
+        <field name="DATASHEET LINK">https://www.vishay.com/doc?28548</field>
+        <field name="Description">Multilayer Ceramic Capacitors MLCC - SMD/SMT 1206 0.1uF 10volts X7R 10%</field>
+        <field name="MPN">VJ1206Y104KXQCW1BC</field>
+        <field name="Size">1206</field>
+        <field name="Tolerance">10%</field>
+      </fields>
+      <libsource lib="Device" part="C_Small" description="Unpolarized capacitor, small symbol"/>
+      <property name="Size" value="1206"/>
+      <property name="Tolerance" value="10%"/>
+      <property name="DATASHEET LINK" value="https://www.vishay.com/doc?28548"/>
+      <property name="Description" value="Multilayer Ceramic Capacitors MLCC - SMD/SMT 1206 0.1uF 10volts X7R 10%"/>
+      <property name="MPN" value="VJ1206Y104KXQCW1BC"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="PICO_ADC_Test.kicad_sch"/>
+      <property name="ki_description" value="Unpolarized capacitor, small symbol"/>
+      <property name="ki_keywords" value="capacitor cap"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>fa7aa007-7706-4cb4-883f-758575b0719d</tstamps>
+    </comp>
+    <comp ref="C11">
+      <value>100nF</value>
+      <footprint>Capacitor_SMD:C_1206_3216Metric</footprint>
+      <fields>
+        <field name="DATASHEET LINK">https://www.vishay.com/doc?28548</field>
+        <field name="Description">Multilayer Ceramic Capacitors MLCC - SMD/SMT 1206 0.1uF 10volts X7R 10%</field>
+        <field name="MPN">VJ1206Y104KXQCW1BC</field>
+        <field name="Size">1206</field>
+        <field name="Tolerance">10%</field>
+      </fields>
+      <libsource lib="Device" part="C_Small" description="Unpolarized capacitor, small symbol"/>
+      <property name="Size" value="1206"/>
+      <property name="Tolerance" value="10%"/>
+      <property name="DATASHEET LINK" value="https://www.vishay.com/doc?28548"/>
+      <property name="Description" value="Multilayer Ceramic Capacitors MLCC - SMD/SMT 1206 0.1uF 10volts X7R 10%"/>
+      <property name="MPN" value="VJ1206Y104KXQCW1BC"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="PICO_ADC_Test.kicad_sch"/>
+      <property name="ki_description" value="Unpolarized capacitor, small symbol"/>
+      <property name="ki_keywords" value="capacitor cap"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>5515170f-8220-4217-a46d-cb0abbfa8d71</tstamps>
+    </comp>
+    <comp ref="C12">
+      <value>22pF</value>
+      <footprint>Capacitor_SMD:C_1206_3216Metric</footprint>
+      <fields>
+        <field name="DATASHEET LINK">https://www.vishay.com/doc?28548</field>
+        <field name="Description">Multilayer Ceramic Capacitors MLCC - SMD/SMT 1206 22pF 10volts C0G 5%</field>
+        <field name="MPN">VJ1206A220JXQPW1BC</field>
+        <field name="Size">1206</field>
+        <field name="Tolerance">10%</field>
+      </fields>
+      <libsource lib="Device" part="C_Small" description="Unpolarized capacitor, small symbol"/>
+      <property name="Size" value="1206"/>
+      <property name="Tolerance" value="10%"/>
+      <property name="DATASHEET LINK" value="https://www.vishay.com/doc?28548"/>
+      <property name="Description" value="Multilayer Ceramic Capacitors MLCC - SMD/SMT 1206 22pF 10volts C0G 5%"/>
+      <property name="MPN" value="VJ1206A220JXQPW1BC"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="PICO_ADC_Test.kicad_sch"/>
+      <property name="ki_description" value="Unpolarized capacitor, small symbol"/>
+      <property name="ki_keywords" value="capacitor cap"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>6bfa33f3-94f7-4f95-99a8-08d0b8b33eb2</tstamps>
+    </comp>
+    <comp ref="C13">
+      <value>100nF</value>
+      <footprint>Capacitor_SMD:C_1206_3216Metric</footprint>
+      <fields>
+        <field name="Size">1206</field>
+        <field name="Tolerance">10%</field>
+      </fields>
+      <libsource lib="Device" part="C_Small" description="Unpolarized capacitor, small symbol"/>
+      <property name="Size" value="1206"/>
+      <property name="Tolerance" value="10%"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="PICO_ADC_Test.kicad_sch"/>
+      <property name="ki_description" value="Unpolarized capacitor, small symbol"/>
+      <property name="ki_keywords" value="capacitor cap"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>b47c80e2-ea16-4432-a573-b2081eb71063</tstamps>
+    </comp>
+    <comp ref="C14">
+      <value>100nF</value>
+      <footprint>Capacitor_SMD:C_1206_3216Metric</footprint>
+      <fields>
+        <field name="Size">1206</field>
+        <field name="Tolerance">10%</field>
+      </fields>
+      <libsource lib="Device" part="C_Small" description="Unpolarized capacitor, small symbol"/>
+      <property name="Size" value="1206"/>
+      <property name="Tolerance" value="10%"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="PICO_ADC_Test.kicad_sch"/>
+      <property name="ki_description" value="Unpolarized capacitor, small symbol"/>
+      <property name="ki_keywords" value="capacitor cap"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>dc1b2b88-06a7-41c8-b64f-5e45f851ee92</tstamps>
+    </comp>
+    <comp ref="C15">
+      <value>100nF</value>
+      <footprint>Capacitor_SMD:C_1206_3216Metric</footprint>
+      <fields>
+        <field name="Size">1206</field>
+        <field name="Tolerance">10%</field>
+      </fields>
+      <libsource lib="Device" part="C_Small" description="Unpolarized capacitor, small symbol"/>
+      <property name="Size" value="1206"/>
+      <property name="Tolerance" value="10%"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="PICO_ADC_Test.kicad_sch"/>
+      <property name="ki_description" value="Unpolarized capacitor, small symbol"/>
+      <property name="ki_keywords" value="capacitor cap"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>697c4097-9f9c-45a1-91ff-5512b7d685b3</tstamps>
+    </comp>
+    <comp ref="C16">
+      <value>100nF</value>
+      <footprint>Capacitor_SMD:C_1206_3216Metric</footprint>
+      <fields>
+        <field name="Size">1206</field>
+        <field name="Tolerance">10%</field>
+      </fields>
+      <libsource lib="Device" part="C_Small" description="Unpolarized capacitor, small symbol"/>
+      <property name="Size" value="1206"/>
+      <property name="Tolerance" value="10%"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="PICO_ADC_Test.kicad_sch"/>
+      <property name="ki_description" value="Unpolarized capacitor, small symbol"/>
+      <property name="ki_keywords" value="capacitor cap"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>eb68d4ac-52b4-49d5-8363-6101a7d34bc7</tstamps>
+    </comp>
+    <comp ref="C17">
+      <value>100nF</value>
+      <footprint>Capacitor_SMD:C_1206_3216Metric</footprint>
+      <fields>
+        <field name="DATASHEET LINK">https://www.vishay.com/doc?28548</field>
+        <field name="Description">Multilayer Ceramic Capacitors MLCC - SMD/SMT 1206 0.1uF 10volts X7R 10%</field>
+        <field name="MPN">VJ1206Y104KXQCW1BC</field>
+        <field name="Size">1206</field>
+        <field name="Tolerance">10%</field>
+      </fields>
+      <libsource lib="Device" part="C_Small" description="Unpolarized capacitor, small symbol"/>
+      <property name="Size" value="1206"/>
+      <property name="Tolerance" value="10%"/>
+      <property name="DATASHEET LINK" value="https://www.vishay.com/doc?28548"/>
+      <property name="Description" value="Multilayer Ceramic Capacitors MLCC - SMD/SMT 1206 0.1uF 10volts X7R 10%"/>
+      <property name="MPN" value="VJ1206Y104KXQCW1BC"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="PICO_ADC_Test.kicad_sch"/>
+      <property name="ki_description" value="Unpolarized capacitor, small symbol"/>
+      <property name="ki_keywords" value="capacitor cap"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>6f42ef8d-b248-40fc-b331-d4980bfd3cf1</tstamps>
+    </comp>
+    <comp ref="C18">
+      <value>1nF</value>
+      <footprint>Capacitor_SMD:C_1206_3216Metric</footprint>
+      <fields>
+        <field name="Size">1206</field>
+        <field name="Tolerance">10%</field>
+      </fields>
+      <libsource lib="Device" part="C_Small" description="Unpolarized capacitor, small symbol"/>
+      <property name="Size" value="1206"/>
+      <property name="Tolerance" value="10%"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="PICO_ADC_Test.kicad_sch"/>
+      <property name="ki_description" value="Unpolarized capacitor, small symbol"/>
+      <property name="ki_keywords" value="capacitor cap"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>201cc362-51ae-4f34-925a-c68e3da0e17d</tstamps>
+    </comp>
+    <comp ref="C19">
+      <value>100nF</value>
+      <footprint>Capacitor_SMD:C_1206_3216Metric</footprint>
+      <fields>
+        <field name="DATASHEET LINK">https://www.vishay.com/doc?28548</field>
+        <field name="Description">Multilayer Ceramic Capacitors MLCC - SMD/SMT 1206 0.1uF 10volts X7R 10%</field>
+        <field name="MPN">VJ1206Y104KXQCW1BC</field>
+        <field name="Size">1206</field>
+        <field name="Tolerance">10%</field>
+      </fields>
+      <libsource lib="Device" part="C_Small" description="Unpolarized capacitor, small symbol"/>
+      <property name="Size" value="1206"/>
+      <property name="Tolerance" value="10%"/>
+      <property name="DATASHEET LINK" value="https://www.vishay.com/doc?28548"/>
+      <property name="Description" value="Multilayer Ceramic Capacitors MLCC - SMD/SMT 1206 0.1uF 10volts X7R 10%"/>
+      <property name="MPN" value="VJ1206Y104KXQCW1BC"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="PICO_ADC_Test.kicad_sch"/>
+      <property name="ki_description" value="Unpolarized capacitor, small symbol"/>
+      <property name="ki_keywords" value="capacitor cap"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>4ac95372-d7c0-45b9-952e-0f6101dbb763</tstamps>
+    </comp>
+    <comp ref="C20">
+      <value>50pF</value>
+      <footprint>Capacitor_SMD:C_1206_3216Metric</footprint>
+      <fields>
+        <field name="Size">1206</field>
+        <field name="Tolerance">5%</field>
+      </fields>
+      <libsource lib="Device" part="C_Small" description="Unpolarized capacitor, small symbol"/>
+      <property name="Size" value="1206"/>
+      <property name="Tolerance" value="5%"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="PICO_ADC_Test.kicad_sch"/>
+      <property name="ki_description" value="Unpolarized capacitor, small symbol"/>
+      <property name="ki_keywords" value="capacitor cap"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>4ca56e60-f36c-4eb0-8bf0-6b56ef531308</tstamps>
+    </comp>
+    <comp ref="C21">
+      <value>1nF</value>
+      <footprint>Capacitor_SMD:C_1206_3216Metric</footprint>
+      <fields>
+        <field name="Size">1206</field>
+        <field name="Tolerance">10%</field>
+      </fields>
+      <libsource lib="Device" part="C_Small" description="Unpolarized capacitor, small symbol"/>
+      <property name="Size" value="1206"/>
+      <property name="Tolerance" value="10%"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="PICO_ADC_Test.kicad_sch"/>
+      <property name="ki_description" value="Unpolarized capacitor, small symbol"/>
+      <property name="ki_keywords" value="capacitor cap"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>a434e29d-ef62-4fd1-ac4d-93cf5454e4c7</tstamps>
+    </comp>
+    <comp ref="C22">
+      <value>100nF</value>
+      <footprint>Capacitor_SMD:C_1206_3216Metric</footprint>
+      <fields>
+        <field name="DATASHEET LINK">https://www.vishay.com/doc?28548</field>
+        <field name="Description">Multilayer Ceramic Capacitors MLCC - SMD/SMT 1206 0.1uF 10volts X7R 10%</field>
+        <field name="MPN">VJ1206Y104KXQCW1BC</field>
+        <field name="Size">1206</field>
+        <field name="Tolerance">10%</field>
+      </fields>
+      <libsource lib="Device" part="C_Small" description="Unpolarized capacitor, small symbol"/>
+      <property name="Size" value="1206"/>
+      <property name="Tolerance" value="10%"/>
+      <property name="DATASHEET LINK" value="https://www.vishay.com/doc?28548"/>
+      <property name="Description" value="Multilayer Ceramic Capacitors MLCC - SMD/SMT 1206 0.1uF 10volts X7R 10%"/>
+      <property name="MPN" value="VJ1206Y104KXQCW1BC"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="PICO_ADC_Test.kicad_sch"/>
+      <property name="ki_description" value="Unpolarized capacitor, small symbol"/>
+      <property name="ki_keywords" value="capacitor cap"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>13e630ce-676a-484d-aa2d-93c2f0efc971</tstamps>
+    </comp>
+    <comp ref="C23">
+      <value>1nF</value>
+      <footprint>Capacitor_SMD:C_1206_3216Metric</footprint>
+      <fields>
+        <field name="Size">1206</field>
+        <field name="Tolerance">10%</field>
+      </fields>
+      <libsource lib="Device" part="C_Small" description="Unpolarized capacitor, small symbol"/>
+      <property name="Size" value="1206"/>
+      <property name="Tolerance" value="10%"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="PICO_ADC_Test.kicad_sch"/>
+      <property name="ki_description" value="Unpolarized capacitor, small symbol"/>
+      <property name="ki_keywords" value="capacitor cap"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>b440b323-bd86-4224-9fa4-7b3bd3ff4ab0</tstamps>
+    </comp>
+    <comp ref="C24">
+      <value>100nF</value>
+      <footprint>Capacitor_SMD:C_1206_3216Metric</footprint>
+      <fields>
+        <field name="DATASHEET LINK">https://www.vishay.com/doc?28548</field>
+        <field name="Description">Multilayer Ceramic Capacitors MLCC - SMD/SMT 1206 0.1uF 10volts X7R 10%</field>
+        <field name="MPN">VJ1206Y104KXQCW1BC</field>
+        <field name="Size">1206</field>
+        <field name="Tolerance">10%</field>
+      </fields>
+      <libsource lib="Device" part="C_Small" description="Unpolarized capacitor, small symbol"/>
+      <property name="Size" value="1206"/>
+      <property name="Tolerance" value="10%"/>
+      <property name="DATASHEET LINK" value="https://www.vishay.com/doc?28548"/>
+      <property name="Description" value="Multilayer Ceramic Capacitors MLCC - SMD/SMT 1206 0.1uF 10volts X7R 10%"/>
+      <property name="MPN" value="VJ1206Y104KXQCW1BC"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="PICO_ADC_Test.kicad_sch"/>
+      <property name="ki_description" value="Unpolarized capacitor, small symbol"/>
+      <property name="ki_keywords" value="capacitor cap"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>7f407b81-d2a9-4082-8a8c-9e280ec0a90b</tstamps>
+    </comp>
+    <comp ref="C25">
+      <value>10uF</value>
+      <footprint>Capacitor_SMD:C_1206_3216Metric</footprint>
+      <fields>
+        <field name="Size">1206</field>
+        <field name="Tolerance">10%</field>
+      </fields>
+      <libsource lib="Device" part="C_Small" description="Unpolarized capacitor, small symbol"/>
+      <property name="Size" value="1206"/>
+      <property name="Tolerance" value="10%"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="PICO_ADC_Test.kicad_sch"/>
+      <property name="ki_description" value="Unpolarized capacitor, small symbol"/>
+      <property name="ki_keywords" value="capacitor cap"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>b29adbf5-0b40-4f31-b6aa-b8e99504a09f</tstamps>
+    </comp>
+    <comp ref="C26">
+      <value>100nF</value>
+      <footprint>Capacitor_SMD:C_1206_3216Metric</footprint>
+      <fields>
+        <field name="DATASHEET LINK">https://www.vishay.com/doc?28548</field>
+        <field name="Description">Multilayer Ceramic Capacitors MLCC - SMD/SMT 1206 0.1uF 10volts X7R 10%</field>
+        <field name="MPN">VJ1206Y104KXQCW1BC</field>
+        <field name="Size">1206</field>
+        <field name="Tolerance">10%</field>
+      </fields>
+      <libsource lib="Device" part="C_Small" description="Unpolarized capacitor, small symbol"/>
+      <property name="Size" value="1206"/>
+      <property name="Tolerance" value="10%"/>
+      <property name="DATASHEET LINK" value="https://www.vishay.com/doc?28548"/>
+      <property name="Description" value="Multilayer Ceramic Capacitors MLCC - SMD/SMT 1206 0.1uF 10volts X7R 10%"/>
+      <property name="MPN" value="VJ1206Y104KXQCW1BC"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="PICO_ADC_Test.kicad_sch"/>
+      <property name="ki_description" value="Unpolarized capacitor, small symbol"/>
+      <property name="ki_keywords" value="capacitor cap"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>329b7eb2-f800-4e72-a540-64a0b51289b2</tstamps>
+    </comp>
+    <comp ref="D1">
+      <value>BAV99-7-F</value>
+      <footprint>PICO_ADC_Test:SOT95P240X120-3N</footprint>
+      <datasheet>https://www.diodes.com/assets/Datasheets/ds12007.pdf</datasheet>
+      <fields>
+        <field name="Description">Diode Small Signal Switching 75V 0.3A 3-Pin SOT-23 T/R</field>
+        <field name="Height">1.2</field>
+        <field name="Manufacturer_Name">Diodes Incorporated</field>
+        <field name="Manufacturer_Part_Number">BAV99-7-F</field>
+        <field name="Mouser Part Number">621-BAV99-F</field>
+        <field name="Mouser Price/Stock">https://www.mouser.co.uk/ProductDetail/Diodes-Incorporated/BAV99-7-F?qs=E9Ihi8A05%252BSTVRjo74hQDA%3D%3D</field>
+      </fields>
+      <libsource lib="PICO_ADC_Test" part="BAV99-7-F" description="Diode Small Signal Switching 75V 0.3A 3-Pin SOT-23 T/R"/>
+      <property name="Description" value="Diode Small Signal Switching 75V 0.3A 3-Pin SOT-23 T/R"/>
+      <property name="Height" value="1.2"/>
+      <property name="Mouser Part Number" value="621-BAV99-F"/>
+      <property name="Mouser Price/Stock" value="https://www.mouser.co.uk/ProductDetail/Diodes-Incorporated/BAV99-7-F?qs=E9Ihi8A05%252BSTVRjo74hQDA%3D%3D"/>
+      <property name="Manufacturer_Name" value="Diodes Incorporated"/>
+      <property name="Manufacturer_Part_Number" value="BAV99-7-F"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="PICO_ADC_Test.kicad_sch"/>
+      <property name="ki_description" value="Diode Small Signal Switching 75V 0.3A 3-Pin SOT-23 T/R"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>644cbd4f-bc3a-4acc-b997-993d4ee75dbd</tstamps>
+    </comp>
+    <comp ref="FB1">
+      <value>ILHB1206ER750V</value>
+      <footprint>Inductor_SMD:L_1206_3216Metric</footprint>
+      <datasheet>https://www.murata.com/en-us/products/productdetail?partno=BLM21BB750SN1%23</datasheet>
+      <fields>
+        <field name="DATASHEET LINK">https://www.vishay.com/doc?34102</field>
+        <field name="Description">Ferrite Beads 75ohms 25%</field>
+        <field name="Height">1.05</field>
+        <field name="Manufacturer_Name">Murata Electronics</field>
+        <field name="Manufacturer_Part_Number">BLM21BB750SN1D</field>
+        <field name="Mouser Part Number">81-BLM21B750S</field>
+        <field name="Mouser Price/Stock">https://www.mouser.co.uk/ProductDetail/Murata-Electronics/BLM21BB750SN1D/?qs=Ncw4LTdqe05b2FdOdGUHhQ%3D%3D</field>
+        <field name="Size">1206</field>
+        <field name="Tolerance">25%</field>
+      </fields>
+      <libsource lib="PICO_ADC_Test" part="BLM21BB750SN1D" description="BLM21_N1D Series EMI Suppression Filter 75+/-25% at 100MHz 700mA @85"/>
+      <property name="Description" value="Ferrite Beads 75ohms 25%"/>
+      <property name="Height" value="1.05"/>
+      <property name="Mouser Part Number" value="81-BLM21B750S"/>
+      <property name="Mouser Price/Stock" value="https://www.mouser.co.uk/ProductDetail/Murata-Electronics/BLM21BB750SN1D/?qs=Ncw4LTdqe05b2FdOdGUHhQ%3D%3D"/>
+      <property name="Manufacturer_Name" value="Murata Electronics"/>
+      <property name="Manufacturer_Part_Number" value="BLM21BB750SN1D"/>
+      <property name="DATASHEET LINK" value="https://www.vishay.com/doc?34102"/>
+      <property name="Size" value="1206"/>
+      <property name="Tolerance" value="25%"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="PICO_ADC_Test.kicad_sch"/>
+      <property name="ki_description" value="BLM21_N1D Series EMI Suppression Filter 75+/-25% at 100MHz 700mA @85"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>0cd5b2ce-b7f4-4c41-9995-f9a4565cc6d9</tstamps>
+    </comp>
+    <comp ref="FB2">
+      <value>ILHB1206ER750V</value>
+      <footprint>Inductor_SMD:L_1206_3216Metric</footprint>
+      <datasheet>https://www.murata.com/en-us/products/productdetail?partno=BLM21BB750SN1%23</datasheet>
+      <fields>
+        <field name="DATASHEET LINK">https://www.vishay.com/doc?34102</field>
+        <field name="Description">Ferrite Beads 75ohms 25%</field>
+        <field name="Height">1.05</field>
+        <field name="Manufacturer_Name">Murata Electronics</field>
+        <field name="Manufacturer_Part_Number">BLM21BB750SN1D</field>
+        <field name="Mouser Part Number">81-BLM21B750S</field>
+        <field name="Mouser Price/Stock">https://www.mouser.co.uk/ProductDetail/Murata-Electronics/BLM21BB750SN1D/?qs=Ncw4LTdqe05b2FdOdGUHhQ%3D%3D</field>
+        <field name="Size">1206</field>
+        <field name="Tolerance">25%</field>
+      </fields>
+      <libsource lib="PICO_ADC_Test" part="BLM21BB750SN1D" description="BLM21_N1D Series EMI Suppression Filter 75+/-25% at 100MHz 700mA @85"/>
+      <property name="Description" value="Ferrite Beads 75ohms 25%"/>
+      <property name="Height" value="1.05"/>
+      <property name="Mouser Part Number" value="81-BLM21B750S"/>
+      <property name="Mouser Price/Stock" value="https://www.mouser.co.uk/ProductDetail/Murata-Electronics/BLM21BB750SN1D/?qs=Ncw4LTdqe05b2FdOdGUHhQ%3D%3D"/>
+      <property name="Manufacturer_Name" value="Murata Electronics"/>
+      <property name="Manufacturer_Part_Number" value="BLM21BB750SN1D"/>
+      <property name="DATASHEET LINK" value="https://www.vishay.com/doc?34102"/>
+      <property name="Size" value="1206"/>
+      <property name="Tolerance" value="25%"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="PICO_ADC_Test.kicad_sch"/>
+      <property name="ki_description" value="BLM21_N1D Series EMI Suppression Filter 75+/-25% at 100MHz 700mA @85"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>f2dae1bc-1cfe-4159-80c2-da537bc8e73b</tstamps>
+    </comp>
+    <comp ref="FB3">
+      <value>ILHB1206ER750V</value>
+      <footprint>Inductor_SMD:L_1206_3216Metric</footprint>
+      <datasheet>https://www.murata.com/en-us/products/productdetail?partno=BLM21BB750SN1%23</datasheet>
+      <fields>
+        <field name="DATASHEET LINK">https://www.vishay.com/doc?34102</field>
+        <field name="Description">Ferrite Beads 75ohms 25%</field>
+        <field name="Height">1.05</field>
+        <field name="Manufacturer_Name">Murata Electronics</field>
+        <field name="Manufacturer_Part_Number">BLM21BB750SN1D</field>
+        <field name="Mouser Part Number">81-BLM21B750S</field>
+        <field name="Mouser Price/Stock">https://www.mouser.co.uk/ProductDetail/Murata-Electronics/BLM21BB750SN1D/?qs=Ncw4LTdqe05b2FdOdGUHhQ%3D%3D</field>
+        <field name="Size">1206</field>
+        <field name="Tolerance">25%</field>
+      </fields>
+      <libsource lib="PICO_ADC_Test" part="BLM21BB750SN1D" description="BLM21_N1D Series EMI Suppression Filter 75+/-25% at 100MHz 700mA @85"/>
+      <property name="Description" value="Ferrite Beads 75ohms 25%"/>
+      <property name="Height" value="1.05"/>
+      <property name="Mouser Part Number" value="81-BLM21B750S"/>
+      <property name="Mouser Price/Stock" value="https://www.mouser.co.uk/ProductDetail/Murata-Electronics/BLM21BB750SN1D/?qs=Ncw4LTdqe05b2FdOdGUHhQ%3D%3D"/>
+      <property name="Manufacturer_Name" value="Murata Electronics"/>
+      <property name="Manufacturer_Part_Number" value="BLM21BB750SN1D"/>
+      <property name="DATASHEET LINK" value="https://www.vishay.com/doc?34102"/>
+      <property name="Size" value="1206"/>
+      <property name="Tolerance" value="25%"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="PICO_ADC_Test.kicad_sch"/>
+      <property name="ki_description" value="BLM21_N1D Series EMI Suppression Filter 75+/-25% at 100MHz 700mA @85"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>5f2c6f45-ba7b-472f-b293-9570d0166241</tstamps>
+    </comp>
+    <comp ref="FB4">
+      <value>ILHB1206ER750V</value>
+      <footprint>Inductor_SMD:L_1206_3216Metric</footprint>
+      <datasheet>https://www.murata.com/en-us/products/productdetail?partno=BLM21BB750SN1%23</datasheet>
+      <fields>
+        <field name="DATASHEET LINK">https://www.vishay.com/doc?34102</field>
+        <field name="Description">Ferrite Beads 75ohms 25%</field>
+        <field name="Height">1.05</field>
+        <field name="Manufacturer_Name">Murata Electronics</field>
+        <field name="Manufacturer_Part_Number">BLM21BB750SN1D</field>
+        <field name="Mouser Part Number">81-BLM21B750S</field>
+        <field name="Mouser Price/Stock">https://www.mouser.co.uk/ProductDetail/Murata-Electronics/BLM21BB750SN1D/?qs=Ncw4LTdqe05b2FdOdGUHhQ%3D%3D</field>
+        <field name="Size">1206</field>
+        <field name="Tolerance">25%</field>
+      </fields>
+      <libsource lib="PICO_ADC_Test" part="BLM21BB750SN1D" description="BLM21_N1D Series EMI Suppression Filter 75+/-25% at 100MHz 700mA @85"/>
+      <property name="Description" value="Ferrite Beads 75ohms 25%"/>
+      <property name="Height" value="1.05"/>
+      <property name="Mouser Part Number" value="81-BLM21B750S"/>
+      <property name="Mouser Price/Stock" value="https://www.mouser.co.uk/ProductDetail/Murata-Electronics/BLM21BB750SN1D/?qs=Ncw4LTdqe05b2FdOdGUHhQ%3D%3D"/>
+      <property name="Manufacturer_Name" value="Murata Electronics"/>
+      <property name="Manufacturer_Part_Number" value="BLM21BB750SN1D"/>
+      <property name="DATASHEET LINK" value="https://www.vishay.com/doc?34102"/>
+      <property name="Size" value="1206"/>
+      <property name="Tolerance" value="25%"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="PICO_ADC_Test.kicad_sch"/>
+      <property name="ki_description" value="BLM21_N1D Series EMI Suppression Filter 75+/-25% at 100MHz 700mA @85"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>b8d4fe45-c6ea-418e-b98c-4b7dbec39473</tstamps>
+    </comp>
+    <comp ref="FB5">
+      <value>ILHB1206ER750V</value>
+      <footprint>Inductor_SMD:L_1206_3216Metric</footprint>
+      <datasheet>https://www.murata.com/en-us/products/productdetail?partno=BLM21BB750SN1%23</datasheet>
+      <fields>
+        <field name="DATASHEET LINK">https://www.vishay.com/doc?34102</field>
+        <field name="Description">Ferrite Beads 75ohms 25%</field>
+        <field name="Height">1.05</field>
+        <field name="Manufacturer_Name">Murata Electronics</field>
+        <field name="Manufacturer_Part_Number">BLM21BB750SN1D</field>
+        <field name="Mouser Part Number">81-BLM21B750S</field>
+        <field name="Mouser Price/Stock">https://www.mouser.co.uk/ProductDetail/Murata-Electronics/BLM21BB750SN1D/?qs=Ncw4LTdqe05b2FdOdGUHhQ%3D%3D</field>
+        <field name="Size">1206</field>
+        <field name="Tolerance">25%</field>
+      </fields>
+      <libsource lib="PICO_ADC_Test" part="BLM21BB750SN1D" description="BLM21_N1D Series EMI Suppression Filter 75+/-25% at 100MHz 700mA @85"/>
+      <property name="Description" value="Ferrite Beads 75ohms 25%"/>
+      <property name="Height" value="1.05"/>
+      <property name="Mouser Part Number" value="81-BLM21B750S"/>
+      <property name="Mouser Price/Stock" value="https://www.mouser.co.uk/ProductDetail/Murata-Electronics/BLM21BB750SN1D/?qs=Ncw4LTdqe05b2FdOdGUHhQ%3D%3D"/>
+      <property name="Manufacturer_Name" value="Murata Electronics"/>
+      <property name="Manufacturer_Part_Number" value="BLM21BB750SN1D"/>
+      <property name="DATASHEET LINK" value="https://www.vishay.com/doc?34102"/>
+      <property name="Size" value="1206"/>
+      <property name="Tolerance" value="25%"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="PICO_ADC_Test.kicad_sch"/>
+      <property name="ki_description" value="BLM21_N1D Series EMI Suppression Filter 75+/-25% at 100MHz 700mA @85"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>f17b8779-ef28-42da-b080-d4dfeb38cda5</tstamps>
+    </comp>
+    <comp ref="IC1">
+      <value>ADC10065CIMT_NOPB</value>
+      <footprint>PICO_ADC_Test:SOP65P640X120-28N</footprint>
+      <datasheet>http://www.ti.com/lit/gpn/adc10065</datasheet>
+      <fields>
+        <field name="Description">10-Bit, 65-MSPS Analog-to-Digital Converter (ADC)</field>
+        <field name="Height">1.2</field>
+        <field name="Manufacturer_Name">Texas Instruments</field>
+        <field name="Manufacturer_Part_Number">ADC10065CIMT/NOPB</field>
+        <field name="Mouser Part Number">926-ADC10065CIMTNOPB</field>
+        <field name="Mouser Price/Stock">https://www.mouser.com/Search/Refine.aspx?Keyword=926-ADC10065CIMTNOPB</field>
+      </fields>
+      <libsource lib="PICO_ADC_Test" part="ADC10065CIMT_NOPB" description="10-Bit, 65-MSPS Analog-to-Digital Converter (ADC)"/>
+      <property name="Description" value="10-Bit, 65-MSPS Analog-to-Digital Converter (ADC)"/>
+      <property name="Height" value="1.2"/>
+      <property name="Mouser Part Number" value="926-ADC10065CIMTNOPB"/>
+      <property name="Mouser Price/Stock" value="https://www.mouser.com/Search/Refine.aspx?Keyword=926-ADC10065CIMTNOPB"/>
+      <property name="Manufacturer_Name" value="Texas Instruments"/>
+      <property name="Manufacturer_Part_Number" value="ADC10065CIMT/NOPB"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="PICO_ADC_Test.kicad_sch"/>
+      <property name="ki_description" value="10-Bit, 65-MSPS Analog-to-Digital Converter (ADC)"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>7693da3d-0c2c-488e-9915-06fd8671228e</tstamps>
+    </comp>
+    <comp ref="IC2">
+      <value>AD8331ARQZ</value>
+      <footprint>PICO_ADC_Test:SOP64P600X175-20N</footprint>
+      <fields>
+        <field name="ARROW PART NUMBER">AD8331ARQZ</field>
+        <field name="ARROW PRICE/STOCK">https://www.arrow.com/en/products/ad8331arqz/analog-devices</field>
+        <field name="DATASHEET LINK">http://www.analog.com/static/imported-files/data_sheets/AD8331_8332_8334.pdf</field>
+        <field name="HEIGHT">1.75mm</field>
+        <field name="MANUFACTURER_NAME">Analog Devices</field>
+        <field name="MANUFACTURER_PART_NUMBER">AD8331ARQZ</field>
+        <field name="MOUSER PART NUMBER">584-AD8331ARQZ</field>
+        <field name="MOUSER PRICE/STOCK">https://www.mouser.co.uk/ProductDetail/Analog-Devices/AD8331ARQZ?qs=%2FtpEQrCGXCwx0%2F22gf7ohQ%3D%3D</field>
+      </fields>
+      <libsource lib="PICO_ADC_Test" part="AD8331ARQZ" description="Integrated Circuit"/>
+      <property name="HEIGHT" value="1.75mm"/>
+      <property name="DATASHEET LINK" value="http://www.analog.com/static/imported-files/data_sheets/AD8331_8332_8334.pdf"/>
+      <property name="MANUFACTURER_NAME" value="Analog Devices"/>
+      <property name="MANUFACTURER_PART_NUMBER" value="AD8331ARQZ"/>
+      <property name="MOUSER PART NUMBER" value="584-AD8331ARQZ"/>
+      <property name="MOUSER PRICE/STOCK" value="https://www.mouser.co.uk/ProductDetail/Analog-Devices/AD8331ARQZ?qs=%2FtpEQrCGXCwx0%2F22gf7ohQ%3D%3D"/>
+      <property name="ARROW PART NUMBER" value="AD8331ARQZ"/>
+      <property name="ARROW PRICE/STOCK" value="https://www.arrow.com/en/products/ad8331arqz/analog-devices"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="PICO_ADC_Test.kicad_sch"/>
+      <property name="ki_description" value="Integrated Circuit"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>8fc4f03e-0615-4f83-9fe3-832e981d406f</tstamps>
+    </comp>
+    <comp ref="IC3">
+      <value>MCP4812-E_MS</value>
+      <footprint>PICO_ADC_Test:MCP4812-EMS</footprint>
+      <fields>
+        <field name="ARROW PART NUMBER">MCP4812-E/MS</field>
+        <field name="ARROW PRICE/STOCK">https://www.arrow.com/en/products/mcp4812-ems/microchip-technology</field>
+        <field name="DATASHEET LINK">http://ww1.microchip.com/downloads/en/DeviceDoc/20002249B.pdf</field>
+        <field name="HEIGHT">1.1mm</field>
+        <field name="MANUFACTURER_NAME">Microchip</field>
+        <field name="MANUFACTURER_PART_NUMBER">MCP4812-E/MS</field>
+        <field name="MOUSER PART NUMBER">579-MCP4812-E/MS</field>
+        <field name="MOUSER PRICE/STOCK">https://www.mouser.co.uk/ProductDetail/Microchip-Technology/MCP4812-E-MS?qs=bxUt0k7cytJEpyWPtzKy6A%3D%3D</field>
+      </fields>
+      <libsource lib="PICO_ADC_Test" part="MCP4812-E_MS" description="Integrated Circuit"/>
+      <property name="DATASHEET LINK" value="http://ww1.microchip.com/downloads/en/DeviceDoc/20002249B.pdf"/>
+      <property name="HEIGHT" value="1.1mm"/>
+      <property name="MANUFACTURER_NAME" value="Microchip"/>
+      <property name="MANUFACTURER_PART_NUMBER" value="MCP4812-E/MS"/>
+      <property name="MOUSER PART NUMBER" value="579-MCP4812-E/MS"/>
+      <property name="MOUSER PRICE/STOCK" value="https://www.mouser.co.uk/ProductDetail/Microchip-Technology/MCP4812-E-MS?qs=bxUt0k7cytJEpyWPtzKy6A%3D%3D"/>
+      <property name="ARROW PART NUMBER" value="MCP4812-E/MS"/>
+      <property name="ARROW PRICE/STOCK" value="https://www.arrow.com/en/products/mcp4812-ems/microchip-technology"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="PICO_ADC_Test.kicad_sch"/>
+      <property name="ki_description" value="Integrated Circuit"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>7823d7bf-41eb-41ed-9d2b-d9af9b3d6d15</tstamps>
+    </comp>
+    <comp ref="J1">
+      <value>AMPHENOL_132357-11</value>
+      <footprint>PICO_ADC_Test:AMPHENOL_132357-11</footprint>
+      <fields>
+        <field name="Description">JOHNSON - 142-0701-801 - \u5C04\u9891/\u540C\u8F74\u63D2\u5B54, SMA, PCB\u5B89\u88C5</field>
+        <field name="Manufacturer_Name">Cinch Connectivity Solutions</field>
+        <field name="Manufacturer_Part_Number">142-0701-801</field>
+        <field name="Mouser Part Number">530-142-0701-801</field>
+        <field name="Mouser Price/Stock">https://www.mouser.co.uk/ProductDetail/Johnson-Cinch-Connectivity-Solutions/142-0701-801?qs=PcPxjN2Z58KbDaDuDxyLHA%3D%3D</field>
+      </fields>
+      <libsource lib="PICO_ADC_Test" part="AMPHENOL_132357-11" description="JOHNSON - 142-0701-801 - \u5C04\u9891/\u540C\u8F74\u63D2\u5B54, SMA, PCB\u5B89\u88C5"/>
+      <property name="Description" value="JOHNSON - 142-0701-801 - \u5C04\u9891/\u540C\u8F74\u63D2\u5B54, SMA, PCB\u5B89\u88C5"/>
+      <property name="Height" value=""/>
+      <property name="Mouser Part Number" value="530-142-0701-801"/>
+      <property name="Mouser Price/Stock" value="https://www.mouser.co.uk/ProductDetail/Johnson-Cinch-Connectivity-Solutions/142-0701-801?qs=PcPxjN2Z58KbDaDuDxyLHA%3D%3D"/>
+      <property name="Manufacturer_Name" value="Cinch Connectivity Solutions"/>
+      <property name="Manufacturer_Part_Number" value="142-0701-801"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="PICO_ADC_Test.kicad_sch"/>
+      <property name="ki_description" value="JOHNSON - 142-0701-801 - \u5C04\u9891/\u540C\u8F74\u63D2\u5B54, SMA, PCB\u5B89\u88C5"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>a352191a-a815-4c45-9f10-2ebcdc94db5d</tstamps>
+    </comp>
+    <comp ref="J2">
+      <value>22-23-2021</value>
+      <footprint>Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical</footprint>
+      <libsource lib="Connector_Generic" part="Conn_01x02" description="Generic connector, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="PICO_ADC_Test.kicad_sch"/>
+      <property name="ki_description" value="Generic connector, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)"/>
+      <property name="ki_keywords" value="connector"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>96ac964f-793a-4926-93d2-be972f127e3f</tstamps>
+    </comp>
+    <comp ref="J3">
+      <value>61300611121</value>
+      <footprint>Connector_PinHeader_2.54mm:PinHeader_1x06_P2.54mm_Horizontal</footprint>
+      <datasheet>https://katalog.we-online.de/em/datasheet/6130xx11121.pdf</datasheet>
+      <fields>
+        <field name="Digi-Key_PN">732-5319-ND</field>
+        <field name="MPN">61300611121</field>
+        <field name="Manufacturer">Würth Elektronik</field>
+      </fields>
+      <libsource lib="ICTAMKY" part="61300611121" description="CONN HEADER VERT 6POS 2.54MM"/>
+      <property name="Manufacturer" value="Würth Elektronik"/>
+      <property name="MPN" value="61300611121"/>
+      <property name="Digi-Key_PN" value="732-5319-ND"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="PICO_ADC_Test.kicad_sch"/>
+      <property name="ki_description" value="CONN HEADER VERT 6POS 2.54MM"/>
+      <property name="ki_keywords" value="61300611121"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>fa6b0216-b594-4330-8cc7-3f8e8dceb212</tstamps>
+    </comp>
+    <comp ref="J4">
+      <value>Conn_01x04</value>
+      <footprint>Connector_PinHeader_2.54mm:PinHeader_1x04_P2.54mm_Vertical</footprint>
+      <libsource lib="Connector_Generic" part="Conn_01x04" description="Generic connector, single row, 01x04, script generated (kicad-library-utils/schlib/autogen/connector/)"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="PICO_ADC_Test.kicad_sch"/>
+      <property name="ki_description" value="Generic connector, single row, 01x04, script generated (kicad-library-utils/schlib/autogen/connector/)"/>
+      <property name="ki_keywords" value="connector"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>9fb10ada-22c2-4008-bc3e-3cbd548da619</tstamps>
+    </comp>
+    <comp ref="J5">
+      <value>22-23-2021</value>
+      <footprint>Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical</footprint>
+      <libsource lib="Connector_Generic" part="Conn_01x02" description="Generic connector, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="PICO_ADC_Test.kicad_sch"/>
+      <property name="ki_description" value="Generic connector, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)"/>
+      <property name="ki_keywords" value="connector"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>9a21d437-112d-4808-9fd6-2583339be0a2</tstamps>
+    </comp>
+    <comp ref="J6">
+      <value>90122-0126</value>
+      <footprint>Connector_PinHeader_2.54mm:PinHeader_2x06_P2.54mm_Horizontal</footprint>
+      <libsource lib="Connector_Generic" part="Conn_02x06_Odd_Even" description="Generic connector, double row, 02x06, odd/even pin numbering scheme (row 1 odd numbers, row 2 even numbers), script generated (kicad-library-utils/schlib/autogen/connector/)"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="PICO_ADC_Test.kicad_sch"/>
+      <property name="ki_description" value="Generic connector, double row, 02x06, odd/even pin numbering scheme (row 1 odd numbers, row 2 even numbers), script generated (kicad-library-utils/schlib/autogen/connector/)"/>
+      <property name="ki_keywords" value="connector"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>e54d1859-28ae-41e4-89fc-3a35faa61d39</tstamps>
+    </comp>
+    <comp ref="J7">
+      <value>22-23-2021</value>
+      <footprint>Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical</footprint>
+      <libsource lib="Connector_Generic" part="Conn_01x02" description="Generic connector, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="PICO_ADC_Test.kicad_sch"/>
+      <property name="ki_description" value="Generic connector, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)"/>
+      <property name="ki_keywords" value="connector"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>6f075039-43f3-48cb-8fb4-cbade8cf17b7</tstamps>
+    </comp>
+    <comp ref="R1">
+      <value>18R</value>
+      <footprint>Resistor_SMD:R_1206_3216Metric</footprint>
+      <fields>
+        <field name="Size">1206</field>
+        <field name="Tolerance">1%</field>
+      </fields>
+      <libsource lib="Device" part="R_Small_US" description="Resistor, small US symbol"/>
+      <property name="Size" value="1206"/>
+      <property name="Tolerance" value="1%"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="PICO_ADC_Test.kicad_sch"/>
+      <property name="ki_description" value="Resistor, small US symbol"/>
+      <property name="ki_keywords" value="r resistor"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>eb50eae3-3d29-435c-a210-f1912484f5f0</tstamps>
+    </comp>
+    <comp ref="R2">
+      <value>10K</value>
+      <footprint>Resistor_SMD:R_1206_3216Metric</footprint>
+      <fields>
+        <field name="Size">1206</field>
+        <field name="Tolerance">1%</field>
+      </fields>
+      <libsource lib="Device" part="R_Small_US" description="Resistor, small US symbol"/>
+      <property name="Size" value="1206"/>
+      <property name="Tolerance" value="1%"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="PICO_ADC_Test.kicad_sch"/>
+      <property name="ki_description" value="Resistor, small US symbol"/>
+      <property name="ki_keywords" value="r resistor"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>3f0586c2-6c4a-4791-9b8f-27c41c984136</tstamps>
+    </comp>
+    <comp ref="R3">
+      <value>10K</value>
+      <footprint>Resistor_SMD:R_1206_3216Metric</footprint>
+      <fields>
+        <field name="Size">1206</field>
+        <field name="Tolerance">1%</field>
+      </fields>
+      <libsource lib="Device" part="R_Small_US" description="Resistor, small US symbol"/>
+      <property name="Size" value="1206"/>
+      <property name="Tolerance" value="1%"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="PICO_ADC_Test.kicad_sch"/>
+      <property name="ki_description" value="Resistor, small US symbol"/>
+      <property name="ki_keywords" value="r resistor"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>133e86c7-6da0-4140-b9a6-10c3337b3737</tstamps>
+    </comp>
+    <comp ref="R4">
+      <value>100R</value>
+      <footprint>Resistor_SMD:R_1206_3216Metric</footprint>
+      <fields>
+        <field name="Size">1206</field>
+        <field name="Tolerance">1%</field>
+      </fields>
+      <libsource lib="Device" part="R_Small_US" description="Resistor, small US symbol"/>
+      <property name="Size" value="1206"/>
+      <property name="Tolerance" value="1%"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="PICO_ADC_Test.kicad_sch"/>
+      <property name="ki_description" value="Resistor, small US symbol"/>
+      <property name="ki_keywords" value="r resistor"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>58b13c70-13a8-44ae-9243-ef28a72e8110</tstamps>
+    </comp>
+    <comp ref="R5">
+      <value>10K</value>
+      <footprint>Resistor_SMD:R_1206_3216Metric</footprint>
+      <fields>
+        <field name="Size">1206</field>
+        <field name="Tolerance">1%</field>
+      </fields>
+      <libsource lib="Device" part="R_Small_US" description="Resistor, small US symbol"/>
+      <property name="Size" value="1206"/>
+      <property name="Tolerance" value="1%"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="PICO_ADC_Test.kicad_sch"/>
+      <property name="ki_description" value="Resistor, small US symbol"/>
+      <property name="ki_keywords" value="r resistor"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>b8762a22-0d2d-4d17-a0a0-440479e3da84</tstamps>
+    </comp>
+    <comp ref="R6">
+      <value>10K</value>
+      <footprint>Resistor_SMD:R_1206_3216Metric</footprint>
+      <fields>
+        <field name="Size">1206</field>
+        <field name="Tolerance">1%</field>
+      </fields>
+      <libsource lib="Device" part="R_Small_US" description="Resistor, small US symbol"/>
+      <property name="Size" value="1206"/>
+      <property name="Tolerance" value="1%"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="PICO_ADC_Test.kicad_sch"/>
+      <property name="ki_description" value="Resistor, small US symbol"/>
+      <property name="ki_keywords" value="r resistor"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>74270eee-b3b4-4338-81a6-3d578cb92726</tstamps>
+    </comp>
+    <comp ref="R7">
+      <value>280R</value>
+      <footprint>Resistor_SMD:R_1206_3216Metric</footprint>
+      <fields>
+        <field name="Size">1206</field>
+        <field name="Tolerance">1%</field>
+      </fields>
+      <libsource lib="Device" part="R_Small_US" description="Resistor, small US symbol"/>
+      <property name="Size" value="1206"/>
+      <property name="Tolerance" value="1%"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="PICO_ADC_Test.kicad_sch"/>
+      <property name="ki_description" value="Resistor, small US symbol"/>
+      <property name="ki_keywords" value="r resistor"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>bd91cbce-5a66-4c48-b5b5-731e21a444d1</tstamps>
+    </comp>
+    <comp ref="R8">
+      <value>100R</value>
+      <footprint>Resistor_SMD:R_1206_3216Metric</footprint>
+      <fields>
+        <field name="Size">1206</field>
+        <field name="Tolerance">1%</field>
+      </fields>
+      <libsource lib="Device" part="R_Small_US" description="Resistor, small US symbol"/>
+      <property name="Size" value="1206"/>
+      <property name="Tolerance" value="1%"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="PICO_ADC_Test.kicad_sch"/>
+      <property name="ki_description" value="Resistor, small US symbol"/>
+      <property name="ki_keywords" value="r resistor"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>88ee1682-6830-4e54-ab75-65ecb0191bea</tstamps>
+    </comp>
+    <comp ref="R9">
+      <value>12K</value>
+      <footprint>Resistor_SMD:R_1206_3216Metric</footprint>
+      <fields>
+        <field name="Size">1206</field>
+        <field name="Tolerance">1%</field>
+      </fields>
+      <libsource lib="Device" part="R_Small_US" description="Resistor, small US symbol"/>
+      <property name="Size" value="1206"/>
+      <property name="Tolerance" value="1%"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="PICO_ADC_Test.kicad_sch"/>
+      <property name="ki_description" value="Resistor, small US symbol"/>
+      <property name="ki_keywords" value="r resistor"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>bd03070f-a300-47e6-89d4-031d00e81f11</tstamps>
+    </comp>
+    <comp ref="R10">
+      <value>18R</value>
+      <footprint>Resistor_SMD:R_1206_3216Metric</footprint>
+      <fields>
+        <field name="Size">1206</field>
+        <field name="Tolerance">1%</field>
+      </fields>
+      <libsource lib="Device" part="R_Small_US" description="Resistor, small US symbol"/>
+      <property name="Size" value="1206"/>
+      <property name="Tolerance" value="1%"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="PICO_ADC_Test.kicad_sch"/>
+      <property name="ki_description" value="Resistor, small US symbol"/>
+      <property name="ki_keywords" value="r resistor"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>850eff67-217b-4721-89cd-6e81047bab9b</tstamps>
+    </comp>
+    <comp ref="R11">
+      <value>18R</value>
+      <footprint>Resistor_SMD:R_1206_3216Metric</footprint>
+      <fields>
+        <field name="Size">1206</field>
+        <field name="Tolerance">1%</field>
+      </fields>
+      <libsource lib="Device" part="R_Small_US" description="Resistor, small US symbol"/>
+      <property name="Size" value="1206"/>
+      <property name="Tolerance" value="1%"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="PICO_ADC_Test.kicad_sch"/>
+      <property name="ki_description" value="Resistor, small US symbol"/>
+      <property name="ki_keywords" value="r resistor"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>83ef5dbb-902e-46f8-995d-b4694b3433c2</tstamps>
+    </comp>
+    <comp ref="U1">
+      <value>MD0100N8-G</value>
+      <footprint>Package_TO_SOT_SMD:SOT-89-3</footprint>
+      <datasheet>MD0100N8-G</datasheet>
+      <libsource lib="PICO_ADC_Test" part="MD0100N8-G" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="PICO_ADC_Test.kicad_sch"/>
+      <property name="ki_keywords" value="MD0100N8-G"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>e8cbb767-e3a2-4088-9f09-784d0622c9f2</tstamps>
+    </comp>
+    <comp ref="U2">
+      <value>Pico</value>
+      <footprint>PICO_ADC_Test:RPi_Pico_SMD</footprint>
+      <libsource lib="PICO_ADC_Test" part="Pico" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="PICO_ADC_Test.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>5df9f4a0-6515-4ead-993e-db877cbe71c5</tstamps>
+    </comp>
+  </components>
+  <libparts>
+    <libpart lib="Connector_Generic" part="Conn_01x02">
+      <description>Generic connector, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)</description>
+      <docs>~</docs>
+      <footprints>
+        <fp>Connector*:*_1x??_*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">J</field>
+        <field name="Value">Conn_01x02</field>
+        <field name="Datasheet">~</field>
+      </fields>
+      <pins>
+        <pin num="1" name="Pin_1" type="passive"/>
+        <pin num="2" name="Pin_2" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Connector_Generic" part="Conn_01x04">
+      <description>Generic connector, single row, 01x04, script generated (kicad-library-utils/schlib/autogen/connector/)</description>
+      <docs>~</docs>
+      <footprints>
+        <fp>Connector*:*_1x??_*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">J</field>
+        <field name="Value">Conn_01x04</field>
+        <field name="Datasheet">~</field>
+      </fields>
+      <pins>
+        <pin num="1" name="Pin_1" type="passive"/>
+        <pin num="2" name="Pin_2" type="passive"/>
+        <pin num="3" name="Pin_3" type="passive"/>
+        <pin num="4" name="Pin_4" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Connector_Generic" part="Conn_02x06_Odd_Even">
+      <description>Generic connector, double row, 02x06, odd/even pin numbering scheme (row 1 odd numbers, row 2 even numbers), script generated (kicad-library-utils/schlib/autogen/connector/)</description>
+      <docs>~</docs>
+      <footprints>
+        <fp>Connector*:*_2x??_*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">J</field>
+        <field name="Value">Conn_02x06_Odd_Even</field>
+        <field name="Datasheet">~</field>
+      </fields>
+      <pins>
+        <pin num="1" name="Pin_1" type="passive"/>
+        <pin num="2" name="Pin_2" type="passive"/>
+        <pin num="3" name="Pin_3" type="passive"/>
+        <pin num="4" name="Pin_4" type="passive"/>
+        <pin num="5" name="Pin_5" type="passive"/>
+        <pin num="6" name="Pin_6" type="passive"/>
+        <pin num="7" name="Pin_7" type="passive"/>
+        <pin num="8" name="Pin_8" type="passive"/>
+        <pin num="9" name="Pin_9" type="passive"/>
+        <pin num="10" name="Pin_10" type="passive"/>
+        <pin num="11" name="Pin_11" type="passive"/>
+        <pin num="12" name="Pin_12" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Device" part="C_Small">
+      <description>Unpolarized capacitor, small symbol</description>
+      <docs>~</docs>
+      <footprints>
+        <fp>C_*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">C</field>
+        <field name="Value">C_Small</field>
+        <field name="Datasheet">~</field>
+      </fields>
+      <pins>
+        <pin num="1" name="" type="passive"/>
+        <pin num="2" name="" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Device" part="R_Small_US">
+      <description>Resistor, small US symbol</description>
+      <docs>~</docs>
+      <footprints>
+        <fp>R_*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">R</field>
+        <field name="Value">R_Small_US</field>
+        <field name="Datasheet">~</field>
+      </fields>
+      <pins>
+        <pin num="1" name="" type="passive"/>
+        <pin num="2" name="" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="ICTAMKY" part="61300611121">
+      <description>CONN HEADER VERT 6POS 2.54MM</description>
+      <docs>https://katalog.we-online.de/em/datasheet/6130xx11121.pdf</docs>
+      <footprints>
+        <fp>Connector*:*_1x??_*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">J</field>
+        <field name="Value">61300611121</field>
+        <field name="Footprint">lib_laser_module_connectors:PinHeader_1x06_P2.00mm_Vertical</field>
+        <field name="Datasheet">https://katalog.we-online.de/em/datasheet/6130xx11121.pdf</field>
+        <field name="Manufacturer">Würth Elektronik</field>
+        <field name="MPN">61300611121</field>
+        <field name="Digi-Key_PN">732-5319-ND</field>
+      </fields>
+      <pins>
+        <pin num="1" name="Pin_1" type="passive"/>
+        <pin num="2" name="Pin_2" type="passive"/>
+        <pin num="3" name="Pin_3" type="passive"/>
+        <pin num="4" name="Pin_4" type="passive"/>
+        <pin num="5" name="Pin_5" type="passive"/>
+        <pin num="6" name="Pin_6" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="PICO_ADC_Test" part="AD8331ARQZ">
+      <description>Integrated Circuit</description>
+      <footprints>
+        <fp>SOP64P600X175-20N</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">IC?</field>
+        <field name="Value">AD8331ARQZ</field>
+        <field name="Footprint">SOP64P600X175-20N</field>
+        <field name="HEIGHT">1.75mm</field>
+        <field name="DATASHEET LINK">http://www.analog.com/static/imported-files/data_sheets/AD8331_8332_8334.pdf</field>
+        <field name="MANUFACTURER_NAME">Analog Devices</field>
+        <field name="MANUFACTURER_PART_NUMBER">AD8331ARQZ</field>
+        <field name="MOUSER PART NUMBER">584-AD8331ARQZ</field>
+        <field name="MOUSER PRICE/STOCK">https://www.mouser.co.uk/ProductDetail/Analog-Devices/AD8331ARQZ?qs=%2FtpEQrCGXCwx0%2F22gf7ohQ%3D%3D</field>
+        <field name="ARROW PART NUMBER">AD8331ARQZ</field>
+        <field name="ARROW PRICE/STOCK">https://www.arrow.com/en/products/ad8331arqz/analog-devices</field>
+      </fields>
+      <pins>
+        <pin num="1" name="LMD" type="passive"/>
+        <pin num="2" name="INH" type="passive"/>
+        <pin num="3" name="VPSL" type="passive"/>
+        <pin num="4" name="LON" type="passive"/>
+        <pin num="5" name="LOP" type="passive"/>
+        <pin num="6" name="COML" type="passive"/>
+        <pin num="7" name="VIP" type="passive"/>
+        <pin num="8" name="VIN" type="passive"/>
+        <pin num="9" name="MODE" type="passive"/>
+        <pin num="10" name="GAIN" type="passive"/>
+        <pin num="11" name="VCM" type="passive"/>
+        <pin num="12" name="RCLMP" type="passive"/>
+        <pin num="13" name="HILO" type="passive"/>
+        <pin num="14" name="VPOS" type="passive"/>
+        <pin num="15" name="VOH" type="passive"/>
+        <pin num="16" name="VOL" type="passive"/>
+        <pin num="17" name="COMM_1" type="passive"/>
+        <pin num="18" name="ENBV" type="passive"/>
+        <pin num="19" name="ENBL" type="passive"/>
+        <pin num="20" name="COMM_2" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="PICO_ADC_Test" part="ADC10065CIMT_NOPB">
+      <description>10-Bit, 65-MSPS Analog-to-Digital Converter (ADC)</description>
+      <docs>http://www.ti.com/lit/gpn/adc10065</docs>
+      <fields>
+        <field name="Reference">IC</field>
+        <field name="Value">ADC10065CIMT_NOPB</field>
+        <field name="Footprint">SOP65P640X120-28N</field>
+        <field name="Datasheet">http://www.ti.com/lit/gpn/adc10065</field>
+        <field name="Description">10-Bit, 65-MSPS Analog-to-Digital Converter (ADC)</field>
+        <field name="Height">1.2</field>
+        <field name="Mouser Part Number">926-ADC10065CIMTNOPB</field>
+        <field name="Mouser Price/Stock">https://www.mouser.com/Search/Refine.aspx?Keyword=926-ADC10065CIMTNOPB</field>
+        <field name="Manufacturer_Name">Texas Instruments</field>
+        <field name="Manufacturer_Part_Number">ADC10065CIMT/NOPB</field>
+      </fields>
+      <pins>
+        <pin num="1" name="CLK" type="passive"/>
+        <pin num="2" name="VDDA_1" type="passive"/>
+        <pin num="3" name="VSSA_1" type="passive"/>
+        <pin num="4" name="VCOM" type="passive"/>
+        <pin num="5" name="IRS" type="passive"/>
+        <pin num="6" name="VREF" type="passive"/>
+        <pin num="7" name="VREFT" type="passive"/>
+        <pin num="8" name="VREFB" type="passive"/>
+        <pin num="9" name="VDDA_2" type="passive"/>
+        <pin num="10" name="VDDA_3" type="passive"/>
+        <pin num="11" name="VSSA_2" type="passive"/>
+        <pin num="12" name="VIN-" type="passive"/>
+        <pin num="13" name="VIN+" type="passive"/>
+        <pin num="14" name="VSSA_3" type="passive"/>
+        <pin num="15" name="DF" type="passive"/>
+        <pin num="16" name="D9" type="passive"/>
+        <pin num="17" name="D8" type="passive"/>
+        <pin num="18" name="D7" type="passive"/>
+        <pin num="19" name="D6" type="passive"/>
+        <pin num="20" name="D5" type="passive"/>
+        <pin num="21" name="VSSIO" type="passive"/>
+        <pin num="22" name="VDDIO" type="passive"/>
+        <pin num="23" name="D4" type="passive"/>
+        <pin num="24" name="D3" type="passive"/>
+        <pin num="25" name="D2" type="passive"/>
+        <pin num="26" name="D1" type="passive"/>
+        <pin num="27" name="D0" type="passive"/>
+        <pin num="28" name="STBY" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="PICO_ADC_Test" part="AMPHENOL_132357-11">
+      <description>JOHNSON - 142-0701-801 - \u5C04\u9891/\u540C\u8F74\u63D2\u5B54, SMA, PCB\u5B89\u88C5</description>
+      <fields>
+        <field name="Reference">J</field>
+        <field name="Value">AMPHENOL_132357-11</field>
+        <field name="Footprint">142-0701-851</field>
+        <field name="Description">JOHNSON - 142-0701-801 - \u5C04\u9891/\u540C\u8F74\u63D2\u5B54, SMA, PCB\u5B89\u88C5</field>
+        <field name="Mouser Part Number">530-142-0701-801</field>
+        <field name="Mouser Price/Stock">https://www.mouser.co.uk/ProductDetail/Johnson-Cinch-Connectivity-Solutions/142-0701-801?qs=PcPxjN2Z58KbDaDuDxyLHA%3D%3D</field>
+        <field name="Manufacturer_Name">Cinch Connectivity Solutions</field>
+        <field name="Manufacturer_Part_Number">142-0701-801</field>
+      </fields>
+      <pins>
+        <pin num="1" name="1" type="passive"/>
+        <pin num="2" name="2" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="PICO_ADC_Test" part="BAV99-7-F">
+      <description>Diode Small Signal Switching 75V 0.3A 3-Pin SOT-23 T/R</description>
+      <docs>https://www.diodes.com/assets/Datasheets/ds12007.pdf</docs>
+      <fields>
+        <field name="Reference">D</field>
+        <field name="Value">BAV99-7-F</field>
+        <field name="Footprint">SOT95P240X120-3N</field>
+        <field name="Datasheet">https://www.diodes.com/assets/Datasheets/ds12007.pdf</field>
+        <field name="Description">Diode Small Signal Switching 75V 0.3A 3-Pin SOT-23 T/R</field>
+        <field name="Height">1.2</field>
+        <field name="Mouser Part Number">621-BAV99-F</field>
+        <field name="Mouser Price/Stock">https://www.mouser.co.uk/ProductDetail/Diodes-Incorporated/BAV99-7-F?qs=E9Ihi8A05%252BSTVRjo74hQDA%3D%3D</field>
+        <field name="Manufacturer_Name">Diodes Incorporated</field>
+        <field name="Manufacturer_Part_Number">BAV99-7-F</field>
+      </fields>
+      <pins>
+        <pin num="1" name="" type="passive"/>
+        <pin num="2" name="" type="passive"/>
+        <pin num="3" name="" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="PICO_ADC_Test" part="BLM21BB750SN1D">
+      <description>BLM21_N1D Series EMI Suppression Filter 75+/-25% at 100MHz 700mA @85</description>
+      <docs>https://www.murata.com/en-us/products/productdetail?partno=BLM21BB750SN1%23</docs>
+      <fields>
+        <field name="Reference">FB</field>
+        <field name="Value">BLM21BB750SN1D</field>
+        <field name="Footprint">BLM21BB050SH1D</field>
+        <field name="Datasheet">https://www.murata.com/en-us/products/productdetail?partno=BLM21BB750SN1%23</field>
+        <field name="Description">BLM21_N1D Series EMI Suppression Filter 75+/-25% at 100MHz 700mA @85</field>
+        <field name="Height">1.05</field>
+        <field name="Mouser Part Number">81-BLM21B750S</field>
+        <field name="Mouser Price/Stock">https://www.mouser.co.uk/ProductDetail/Murata-Electronics/BLM21BB750SN1D/?qs=Ncw4LTdqe05b2FdOdGUHhQ%3D%3D</field>
+        <field name="Manufacturer_Name">Murata Electronics</field>
+        <field name="Manufacturer_Part_Number">BLM21BB750SN1D</field>
+      </fields>
+      <pins>
+        <pin num="1" name="" type="passive"/>
+        <pin num="2" name="" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="PICO_ADC_Test" part="MCP4812-E_MS">
+      <description>Integrated Circuit</description>
+      <footprints>
+        <fp>E:_reporitories_Projets_HW_Dev_low_cost_nge_psu_design_Control_board_One_Channel_AltiumLL_shunt_resistor.PcbLib_SOP65P490X110-8N</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">IC?</field>
+        <field name="Value">MCP4812-E_MS</field>
+        <field name="Footprint">E:_reporitories_Projets_HW_Dev_low_cost_nge_psu_design_Control_board_One_Channel_AltiumLL_shunt_resistor.PcbLib_SOP65P490X110-8N</field>
+        <field name="DATASHEET LINK">http://ww1.microchip.com/downloads/en/DeviceDoc/20002249B.pdf</field>
+        <field name="HEIGHT">1.1mm</field>
+        <field name="MANUFACTURER_NAME">Microchip</field>
+        <field name="MANUFACTURER_PART_NUMBER">MCP4812-E/MS</field>
+        <field name="MOUSER PART NUMBER">579-MCP4812-E/MS</field>
+        <field name="MOUSER PRICE/STOCK">https://www.mouser.co.uk/ProductDetail/Microchip-Technology/MCP4812-E-MS?qs=bxUt0k7cytJEpyWPtzKy6A%3D%3D</field>
+        <field name="ARROW PART NUMBER">MCP4812-E/MS</field>
+        <field name="ARROW PRICE/STOCK">https://www.arrow.com/en/products/mcp4812-ems/microchip-technology</field>
+      </fields>
+      <pins>
+        <pin num="1" name="VDD" type="passive"/>
+        <pin num="2" name="~{CS}" type="passive"/>
+        <pin num="3" name="SCK" type="passive"/>
+        <pin num="4" name="SDI" type="passive"/>
+        <pin num="5" name="~{LDAC}" type="passive"/>
+        <pin num="6" name="VOUTB" type="passive"/>
+        <pin num="7" name="VSS" type="passive"/>
+        <pin num="8" name="VOUTA" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="PICO_ADC_Test" part="MD0100N8-G">
+      <docs>MD0100N8-G</docs>
+      <footprints>
+        <fp>TO-243AA_MCH</fp>
+        <fp>TO-243AA_MCH-M</fp>
+        <fp>TO-243AA_MCH-L</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">U</field>
+        <field name="Value">MD0100N8-G</field>
+        <field name="Footprint">TO-243AA_MCH</field>
+        <field name="Datasheet">MD0100N8-G</field>
+      </fields>
+      <pins>
+        <pin num="1" name="A" type="unspecified"/>
+        <pin num="2" name="COM" type="unspecified"/>
+        <pin num="3" name="B" type="unspecified"/>
+      </pins>
+    </libpart>
+    <libpart lib="PICO_ADC_Test" part="Pico">
+      <fields>
+        <field name="Reference">U</field>
+        <field name="Value">Pico</field>
+        <field name="Footprint">RPi_Pico:RPi_Pico_SMD_TH</field>
+      </fields>
+      <pins>
+        <pin num="1" name="GPIO0" type="bidirectional"/>
+        <pin num="2" name="GPIO1" type="bidirectional"/>
+        <pin num="3" name="GND" type="power_in"/>
+        <pin num="4" name="GPIO2" type="bidirectional"/>
+        <pin num="5" name="GPIO3" type="bidirectional"/>
+        <pin num="6" name="GPIO4" type="bidirectional"/>
+        <pin num="7" name="GPIO5" type="bidirectional"/>
+        <pin num="8" name="GND" type="power_in"/>
+        <pin num="9" name="GPIO6" type="bidirectional"/>
+        <pin num="10" name="GPIO7" type="bidirectional"/>
+        <pin num="11" name="GPIO8" type="bidirectional"/>
+        <pin num="12" name="GPIO9" type="bidirectional"/>
+        <pin num="13" name="GND" type="power_in"/>
+        <pin num="14" name="GPIO10" type="bidirectional"/>
+        <pin num="15" name="GPIO11" type="bidirectional"/>
+        <pin num="16" name="GPIO12" type="bidirectional"/>
+        <pin num="17" name="GPIO13" type="bidirectional"/>
+        <pin num="18" name="GND" type="power_in"/>
+        <pin num="19" name="GPIO14" type="bidirectional"/>
+        <pin num="20" name="GPIO15" type="bidirectional"/>
+        <pin num="21" name="GPIO16" type="bidirectional"/>
+        <pin num="22" name="GPIO17" type="bidirectional"/>
+        <pin num="23" name="GND" type="power_in"/>
+        <pin num="24" name="GPIO18" type="bidirectional"/>
+        <pin num="25" name="GPIO19" type="bidirectional"/>
+        <pin num="26" name="GPIO20" type="bidirectional"/>
+        <pin num="27" name="GPIO21" type="bidirectional"/>
+        <pin num="28" name="GND" type="power_in"/>
+        <pin num="29" name="GPIO22" type="bidirectional"/>
+        <pin num="30" name="RUN" type="input"/>
+        <pin num="31" name="GPIO26_ADC0" type="bidirectional"/>
+        <pin num="32" name="GPIO27_ADC1" type="bidirectional"/>
+        <pin num="33" name="AGND" type="power_in"/>
+        <pin num="34" name="GPIO28_ADC2" type="bidirectional"/>
+        <pin num="35" name="ADC_VREF" type="power_in"/>
+        <pin num="36" name="3V3" type="power_in"/>
+        <pin num="37" name="3V3_EN" type="input"/>
+        <pin num="38" name="GND" type="bidirectional"/>
+        <pin num="39" name="VSYS" type="power_in"/>
+        <pin num="40" name="VBUS" type="power_in"/>
+        <pin num="41" name="SWCLK" type="input"/>
+        <pin num="42" name="GND" type="power_in"/>
+        <pin num="43" name="SWDIO" type="bidirectional"/>
+      </pins>
+    </libpart>
+  </libparts>
+  <libraries>
+    <library logical="Connector_Generic">
+      <uri>C:\Program Files\KiCad\7.0\share\kicad\symbols/Connector_Generic.kicad_sym</uri>
+    </library>
+    <library logical="Device">
+      <uri>C:\Program Files\KiCad\7.0\share\kicad\symbols/Device.kicad_sym</uri>
+    </library>
+    <library logical="ICTAMKY">
+      <uri>E:/kicad_my_library/ICTAMKY.symbols/ICTAMKY.kicad_sym</uri>
+    </library>
+    <library logical="PICO_ADC_Test">
+      <uri>E:\KICAD_PROJECT\58. PICO_ADC_Test\PICO_ADC_Test/Library/PICO_ADC_Test.kicad_sym</uri>
+    </library>
+  </libraries>
+  <nets>
+    <net code="1" name="+3.3V">
+      <node ref="C25" pin="1" pintype="passive"/>
+      <node ref="C26" pin="1" pintype="passive"/>
+      <node ref="C7" pin="1" pintype="passive"/>
+      <node ref="C8" pin="1" pintype="passive"/>
+      <node ref="IC1" pin="22" pinfunction="VDDIO" pintype="passive"/>
+      <node ref="IC3" pin="1" pinfunction="VDD" pintype="passive"/>
+      <node ref="J3" pin="1" pinfunction="Pin_1" pintype="passive"/>
+      <node ref="J6" pin="1" pinfunction="Pin_1" pintype="passive"/>
+      <node ref="J6" pin="2" pinfunction="Pin_2" pintype="passive"/>
+      <node ref="R1" pin="1" pintype="passive"/>
+    </net>
+    <net code="2" name="+5V">
+      <node ref="FB4" pin="2" pintype="passive"/>
+      <node ref="FB5" pin="1" pintype="passive"/>
+      <node ref="J2" pin="2" pinfunction="Pin_2" pintype="passive"/>
+      <node ref="J4" pin="1" pinfunction="Pin_1" pintype="passive"/>
+      <node ref="J5" pin="2" pinfunction="Pin_2" pintype="passive"/>
+      <node ref="J7" pin="2" pinfunction="Pin_2" pintype="passive"/>
+      <node ref="U2" pin="40" pinfunction="VBUS" pintype="power_in"/>
+    </net>
+    <net code="3" name="5VLNA">
+      <node ref="C23" pin="1" pintype="passive"/>
+      <node ref="C24" pin="1" pintype="passive"/>
+      <node ref="FB5" pin="2" pintype="passive"/>
+      <node ref="IC2" pin="3" pinfunction="VPSL" pintype="passive"/>
+    </net>
+    <net code="4" name="5VVGA">
+      <node ref="C21" pin="1" pintype="passive"/>
+      <node ref="C22" pin="1" pintype="passive"/>
+      <node ref="FB4" pin="1" pintype="passive"/>
+      <node ref="R2" pin="1" pintype="passive"/>
+      <node ref="R3" pin="1" pintype="passive"/>
+      <node ref="R5" pin="1" pintype="passive"/>
+      <node ref="R6" pin="1" pintype="passive"/>
+    </net>
+    <net code="5" name="ADC_CLK">
+      <node ref="IC1" pin="1" pinfunction="CLK" pintype="passive"/>
+      <node ref="U2" pin="16" pinfunction="GPIO12" pintype="bidirectional"/>
+    </net>
+    <net code="6" name="CS">
+      <node ref="IC3" pin="2" pinfunction="~{CS}" pintype="passive"/>
+      <node ref="U2" pin="17" pinfunction="GPIO13" pintype="bidirectional"/>
+    </net>
+    <net code="7" name="D0">
+      <node ref="IC1" pin="27" pinfunction="D0" pintype="passive"/>
+      <node ref="U2" pin="1" pinfunction="GPIO0" pintype="bidirectional"/>
+    </net>
+    <net code="8" name="D1">
+      <node ref="IC1" pin="26" pinfunction="D1" pintype="passive"/>
+      <node ref="U2" pin="2" pinfunction="GPIO1" pintype="bidirectional"/>
+    </net>
+    <net code="9" name="D2">
+      <node ref="IC1" pin="25" pinfunction="D2" pintype="passive"/>
+      <node ref="U2" pin="4" pinfunction="GPIO2" pintype="bidirectional"/>
+    </net>
+    <net code="10" name="D3">
+      <node ref="IC1" pin="24" pinfunction="D3" pintype="passive"/>
+      <node ref="U2" pin="5" pinfunction="GPIO3" pintype="bidirectional"/>
+    </net>
+    <net code="11" name="D4">
+      <node ref="IC1" pin="23" pinfunction="D4" pintype="passive"/>
+      <node ref="U2" pin="6" pinfunction="GPIO4" pintype="bidirectional"/>
+    </net>
+    <net code="12" name="D5">
+      <node ref="IC1" pin="20" pinfunction="D5" pintype="passive"/>
+      <node ref="U2" pin="7" pinfunction="GPIO5" pintype="bidirectional"/>
+    </net>
+    <net code="13" name="D6">
+      <node ref="IC1" pin="19" pinfunction="D6" pintype="passive"/>
+      <node ref="U2" pin="9" pinfunction="GPIO6" pintype="bidirectional"/>
+    </net>
+    <net code="14" name="D7">
+      <node ref="IC1" pin="18" pinfunction="D7" pintype="passive"/>
+      <node ref="U2" pin="10" pinfunction="GPIO7" pintype="bidirectional"/>
+    </net>
+    <net code="15" name="D8">
+      <node ref="IC1" pin="17" pinfunction="D8" pintype="passive"/>
+      <node ref="U2" pin="11" pinfunction="GPIO8" pintype="bidirectional"/>
+    </net>
+    <net code="16" name="D9">
+      <node ref="IC1" pin="16" pinfunction="D9" pintype="passive"/>
+      <node ref="U2" pin="12" pinfunction="GPIO9" pintype="bidirectional"/>
+    </net>
+    <net code="17" name="DAC_G">
+      <node ref="C18" pin="1" pintype="passive"/>
+      <node ref="IC2" pin="10" pinfunction="GAIN" pintype="passive"/>
+      <node ref="IC3" pin="8" pinfunction="VOUTA" pintype="passive"/>
+    </net>
+    <net code="18" name="GND">
+      <node ref="C1" pin="1" pintype="passive"/>
+      <node ref="C12" pin="2" pintype="passive"/>
+      <node ref="C13" pin="2" pintype="passive"/>
+      <node ref="C14" pin="2" pintype="passive"/>
+      <node ref="C15" pin="2" pintype="passive"/>
+      <node ref="C16" pin="2" pintype="passive"/>
+      <node ref="C17" pin="2" pintype="passive"/>
+      <node ref="C18" pin="2" pintype="passive"/>
+      <node ref="C19" pin="2" pintype="passive"/>
+      <node ref="C21" pin="2" pintype="passive"/>
+      <node ref="C22" pin="2" pintype="passive"/>
+      <node ref="C23" pin="2" pintype="passive"/>
+      <node ref="C24" pin="2" pintype="passive"/>
+      <node ref="C25" pin="2" pintype="passive"/>
+      <node ref="C26" pin="2" pintype="passive"/>
+      <node ref="C3" pin="2" pintype="passive"/>
+      <node ref="C4" pin="2" pintype="passive"/>
+      <node ref="C7" pin="2" pintype="passive"/>
+      <node ref="C8" pin="2" pintype="passive"/>
+      <node ref="D1" pin="1" pintype="passive"/>
+      <node ref="D1" pin="2" pintype="passive"/>
+      <node ref="IC1" pin="11" pinfunction="VSSA_2" pintype="passive"/>
+      <node ref="IC1" pin="14" pinfunction="VSSA_3" pintype="passive"/>
+      <node ref="IC1" pin="15" pinfunction="DF" pintype="passive"/>
+      <node ref="IC1" pin="21" pinfunction="VSSIO" pintype="passive"/>
+      <node ref="IC1" pin="28" pinfunction="STBY" pintype="passive"/>
+      <node ref="IC1" pin="3" pinfunction="VSSA_1" pintype="passive"/>
+      <node ref="IC2" pin="17" pinfunction="COMM_1" pintype="passive"/>
+      <node ref="IC2" pin="20" pinfunction="COMM_2" pintype="passive"/>
+      <node ref="IC2" pin="6" pinfunction="COML" pintype="passive"/>
+      <node ref="IC2" pin="9" pinfunction="MODE" pintype="passive"/>
+      <node ref="IC3" pin="5" pinfunction="~{LDAC}" pintype="passive"/>
+      <node ref="IC3" pin="7" pinfunction="VSS" pintype="passive"/>
+      <node ref="J1" pin="2" pinfunction="2" pintype="passive"/>
+      <node ref="J2" pin="1" pinfunction="Pin_1" pintype="passive"/>
+      <node ref="J3" pin="2" pinfunction="Pin_2" pintype="passive"/>
+      <node ref="J4" pin="4" pinfunction="Pin_4" pintype="passive"/>
+      <node ref="J5" pin="1" pinfunction="Pin_1" pintype="passive"/>
+      <node ref="J6" pin="3" pinfunction="Pin_3" pintype="passive"/>
+      <node ref="J6" pin="4" pinfunction="Pin_4" pintype="passive"/>
+      <node ref="J7" pin="1" pinfunction="Pin_1" pintype="passive"/>
+      <node ref="R9" pin="2" pintype="passive"/>
+      <node ref="U2" pin="13" pinfunction="GND" pintype="power_in"/>
+      <node ref="U2" pin="18" pinfunction="GND" pintype="power_in"/>
+      <node ref="U2" pin="23" pinfunction="GND" pintype="power_in"/>
+      <node ref="U2" pin="28" pinfunction="GND" pintype="power_in"/>
+      <node ref="U2" pin="3" pinfunction="GND" pintype="power_in"/>
+      <node ref="U2" pin="33" pinfunction="AGND" pintype="power_in"/>
+      <node ref="U2" pin="38" pinfunction="GND" pintype="bidirectional"/>
+      <node ref="U2" pin="42" pinfunction="GND" pintype="power_in"/>
+      <node ref="U2" pin="8" pinfunction="GND" pintype="power_in"/>
+    </net>
+    <net code="19" name="GPIO14">
+      <node ref="J3" pin="3" pinfunction="Pin_3" pintype="passive"/>
+      <node ref="U2" pin="19" pinfunction="GPIO14" pintype="bidirectional"/>
+    </net>
+    <net code="20" name="GPIO15">
+      <node ref="J3" pin="4" pinfunction="Pin_4" pintype="passive"/>
+      <node ref="U2" pin="20" pinfunction="GPIO15" pintype="bidirectional"/>
+    </net>
+    <net code="21" name="GPIO16">
+      <node ref="J3" pin="5" pinfunction="Pin_5" pintype="passive"/>
+      <node ref="U2" pin="21" pinfunction="GPIO16" pintype="bidirectional"/>
+    </net>
+    <net code="22" name="GPIO17">
+      <node ref="J3" pin="6" pinfunction="Pin_6" pintype="passive"/>
+      <node ref="U2" pin="22" pinfunction="GPIO17" pintype="bidirectional"/>
+    </net>
+    <net code="23" name="GPIO18">
+      <node ref="J6" pin="5" pinfunction="Pin_5" pintype="passive"/>
+      <node ref="U2" pin="24" pinfunction="GPIO18" pintype="bidirectional"/>
+    </net>
+    <net code="24" name="GPIO19">
+      <node ref="J6" pin="6" pinfunction="Pin_6" pintype="passive"/>
+      <node ref="U2" pin="25" pinfunction="GPIO19" pintype="bidirectional"/>
+    </net>
+    <net code="25" name="GPIO20">
+      <node ref="J6" pin="7" pinfunction="Pin_7" pintype="passive"/>
+      <node ref="U2" pin="26" pinfunction="GPIO20" pintype="bidirectional"/>
+    </net>
+    <net code="26" name="GPIO21">
+      <node ref="J6" pin="8" pinfunction="Pin_8" pintype="passive"/>
+      <node ref="U2" pin="27" pinfunction="GPIO21" pintype="bidirectional"/>
+    </net>
+    <net code="27" name="GPIO22">
+      <node ref="J6" pin="9" pinfunction="Pin_9" pintype="passive"/>
+      <node ref="U2" pin="29" pinfunction="GPIO22" pintype="bidirectional"/>
+    </net>
+    <net code="28" name="GPIO26">
+      <node ref="J6" pin="10" pinfunction="Pin_10" pintype="passive"/>
+      <node ref="U2" pin="31" pinfunction="GPIO26_ADC0" pintype="bidirectional"/>
+    </net>
+    <net code="29" name="GPIO27">
+      <node ref="J6" pin="11" pinfunction="Pin_11" pintype="passive"/>
+      <node ref="U2" pin="32" pinfunction="GPIO27_ADC1" pintype="bidirectional"/>
+    </net>
+    <net code="30" name="GPIO28">
+      <node ref="J6" pin="12" pinfunction="Pin_12" pintype="passive"/>
+      <node ref="U2" pin="34" pinfunction="GPIO28_ADC2" pintype="bidirectional"/>
+    </net>
+    <net code="31" name="MOSI">
+      <node ref="IC3" pin="4" pinfunction="SDI" pintype="passive"/>
+      <node ref="U2" pin="15" pinfunction="GPIO11" pintype="bidirectional"/>
+    </net>
+    <net code="32" name="Net-(C2-Pad1)">
+      <node ref="C2" pin="1" pintype="passive"/>
+      <node ref="FB1" pin="2" pintype="passive"/>
+      <node ref="R4" pin="2" pintype="passive"/>
+    </net>
+    <net code="33" name="Net-(C5-Pad1)">
+      <node ref="C5" pin="1" pintype="passive"/>
+      <node ref="FB2" pin="2" pintype="passive"/>
+    </net>
+    <net code="34" name="Net-(C6-Pad2)">
+      <node ref="C6" pin="2" pintype="passive"/>
+      <node ref="R7" pin="1" pintype="passive"/>
+    </net>
+    <net code="35" name="Net-(C9-Pad1)">
+      <node ref="C9" pin="1" pintype="passive"/>
+      <node ref="FB3" pin="2" pintype="passive"/>
+      <node ref="R8" pin="2" pintype="passive"/>
+    </net>
+    <net code="36" name="Net-(IC1-IRS)">
+      <node ref="C3" pin="1" pintype="passive"/>
+      <node ref="C4" pin="1" pintype="passive"/>
+      <node ref="IC1" pin="10" pinfunction="VDDA_3" pintype="passive"/>
+      <node ref="IC1" pin="2" pinfunction="VDDA_1" pintype="passive"/>
+      <node ref="IC1" pin="5" pinfunction="IRS" pintype="passive"/>
+      <node ref="IC1" pin="9" pinfunction="VDDA_2" pintype="passive"/>
+      <node ref="R1" pin="2" pintype="passive"/>
+    </net>
+    <net code="37" name="Net-(IC1-VCOM)">
+      <node ref="C13" pin="1" pintype="passive"/>
+      <node ref="IC1" pin="4" pinfunction="VCOM" pintype="passive"/>
+    </net>
+    <net code="38" name="Net-(IC1-VIN+)">
+      <node ref="C20" pin="2" pintype="passive"/>
+      <node ref="IC1" pin="13" pinfunction="VIN+" pintype="passive"/>
+      <node ref="R11" pin="1" pintype="passive"/>
+    </net>
+    <net code="39" name="Net-(IC1-VIN-)">
+      <node ref="C20" pin="1" pintype="passive"/>
+      <node ref="IC1" pin="12" pinfunction="VIN-" pintype="passive"/>
+      <node ref="R10" pin="1" pintype="passive"/>
+    </net>
+    <net code="40" name="Net-(IC1-VREF)">
+      <node ref="C14" pin="1" pintype="passive"/>
+      <node ref="IC1" pin="6" pinfunction="VREF" pintype="passive"/>
+    </net>
+    <net code="41" name="Net-(IC1-VREFB)">
+      <node ref="C16" pin="1" pintype="passive"/>
+      <node ref="IC1" pin="8" pinfunction="VREFB" pintype="passive"/>
+    </net>
+    <net code="42" name="Net-(IC1-VREFT)">
+      <node ref="C15" pin="1" pintype="passive"/>
+      <node ref="IC1" pin="7" pinfunction="VREFT" pintype="passive"/>
+    </net>
+    <net code="43" name="Net-(IC2-ENBL)">
+      <node ref="IC2" pin="19" pinfunction="ENBL" pintype="passive"/>
+      <node ref="R2" pin="2" pintype="passive"/>
+    </net>
+    <net code="44" name="Net-(IC2-ENBV)">
+      <node ref="IC2" pin="18" pinfunction="ENBV" pintype="passive"/>
+      <node ref="R3" pin="2" pintype="passive"/>
+    </net>
+    <net code="45" name="Net-(IC2-HILO)">
+      <node ref="IC2" pin="13" pinfunction="HILO" pintype="passive"/>
+      <node ref="R6" pin="2" pintype="passive"/>
+    </net>
+    <net code="46" name="Net-(IC2-INH)">
+      <node ref="C12" pin="1" pintype="passive"/>
+      <node ref="C5" pin="2" pintype="passive"/>
+      <node ref="C6" pin="1" pintype="passive"/>
+      <node ref="IC2" pin="2" pinfunction="INH" pintype="passive"/>
+    </net>
+    <net code="47" name="Net-(IC2-LMD)">
+      <node ref="C1" pin="2" pintype="passive"/>
+      <node ref="IC2" pin="1" pinfunction="LMD" pintype="passive"/>
+    </net>
+    <net code="48" name="Net-(IC2-LON)">
+      <node ref="C10" pin="1" pintype="passive"/>
+      <node ref="IC2" pin="4" pinfunction="LON" pintype="passive"/>
+      <node ref="R7" pin="2" pintype="passive"/>
+    </net>
+    <net code="49" name="Net-(IC2-LOP)">
+      <node ref="C11" pin="1" pintype="passive"/>
+      <node ref="IC2" pin="5" pinfunction="LOP" pintype="passive"/>
+    </net>
+    <net code="50" name="Net-(IC2-RCLMP)">
+      <node ref="C17" pin="1" pintype="passive"/>
+      <node ref="IC2" pin="12" pinfunction="RCLMP" pintype="passive"/>
+      <node ref="R9" pin="1" pintype="passive"/>
+    </net>
+    <net code="51" name="Net-(IC2-VCM)">
+      <node ref="C19" pin="1" pintype="passive"/>
+      <node ref="IC2" pin="11" pinfunction="VCM" pintype="passive"/>
+    </net>
+    <net code="52" name="Net-(IC2-VIN)">
+      <node ref="C10" pin="2" pintype="passive"/>
+      <node ref="IC2" pin="8" pinfunction="VIN" pintype="passive"/>
+    </net>
+    <net code="53" name="Net-(IC2-VIP)">
+      <node ref="C11" pin="2" pintype="passive"/>
+      <node ref="IC2" pin="7" pinfunction="VIP" pintype="passive"/>
+    </net>
+    <net code="54" name="Net-(IC2-VPOS)">
+      <node ref="IC2" pin="14" pinfunction="VPOS" pintype="passive"/>
+      <node ref="R5" pin="2" pintype="passive"/>
+    </net>
+    <net code="55" name="Net-(U1-A)">
+      <node ref="J1" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="U1" pin="1" pinfunction="A" pintype="unspecified"/>
+    </net>
+    <net code="56" name="Net-(U1-B)">
+      <node ref="D1" pin="3" pintype="passive"/>
+      <node ref="FB2" pin="1" pintype="passive"/>
+      <node ref="U1" pin="3" pinfunction="B" pintype="unspecified"/>
+    </net>
+    <net code="57" name="SCLK">
+      <node ref="IC3" pin="3" pinfunction="SCK" pintype="passive"/>
+      <node ref="U2" pin="14" pinfunction="GPIO10" pintype="bidirectional"/>
+    </net>
+    <net code="58" name="SWCLK">
+      <node ref="J4" pin="3" pinfunction="Pin_3" pintype="passive"/>
+      <node ref="U2" pin="41" pinfunction="SWCLK" pintype="input"/>
+    </net>
+    <net code="59" name="SWDIO">
+      <node ref="J4" pin="2" pinfunction="Pin_2" pintype="passive"/>
+      <node ref="U2" pin="43" pinfunction="SWDIO" pintype="bidirectional"/>
+    </net>
+    <net code="60" name="TO_ADC_H">
+      <node ref="C2" pin="2" pintype="passive"/>
+      <node ref="R11" pin="2" pintype="passive"/>
+    </net>
+    <net code="61" name="TO_ADC_L">
+      <node ref="C9" pin="2" pintype="passive"/>
+      <node ref="R10" pin="2" pintype="passive"/>
+    </net>
+    <net code="62" name="VOH">
+      <node ref="FB1" pin="1" pintype="passive"/>
+      <node ref="IC2" pin="15" pinfunction="VOH" pintype="passive"/>
+      <node ref="R4" pin="1" pintype="passive"/>
+    </net>
+    <net code="63" name="VOL">
+      <node ref="FB3" pin="1" pintype="passive"/>
+      <node ref="IC2" pin="16" pinfunction="VOL" pintype="passive"/>
+      <node ref="R8" pin="1" pintype="passive"/>
+    </net>
+    <net code="64" name="unconnected-(IC3-VOUTB-Pad6)">
+      <node ref="IC3" pin="6" pinfunction="VOUTB" pintype="passive+no_connect"/>
+    </net>
+    <net code="65" name="unconnected-(U1-COM-Pad2)">
+      <node ref="U1" pin="2" pinfunction="COM" pintype="unspecified+no_connect"/>
+    </net>
+    <net code="66" name="unconnected-(U2-3V3-Pad36)">
+      <node ref="U2" pin="36" pinfunction="3V3" pintype="power_in+no_connect"/>
+    </net>
+    <net code="67" name="unconnected-(U2-3V3_EN-Pad37)">
+      <node ref="U2" pin="37" pinfunction="3V3_EN" pintype="input+no_connect"/>
+    </net>
+    <net code="68" name="unconnected-(U2-ADC_VREF-Pad35)">
+      <node ref="U2" pin="35" pinfunction="ADC_VREF" pintype="power_in+no_connect"/>
+    </net>
+    <net code="69" name="unconnected-(U2-RUN-Pad30)">
+      <node ref="U2" pin="30" pinfunction="RUN" pintype="input+no_connect"/>
+    </net>
+    <net code="70" name="unconnected-(U2-VSYS-Pad39)">
+      <node ref="U2" pin="39" pinfunction="VSYS" pintype="power_in+no_connect"/>
+    </net>
+  </nets>
+</export>
