@@ -1,4 +1,0 @@
-(sym_lib_table
-  (version 7)
-  (lib (name "PMOD_PULSER")(type "KiCad")(uri "${KIPRJMOD}/library/PMOD_PULSER.kicad_sym")(options "")(descr ""))
-)
