@@ -1,0 +1,104 @@
+.program adc
+.side_set 1
+
+pull block side 0
+mov x, osr side 0
+
+adc_loop:
+    in pins, 16 side 1
+    jmp x-- adc_loop side 0
+
+% c-sdk {
+    static inline void adc_program_init(PIO pio, uint sm, uint offset, uint pin, float freq) 
+    {
+        pio_sm_config c = adc_program_get_default_config(offset);
+        pio_gpio_init(pio, pin);
+        pio_gpio_init(pio, pin + 1);
+        pio_gpio_init(pio, pin + 2);
+        pio_gpio_init(pio, pin + 3);
+        pio_gpio_init(pio, pin + 4);
+        pio_gpio_init(pio, pin + 5);
+        pio_gpio_init(pio, pin + 6);
+        pio_gpio_init(pio, pin + 7);
+        pio_gpio_init(pio, pin + 8);
+        pio_gpio_init(pio, pin + 9);
+        pio_gpio_init(pio, pin + 10);
+        sm_config_set_in_pins(&c, pin);
+        sm_config_set_out_pins(&c, pin, 1);
+        pio_sm_set_consecutive_pindirs(pio, sm, pin, 1, true);
+        sm_config_set_sideset_pins(&c, pin);
+        gpio_put(pin, false);
+        sm_config_set_in_shift(&c, false, true, 16);
+        float div = (clock_get_hz(clk_sys) / freq);
+        sm_config_set_clkdiv(&c, div);
+        pio_sm_init(pio, sm, offset, &c);
+    }
+%}
+
+
+.program pulse1
+.side_set 2
+
+pull block side 0
+mov x, osr side 0
+
+pull block side 0
+mov y, osr side 0
+
+nop side 0 [7]
+
+gpio11:
+    jmp x-- gpio11 side 1
+
+gpio12:
+    jmp y-- gpio12 side 2
+
+irq 0 side 2
+
+
+% c-sdk {
+    static inline void pulse1_program_init(PIO pio, uint sm, uint offset, uint pin, float freq) 
+    {
+        pio_sm_config c = pulse1_program_get_default_config(offset);
+        pio_gpio_init(pio, pin);
+        pio_gpio_init(pio, pin + 1);
+        sm_config_set_out_pins(&c, pin, 2);
+        pio_sm_set_consecutive_pindirs(pio, sm, pin, 2, true);
+        sm_config_set_sideset_pins(&c, pin);
+        gpio_put(pin, false);
+        gpio_put(pin + 1, false);
+        sm_config_set_out_shift(&c, false, false, 32);
+        float div = (clock_get_hz(clk_sys) / freq);
+        sm_config_set_clkdiv(&c, div);
+        pio_sm_init(pio, sm, offset, &c);
+    }
+%}
+
+.program pulse2
+.side_set 2
+
+pull block side 0
+mov x, osr side 0
+
+wait 1 irq 0 side 2
+
+gpio16:
+    jmp x-- gpio16 side 3
+
+% c-sdk {
+    static inline void pulse2_program_init(PIO pio, uint sm, uint offset, uint pin, float freq) 
+    {
+        pio_sm_config c = pulse2_program_get_default_config(offset);
+        pio_gpio_init(pio, pin);
+        pio_gpio_init(pio, pin + 1);
+        sm_config_set_out_pins(&c, pin, 2);
+        pio_sm_set_consecutive_pindirs(pio, sm, pin, 2, true);
+        sm_config_set_sideset_pins(&c, pin);
+        gpio_put(pin, false);
+        gpio_put(pin + 1, false);
+        sm_config_set_out_shift(&c, false, false, 32);
+        float div = (clock_get_hz(clk_sys) / freq);
+        sm_config_set_clkdiv(&c, div);
+        pio_sm_init(pio, sm, offset, &c);
+    }
+%}
