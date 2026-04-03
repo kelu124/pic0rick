@@ -3,3 +3,4 @@ pic0doc/*
 pic0doc*
 __pycache__
 .venv
+.env
