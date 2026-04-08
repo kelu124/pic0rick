@@ -23,7 +23,9 @@ The current system uses both PIOs (one for the acquisition, the other for the VG
 Published documents include:
 * KiCad design files for the main board
 * KiCad design files for the pulser + hv boards
-* rp2040 firmware for the microcontroller.
+* KiCad design files for the MUX
+* KiCad design files for other boards =)
+* rp2040/rp2350 firmware for the microcontroller.
 
 I _know_ the PMODs aren't strictly speaking PMODs, I needed to have 5V facility on the header =)
 
@@ -38,7 +40,9 @@ And if you want to discuss the project - [meet us on our chat](https://matrix.to
 
 ![](/documentation/images/pic0gain_at_6.jpg)
 
-## Demo of output to VGA
+## Demo of output to VGA 
+
+Beware. This is not a standard development, more of a proof of concept. It lives on a [separate branch here](https://github.com/kelu124/pic0rick/tree/VGA).
 
 Only using the pico to setup gain and trigger acquisitions. The screen displays the gain value (0 to 9, with a 100x divider). Displays raw buffer of acquisition.
 
@@ -54,16 +58,6 @@ s
 # Along with the other boards
 
 ![](/documentation/images/sister_boards.png)
-
-# Scheduled changes
-
-## DONE
-
-* FW: Tie the pulses to the PIO code so that pulses strictly cohappen with the acquisition start (done)
-
-## TODO
-
-* HW: Slight tweaks on the main board to allow more space for the PMODs (Oct 21, 2024)
 
 # Thank you to
 

@@ -22,3 +22,15 @@ Which would ensure the ADC would reach its wait irq 0 state. As it is now, there
 * WebAPI for the pico2 ?
 * Add version / hash of binary
 * Read ID pico (and type of pico)
+
+
+
+# Scheduled changes
+
+## DONE
+
+* FW: Tie the pulses to the PIO code so that pulses strictly cohappen with the acquisition start (done)
+
+## TODO
+
+* HW: Slight tweaks on the main board to allow more space for the PMODs (Oct 21, 2024)
