@@ -36,7 +36,7 @@ And if you want to discuss the project - [meet us on our chat](https://matrix.to
 
 ## Example of acquisitions
 
-![](/software/imgs/pico_shell/pic0gain_at_6.jpg)
+![](/documentation/images/pic0gain_at_6.jpg)
 
 ## Demo of output to VGA
 
