@@ -23,7 +23,12 @@ if (EXISTS ${picoVscode})
     include(${picoVscode})
 endif()
 # ====================================================================================
-set(PICO_BOARD pico2_w CACHE STRING "Board type")
+
+# Board type: pass -DPICO_BOARD=pico or -DPICO_BOARD=pico2 at configure time.
+# Defaults to pico (rp2040) if not specified.
+if(NOT PICO_BOARD)
+    set(PICO_BOARD pico CACHE STRING "Board type")
+endif()
 
 # Pull in Raspberry Pi Pico SDK (must be before project)
 include(pico_sdk_import.cmake)
@@ -47,15 +52,24 @@ pico_enable_stdio_usb(adc-pulse 1)
 pico_generate_pio_header(adc-pulse ${CMAKE_CURRENT_LIST_DIR}/adc/adc.pio)
 pico_generate_pio_header(adc-pulse ${CMAKE_CURRENT_LIST_DIR}/max/max14866.pio)
 
-target_sources(adc-pulse PRIVATE ${CMAKE_CURRENT_LIST_DIR}/main.c ${CMAKE_CURRENT_LIST_DIR}/adc/adc.c ${CMAKE_CURRENT_LIST_DIR}/max/max14866.c)
+target_sources(adc-pulse PRIVATE
+    ${CMAKE_CURRENT_LIST_DIR}/main.c
+    ${CMAKE_CURRENT_LIST_DIR}/adc/adc.c
+    ${CMAKE_CURRENT_LIST_DIR}/max/max14866.c
+)
 
 # Add the standard include files to the build
 target_include_directories(adc-pulse PRIVATE
-        ${CMAKE_CURRENT_LIST_DIR}
+    ${CMAKE_CURRENT_LIST_DIR}
 )
 
-target_link_libraries(adc-pulse PRIVATE pico_stdlib hardware_pio hardware_dma hardware_clocks hardware_gpio hardware_irq)
-
+target_link_libraries(adc-pulse PRIVATE
+    pico_stdlib
+    hardware_pio
+    hardware_dma
+    hardware_clocks
+    hardware_gpio
+    hardware_irq
+)
 
 pico_add_extra_outputs(adc-pulse)
-
