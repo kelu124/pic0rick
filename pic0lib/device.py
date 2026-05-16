@@ -61,6 +61,8 @@ class Pic0rick:
         time.sleep(1)  # wait for the serial connection to initialize
         self.sread()
 
+        self.Fech = 60e6  # ADC sampling frequency (Hz)
+
 
     def dac(self, N):
         """Write a value to the 10-bit DAC MCP4812 (write dac).
