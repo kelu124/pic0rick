@@ -55,7 +55,7 @@ class UltrasonicAcquisition:
     pon:    int                   # pulse-on duration
     poff:   int                   # pulse-off duration
     damp:   int                   # damping
-    gain:   float                 # gain [dB]
+    gain:   float                 # raw DAC value (0-1023) passed to MCP4812 via `write dac`
     target: str = ""              # NDT target description (block, defect, ...)
     timestamp: str = field(
         default_factory=lambda: datetime.now().isoformat(timespec="seconds")
@@ -347,6 +347,10 @@ class UltrasonicAcquisition:
         Trigger an acquisition and wrap the resulting trace.
 
         `probe`     : existing Pic0rick instance, or None to use the shared one.
+        `gain`      : raw 10-bit DAC value (0–1023) sent to the MCP4812 SPI DAC,
+                      which sets the VGAIN pin on the AD8331 TGC (7.5–55.5 dB).
+                      This is NOT a dB value; typical range is 0–500.
+        `pon`/`poff`/`damp` : pulse timing in nanoseconds.
         `h5_path`   : if given, the acquisition is persisted to that file
                       using (gain, pon, poff, damp, target) as the dedup key.
         `overwrite` : if False (default) and an entry with the same key
@@ -521,7 +525,7 @@ class UltrasonicAcquisition:
         ax_amp.legend(loc="best", fontsize=9)
 
         fig.suptitle(
-            f"Calibration — target='{target}', gain={gain} dB, "
+            f"Calibration — target='{target}', gain={gain} (DAC), "
             f"piezo {piezo_central_freq/1e6:.2f} MHz ± "
             f"{piezo_bandwidth/2/1e6:.2f} MHz"
         )
@@ -541,7 +545,7 @@ class UltrasonicAcquisition:
     def label(self) -> str:
         """One-line summary used as plot title / legend entry."""
         target = self.target or "untitled"
-        parts = [target, f"gain={self.gain} dB",
+        parts = [target, f"gain={self.gain} (DAC)",
                  f"pon={self.pon}, poff={self.poff}, damp={self.damp}",
                  f"Fech={self.Fech / 1e6:.2f} MHz"]
         if self.piezo_id:
