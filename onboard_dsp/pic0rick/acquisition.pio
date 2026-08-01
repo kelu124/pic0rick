@@ -1,0 +1,35 @@
+.program u4rk_adc
+.side_set 1
+
+.wrap_target
+pull block side 0
+mov x, osr side 0
+sample:
+    in pins, 16 side 1
+    jmp x-- sample side 0
+.wrap
+
+% c-sdk {
+static inline void u4rk_adc_program_init(PIO pio, uint sm, uint offset,
+                                         float instruction_hz) {
+    pio_sm_config config = u4rk_adc_program_get_default_config(offset);
+
+    for (uint pin = U4RK_ADC_CLOCK_PIN;
+         pin < U4RK_ADC_DATA_FIRST_PIN + U4RK_ADC_DATA_PIN_COUNT; ++pin) {
+        pio_gpio_init(pio, pin);
+    }
+
+    sm_config_set_in_pins(&config, U4RK_ADC_CLOCK_PIN);
+    sm_config_set_sideset_pins(&config, U4RK_ADC_CLOCK_PIN);
+    sm_config_set_in_shift(&config, false, true, 16);
+    sm_config_set_fifo_join(&config, PIO_FIFO_JOIN_RX);
+    sm_config_set_clkdiv(&config,
+        (float)clock_get_hz(clk_sys) / instruction_hz);
+
+    pio_sm_set_consecutive_pindirs(pio, sm, U4RK_ADC_CLOCK_PIN, 1, true);
+    pio_sm_set_consecutive_pindirs(pio, sm, U4RK_ADC_DATA_FIRST_PIN,
+                                   U4RK_ADC_DATA_PIN_COUNT, false);
+    pio_sm_init(pio, sm, offset, &config);
+    pio_sm_set_enabled(pio, sm, false);
+}
+%}
