@@ -88,7 +88,13 @@ class FrameReader:
 
     def _fill(self, needed: int) -> None:
         while len(self.buffer) < needed:
-            chunk = self.stream.read(max(self.read_size, needed - len(self.buffer)))
+            missing = needed - len(self.buffer)
+            # Do not request a full 4096-byte block when only the final header
+            # or payload tail is missing; PySerial waits for the requested byte
+            # count and previously caused the apparent 20/21-frame pause.
+            available = int(getattr(self.stream, "in_waiting", 0) or 0)
+            request_size = min(self.read_size, max(missing, available))
+            chunk = self.stream.read(request_size)
             if not chunk:
                 raise TimeoutError(f"timed out with {len(self.buffer)}/{needed} bytes")
             self.buffer.extend(chunk)
@@ -288,7 +294,18 @@ def validate_selftest(frames: list[Frame]) -> None:
             np.sqrt(np.mean((firmware_envelope - reference) ** 2)) / scale
         )
         firmware_peak = int(np.argmax(firmware_envelope))
-        reference_peak = int(np.argmax(reference))
+        # Several deterministic vectors have mathematically equal maxima.
+        # Accept any maximum tied at float32 precision, including circularly
+        # adjacent samples, instead of depending on one np.argmax choice.
+        peak_tolerance = max(scale * 1e-6, 1e-6)
+        reference_peak_candidates = np.flatnonzero(
+            reference >= float(np.max(reference)) - peak_tolerance
+        )
+        peak_distances = np.abs(reference_peak_candidates - firmware_peak)
+        peak_distances = np.minimum(
+            peak_distances, len(reference) - peak_distances
+        )
+        peak_delta = int(np.min(peak_distances))
 
         alaw_frame = case_frames[3]
         encoded_reference = alaw_encode(reference, alaw_frame.header.alaw_reference)
@@ -302,12 +319,12 @@ def validate_selftest(frames: list[Frame]) -> None:
         )
         print(
             f"{case_name:12s} nrms={normalized_rms:.3e} "
-            f"peak_delta={abs(firmware_peak-reference_peak)} "
+            f"peak_delta={peak_delta} "
             f"alaw_delta={alaw_error}"
         )
         if normalized_rms > 1e-4:
             failures.append(f"{case_name}: normalized RMS {normalized_rms:.3e}")
-        if abs(firmware_peak - reference_peak) > 1:
+        if peak_delta > 1:
             failures.append(f"{case_name}: peak index differs by more than one")
         if alaw_error > 1:
             failures.append(f"{case_name}: A-law differs by {alaw_error} levels")
@@ -410,7 +427,12 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
         "--rate", type=int, default=0, help="stream rate; 0 requests one-shot"
     )
     parser.add_argument("--frames", type=int, default=1)
-    parser.add_argument("--timeout", type=float, default=2.0)
+    parser.add_argument(
+        "--timeout",
+        type=float,
+        default=30.0,
+        help="per-read timeout in seconds (default: 30 for the self-test)",
+    )
     parser.add_argument("--output", type=Path, default=Path("captures"))
     parser.add_argument(
         "--selftest",
@@ -422,6 +444,8 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
         parser.error("--frames must be positive")
     if args.rate < 0:
         parser.error("--rate cannot be negative")
+    if args.timeout <= 0:
+        parser.error("--timeout must be positive")
     return args
 
 

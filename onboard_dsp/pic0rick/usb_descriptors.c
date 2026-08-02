@@ -52,7 +52,7 @@ uint8_t const *tud_descriptor_configuration_cb(uint8_t index) {
 static char const *const string_descriptors[] = {
     (const char[]){0x09, 0x04},
     "pic0rick",
-    "pic0rick RP2040 Signal Processor",
+    "pic0rick RP2350 Signal Processor",
     "P0RK0001",
     "pic0rick control and data",
 };

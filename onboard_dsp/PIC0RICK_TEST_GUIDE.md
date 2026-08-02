@@ -1,11 +1,12 @@
-# pic0rick RP2040 firmware test guide
+# pic0rick Pico 2 / RP2350A firmware test guide
 
-This guide tests the envelope/A-law firmware itself. It assumes the UF2 has
-already been built and loaded onto the pic0rick.
+This guide tests the envelope/A-law firmware itself. It assumes the included
+`pic0rick-envelope.uf2` (or the equivalent VS Code build output) has already
+been loaded onto the pic0rick.
 
 ## What this build controls
 
-| Function | RP2040 GPIO | Schematic signal |
+| Function | RP2350A GPIO | Schematic signal |
 |---|---:|---|
 | ADC clock | 0 | ADC_CLK |
 | ADC data | 1–10 | D0–D9 |
@@ -59,7 +60,7 @@ help
 Expected `status` fields include:
 
 ```text
-board=pic0rick package=RP2040 samples=4096 sample_rate=60000000 pulser=disarmed
+board=pic0rick package=RP2350A dsp_backend=f32-rfft-hilbert samples=4096 sample_rate=60000000 pulser=disarmed
 ```
 
 Expected `help` output lists acquisition, streaming, DSP, DAC, and pulser
@@ -70,7 +71,7 @@ commands, and does not list a MAX14866 or mux command.
 Close the terminal, then run:
 
 ```powershell
-python tools\pic0rick_capture.py --port COM7 --selftest --output captures\selftest
+python tools\pic0rick_capture.py --port COM7 --selftest --timeout 30 --output captures\selftest
 ```
 
 The firmware produces raw, envelope, and A-law output for seven deterministic
@@ -159,12 +160,12 @@ nearest 8 ns PIO tick. The minimum accepted duration for each stage is 40 ns.
 Confirm the all-low state after `pulser disarm`, USB disconnect, and reset
 before enabling high voltage.
 
-## 6. Streaming and RP2040 timing
+## 6. Streaming and RP2350 timing
 
-Raw frames are limited to 100 Hz. Because the RP2040 has no floating-point
-unit, this first hardware-test build conservatively limits envelope and A-law
-streams to 5 Hz until timing is measured on the actual board. Higher requested
-rates return `ERR RATE` instead of being accepted silently.
+The compiled limits are raw 100 Hz, float envelope 50 Hz, and A-law 70 Hz.
+Higher requested rates return `ERR RATE` instead of being accepted silently.
+The 70 Hz A-law limit is based on the measured 12.98 ms worst case from the
+same RFFT backend on a Pico 2 W; it must still be verified on this pic0rick.
 
 Start with one frame per second:
 
@@ -172,10 +173,10 @@ Start with one frame per second:
 python tools\pic0rick_capture.py --port COM7 --mode alaw --rate 1 --frames 60 --output captures\alaw-1hz
 ```
 
-Then test the compiled limit:
+Then run a 60-second test at the compiled A-law limit:
 
 ```powershell
-python tools\pic0rick_capture.py --port COM7 --mode alaw --rate 5 --frames 300 --output captures\alaw-5hz
+python tools\pic0rick_capture.py --port COM7 --mode alaw --rate 70 --frames 4200 --timeout 30 --output captures\alaw-70hz
 ```
 
 The tool rejects CRC errors and sequence gaps. After stopping the stream it
@@ -185,11 +186,12 @@ measured stages in microseconds:
 ```text
 stages_us=preprocess/forward_fft/mask/inverse_fft/magnitude/alaw
 dsp_us=<last total> worst_us=<worst total>
+envelope_max_rate=50 alaw_max_rate=70
 ```
 
-Use `worst_us`, sequence results, and a longer soak test to decide whether a
-higher RP2040 DSP streaming limit is safe. The original RP2350 200 Hz target is
-not claimed by this RP2040 build without measurements.
+Require zero drops, sequence gaps, and CRC errors. The original exact-Hilbert
+200 Hz/4.5 ms target remains unmet; `performance=over-budget` is expected when
+`worst_us` is greater than 4500.
 
 ## Commands
 

@@ -4,9 +4,9 @@ if(WIN32)
 else()
     set(USERHOME $ENV{HOME})
 endif()
-set(sdkVersion 2.2.0)
+set(sdkVersion 2.3.0)
 set(toolchainVersion 15_2_Rel1)
-set(picotoolVersion 2.2.0)
+set(picotoolVersion 2.3.0)
 set(picoVscode ${USERHOME}/.pico-sdk/cmake/pico-vscode.cmake)
 if(EXISTS ${picoVscode})
     include(${picoVscode})
@@ -19,7 +19,10 @@ set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-set(PICO_BOARD pico_w CACHE STRING "Board type")
+# The client's pic0rick carries a pin-compatible Raspberry Pi Pico 2 module.
+# Force the RP2350A target even when the VS Code extension remembers another
+# board from a previous project.
+set(PICO_BOARD pico2 CACHE STRING "Board type" FORCE)
 
 include(pico_sdk_import.cmake)
 
@@ -41,9 +44,41 @@ set(CMSISCORE
 set(DISABLEFLOAT16 ON CACHE BOOL "Disable CMSIS-DSP float16" FORCE)
 FetchContent_MakeAvailable(CMSISDSP)
 
+# Build only the float32 transform sources used by the exact Hilbert backend.
+# This avoids compiling the complete CMSIS-DSP archive and all unrelated
+# fixed-point, float16 and float64 kernels.
+set_property(TARGET CMSISDSP PROPERTY EXCLUDE_FROM_ALL TRUE)
+add_library(cmsisdsp_p0rk STATIC
+    ${cmsisdsp_SOURCE_DIR}/Source/TransformFunctions/arm_bitreversal2.c
+    ${cmsisdsp_SOURCE_DIR}/Source/TransformFunctions/arm_cfft_f32.c
+    ${cmsisdsp_SOURCE_DIR}/Source/TransformFunctions/arm_cfft_init_f32.c
+    ${cmsisdsp_SOURCE_DIR}/Source/TransformFunctions/arm_cfft_radix8_f32.c
+    ${cmsisdsp_SOURCE_DIR}/Source/TransformFunctions/arm_rfft_fast_f32.c
+    ${cmsisdsp_SOURCE_DIR}/Source/TransformFunctions/arm_rfft_fast_init_f32.c
+    ${cmsisdsp_SOURCE_DIR}/Source/CommonTables/arm_common_tables.c
+    ${cmsisdsp_SOURCE_DIR}/Source/CommonTables/arm_const_structs.c
+)
+target_include_directories(cmsisdsp_p0rk PUBLIC
+    ${cmsisdsp_SOURCE_DIR}/Include
+    ${CMSISCORE}/Include
+)
+target_include_directories(cmsisdsp_p0rk PRIVATE
+    ${cmsisdsp_SOURCE_DIR}/PrivateInclude
+)
+target_compile_definitions(cmsisdsp_p0rk PUBLIC
+    ARM_MATH_CM33
+    DISABLEFLOAT16
+)
+target_compile_options(cmsisdsp_p0rk PRIVATE
+    -O3
+    -ffast-math
+    -ffunction-sections
+    -fdata-sections
+)
+
 add_executable(pic0rick-envelope)
 pico_set_program_name(pic0rick-envelope "pic0rick-envelope")
-pico_set_program_version(pic0rick-envelope "1.0")
+pico_set_program_version(pic0rick-envelope "1.2")
 
 # USB is driven directly through TinyUSB so binary frames cannot be mixed with
 # Pico SDK stdio output.
@@ -74,7 +109,7 @@ target_include_directories(pic0rick-envelope PRIVATE
 )
 
 target_compile_definitions(pic0rick-envelope PRIVATE
-    ARM_MATH_CM0PLUS
+    ARM_MATH_CM33
     DISABLEFLOAT16
     U4RK_CMSIS_DSP_VERSION="1.17.0"
 )
@@ -84,16 +119,6 @@ target_compile_options(pic0rick-envelope PRIVATE
     -ffunction-sections
     -fdata-sections
 )
-
-if(TARGET CMSISDSP)
-    target_compile_definitions(CMSISDSP PUBLIC ARM_MATH_CM0PLUS DISABLEFLOAT16)
-    target_compile_options(CMSISDSP PRIVATE
-        -O3
-        -ffast-math
-        -ffunction-sections
-        -fdata-sections
-    )
-endif()
 
 target_link_libraries(pic0rick-envelope PRIVATE
     pico_stdlib
@@ -105,7 +130,7 @@ target_link_libraries(pic0rick-envelope PRIVATE
     hardware_gpio
     hardware_spi
     tinyusb_device
-    CMSISDSP
+    cmsisdsp_p0rk
     m
 )
 

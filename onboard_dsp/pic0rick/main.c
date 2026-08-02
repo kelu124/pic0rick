@@ -152,11 +152,11 @@ static bool parse_payload_type(const char *text,
 static uint32_t maximum_rate(u4rk_payload_type_t type) {
     switch (type) {
         case U4RK_PAYLOAD_RAW:
-            return 100u;
+            return U4RK_RAW_MAX_RATE_HZ;
         case U4RK_PAYLOAD_ENVELOPE:
-            return 5u;
+            return U4RK_ENVELOPE_MAX_RATE_HZ;
         case U4RK_PAYLOAD_ALAW:
-            return 5u;
+            return U4RK_ALAW_MAX_RATE_HZ;
         default:
             return 0u;
     }
@@ -350,10 +350,12 @@ static void send_status(void) {
     u4rk_dsp_metrics_t metrics;
     u4rk_pipeline_get_metrics(&metrics);
     send_ok(
-        "board=pic0rick package=RP2040 samples=%u sample_rate=%u "
+        "board=pic0rick package=RP2350A dsp_backend=f32-rfft-hilbert "
+        "samples=%u sample_rate=%u "
         "pulser=%s pulse=%u/%u/%u/%s dac=%u scale=%.6g "
         "stream=%s/%u drops=%u stages_us=%u/%u/%u/%u/%u/%u "
-        "dsp_us=%u worst_us=%u performance=%s cmsis=%s",
+        "dsp_us=%u worst_us=%u performance=%s "
+        "envelope_max_rate=%u alaw_max_rate=%u cmsis=%s",
         U4RK_SAMPLE_COUNT, U4RK_SAMPLE_RATE_HZ,
         u4rk_pulser_is_armed() ? "armed" : "disarmed",
         pulse.negative_ns, pulse.damp_ns, pulse.positive_ns,
@@ -364,8 +366,9 @@ static void send_status(void) {
         metrics.preprocess_us, metrics.forward_fft_us, metrics.mask_us,
         metrics.inverse_fft_us, metrics.magnitude_us, metrics.alaw_us,
         metrics.total_us, metrics.worst_total_us,
-        metrics.worst_total_us <= U4RK_RP2040_DSP_BUDGET_US
+        metrics.worst_total_us <= U4RK_DSP_TARGET_US
             ? "ok" : "over-budget",
+        U4RK_ENVELOPE_MAX_RATE_HZ, U4RK_ALAW_MAX_RATE_HZ,
         U4RK_CMSIS_DSP_VERSION);
 }
 
@@ -686,7 +689,7 @@ static void handle_disconnect(bool *was_connected) {
 
 int main(void) {
     bi_decl(bi_program_description(
-        "pic0rick RP2040 4096-sample Hilbert envelope and A-law firmware"));
+        "pic0rick RP2350A 4096-sample Hilbert envelope and A-law firmware"));
     bi_decl(bi_pin_mask_with_name(0x7ffu, "ADC clock GPIO0 and data GPIO1..10"));
     bi_decl(bi_3pins_with_names(
         U4RK_DAC_CS_PIN, "MCP4812 CS",

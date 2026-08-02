@@ -10,8 +10,8 @@
 #define U4RK_ALAW_LUT_SIZE 4096u
 #define U4RK_PI 3.14159265358979323846f
 
-static arm_cfft_instance_f32 cfft;
-static float32_t complex_buffer[U4RK_SAMPLE_COUNT * 2u]
+static arm_rfft_fast_instance_f32 rfft;
+static float32_t rfft_buffer[U4RK_SAMPLE_COUNT]
     __attribute__((aligned(16)));
 static float32_t envelope_buffer[U4RK_SAMPLE_COUNT]
     __attribute__((aligned(16)));
@@ -24,7 +24,7 @@ static uint32_t elapsed_us(uint64_t start) {
 }
 
 bool u4rk_dsp_init(void) {
-    if (arm_cfft_init_4096_f32(&cfft) != ARM_MATH_SUCCESS) {
+    if (arm_rfft_fast_init_4096_f32(&rfft) != ARM_MATH_SUCCESS) {
         return false;
     }
 
@@ -69,37 +69,45 @@ void u4rk_dsp_envelope(const uint16_t *dma_samples, uint16_t *raw_out,
 
     float mean = u4rk_dsp_extract(dma_samples, raw_out);
     for (uint32_t i = 0; i < U4RK_SAMPLE_COUNT; ++i) {
-        complex_buffer[2u * i] = (float32_t)raw_out[i] - mean;
-        complex_buffer[2u * i + 1u] = 0.0f;
+        rfft_buffer[i] = (float32_t)raw_out[i] - mean;
     }
     metrics->dc_mean = mean;
     metrics->preprocess_us = elapsed_us(stage_started);
 
     stage_started = time_us_64();
-    arm_cfft_f32(&cfft, complex_buffer, 0, 1);
+    /* A real input has a redundant negative-frequency half, so the fast real
+     * FFT performs half the complex FFT work of the former implementation. */
+    arm_rfft_fast_f32(&rfft, rfft_buffer, envelope_buffer, 0);
     metrics->forward_fft_us = elapsed_us(stage_started);
 
     stage_started = time_us_64();
-    arm_scale_f32(&complex_buffer[2], 2.0f, &complex_buffer[2],
-                  (U4RK_SAMPLE_COUNT / 2u - 1u) * 2u);
-    memset(&complex_buffer[(U4RK_SAMPLE_COUNT / 2u + 1u) * 2u], 0,
-           (U4RK_SAMPLE_COUNT / 2u - 1u) * 2u * sizeof(float32_t));
+    /* Build the packed spectrum of the real Hilbert transform. Multiplication
+     * by -j maps (real + j*imag) to (imag - j*real). */
+    envelope_buffer[0] = 0.0f;
+    envelope_buffer[1] = 0.0f;
+    for (uint32_t i = 1; i < U4RK_SAMPLE_COUNT / 2u; ++i) {
+        float32_t real = envelope_buffer[2u * i];
+        float32_t imag = envelope_buffer[2u * i + 1u];
+        envelope_buffer[2u * i] = imag;
+        envelope_buffer[2u * i + 1u] = -real;
+    }
     metrics->mask_us = elapsed_us(stage_started);
 
     stage_started = time_us_64();
-    /*
-     * CMSIS-DSP's inverse arm_cfft_f32 path performs the 1/N normalization.
-     * Adding another scale here would make the result 4096 times too small.
-     */
-    arm_cfft_f32(&cfft, complex_buffer, 1, 1);
+    arm_rfft_fast_f32(&rfft, envelope_buffer, rfft_buffer, 1);
     metrics->inverse_fft_us = elapsed_us(stage_started);
 
     stage_started = time_us_64();
-    arm_cmplx_mag_f32(complex_buffer, envelope_buffer, U4RK_SAMPLE_COUNT);
-    uint32_t peak_index;
-    arm_max_f32(envelope_buffer, U4RK_SAMPLE_COUNT,
-                &metrics->envelope_peak, &peak_index);
-    (void)peak_index;
+    metrics->envelope_peak = 0.0f;
+    for (uint32_t i = 0; i < U4RK_SAMPLE_COUNT; ++i) {
+        float32_t real = (float32_t)raw_out[i] - mean;
+        float32_t quadrature = rfft_buffer[i];
+        float32_t magnitude = sqrtf(real * real + quadrature * quadrature);
+        envelope_buffer[i] = magnitude;
+        if (magnitude > metrics->envelope_peak) {
+            metrics->envelope_peak = magnitude;
+        }
+    }
     metrics->magnitude_us = elapsed_us(stage_started);
 
     *saturated = false;
@@ -140,45 +148,63 @@ static uint16_t clamp_adc(float value) {
 }
 
 void u4rk_dsp_make_selftest(uint8_t test_case, uint16_t *dma_samples) {
-    for (uint32_t i = 0; i < U4RK_SAMPLE_COUNT; ++i) {
-        float value;
-        float carrier = sinf(2.0f * U4RK_PI * 80.0f * (float)i /
-                             (float)U4RK_SAMPLE_COUNT);
-        switch (test_case) {
-            case 0: /* zero */
-                value = 0.0f;
-                break;
-            case 1: /* DC */
-                value = 700.0f;
-                break;
-            case 2: /* centred bin-coherent sinusoid */
-                value = 512.0f +
-                    200.0f * sinf(2.0f * U4RK_PI * 32.0f * (float)i /
-                                  (float)U4RK_SAMPLE_COUNT);
-                break;
-            case 3: { /* amplitude-modulated tone */
-                float modulation = 1.0f +
-                    0.65f * sinf(2.0f * U4RK_PI * 5.0f * (float)i /
-                                 (float)U4RK_SAMPLE_COUNT);
-                value = 512.0f + 190.0f * modulation * carrier;
-                break;
-            }
-            case 4: /* two separated tone bursts */
-                value = 512.0f;
-                if ((i >= 480u && i < 900u) ||
-                    (i >= 2250u && i < 2730u)) {
-                    value += 260.0f * carrier;
-                }
-                break;
-            case 5: /* impulse */
-                value = (i == U4RK_SAMPLE_COUNT / 2u) ? 1023.0f : 512.0f;
-                break;
-            default: /* clipping/extreme square wave */
-                value = ((i / 16u) & 1u) ? 1023.0f : 0.0f;
-                break;
+    /* Select the case outside the sample loop. In particular, zero and DC no
+     * longer execute 4096 unnecessary sinf calls before the first frame. */
+    if (test_case == 0u) {
+        memset(dma_samples, 0, U4RK_SAMPLE_COUNT * sizeof(*dma_samples));
+        return;
+    }
+    if (test_case == 1u) {
+        for (uint32_t i = 0; i < U4RK_SAMPLE_COUNT; ++i) {
+            dma_samples[i] = (uint16_t)(700u << 1);
         }
-        /* Acquisition buffers include GPIO0 at bit zero, hence << 1. */
-        dma_samples[i] = (uint16_t)(clamp_adc(value) << 1);
+        return;
+    }
+    if (test_case == 2u) {
+        for (uint32_t i = 0; i < U4RK_SAMPLE_COUNT; ++i) {
+            float value = 512.0f +
+                200.0f * sinf(2.0f * U4RK_PI * 32.0f * (float)i /
+                              (float)U4RK_SAMPLE_COUNT);
+            dma_samples[i] = (uint16_t)(clamp_adc(value) << 1);
+        }
+        return;
+    }
+    if (test_case == 3u) {
+        for (uint32_t i = 0; i < U4RK_SAMPLE_COUNT; ++i) {
+            float carrier = sinf(2.0f * U4RK_PI * 80.0f * (float)i /
+                                 (float)U4RK_SAMPLE_COUNT);
+            float modulation = 1.0f +
+                0.65f * sinf(2.0f * U4RK_PI * 5.0f * (float)i /
+                              (float)U4RK_SAMPLE_COUNT);
+            float value = 512.0f + 190.0f * modulation * carrier;
+            dma_samples[i] = (uint16_t)(clamp_adc(value) << 1);
+        }
+        return;
+    }
+    if (test_case == 4u) {
+        for (uint32_t i = 0; i < U4RK_SAMPLE_COUNT; ++i) {
+            float value = 512.0f;
+            if ((i >= 480u && i < 900u) ||
+                (i >= 2250u && i < 2730u)) {
+                float carrier = sinf(2.0f * U4RK_PI * 80.0f * (float)i /
+                                     (float)U4RK_SAMPLE_COUNT);
+                value += 260.0f * carrier;
+            }
+            dma_samples[i] = (uint16_t)(clamp_adc(value) << 1);
+        }
+        return;
+    }
+    if (test_case == 5u) {
+        for (uint32_t i = 0; i < U4RK_SAMPLE_COUNT; ++i) {
+            uint16_t value =
+                i == U4RK_SAMPLE_COUNT / 2u ? 1023u : 512u;
+            dma_samples[i] = (uint16_t)(value << 1);
+        }
+        return;
+    }
+    for (uint32_t i = 0; i < U4RK_SAMPLE_COUNT; ++i) {
+        uint16_t value = ((i / 16u) & 1u) ? 1023u : 0u;
+        dma_samples[i] = (uint16_t)(value << 1);
     }
 }
 

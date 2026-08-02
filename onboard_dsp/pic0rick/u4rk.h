@@ -14,6 +14,10 @@
 #define U4RK_RAW_BUFFER_COUNT         2u
 #define U4RK_OUTPUT_SLOT_COUNT        2u
 #define U4RK_ALAW_DEFAULT_REFERENCE   512.0f
+#define U4RK_RAW_MAX_RATE_HZ          100u
+#define U4RK_ENVELOPE_MAX_RATE_HZ     50u
+#define U4RK_ALAW_MAX_RATE_HZ         70u
+#define U4RK_DSP_TARGET_US            4500u
 
 #define U4RK_ADC_CLOCK_PIN            0u
 #define U4RK_ADC_DATA_FIRST_PIN       1u
@@ -27,9 +31,6 @@
 #define U4RK_PULSER_GATE_PIN_BASE     16u
 #define U4RK_PULSER_PDAMP_PIN         16u
 #define U4RK_PULSER_OE_PIN            17u
-
-/* Conservative first-board limits; status reports measured DSP timing. */
-#define U4RK_RP2040_DSP_BUDGET_US     200000u
 
 typedef enum {
     U4RK_PAYLOAD_NONE = 0,
