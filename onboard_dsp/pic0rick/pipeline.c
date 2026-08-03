@@ -10,6 +10,8 @@
 
 typedef struct {
     size_t size;
+    uint32_t sequence;
+    uint32_t session_id;
     uint8_t bytes[U4RK_MAX_FRAME_SIZE];
 } output_slot_t;
 
@@ -121,12 +123,15 @@ void u4rk_pipeline_get_metrics(u4rk_dsp_metrics_t *metrics) {
 }
 
 bool u4rk_pipeline_take_output(uint8_t *slot, const uint8_t **data,
-                               size_t *size) {
+                               size_t *size, uint32_t *sequence,
+                               uint32_t *session_id) {
     if (!queue_try_remove(&output_ready_queue, slot)) {
         return false;
     }
     *data = output_slots[*slot].bytes;
     *size = output_slots[*slot].size;
+    *sequence = output_slots[*slot].sequence;
+    *session_id = output_slots[*slot].session_id;
     return true;
 }
 
@@ -240,6 +245,8 @@ static void process_job(const u4rk_capture_job_t *job) {
     };
     u4rk_serialize_header(slot->bytes, &header);
     slot->size = U4RK_HEADER_SIZE + payload_size;
+    slot->sequence = job->sequence;
+    slot->session_id = job->session_id;
 
     u4rk_pipeline_release_raw(job->raw_index);
     if (!queue_try_add(&output_ready_queue, &output_index)) {

@@ -11,7 +11,8 @@ void u4rk_pipeline_release_raw(uint8_t index);
 bool u4rk_pipeline_submit(const u4rk_capture_job_t *job);
 
 bool u4rk_pipeline_take_output(uint8_t *slot, const uint8_t **data,
-                               size_t *size);
+                               size_t *size, uint32_t *sequence,
+                               uint32_t *session_id);
 void u4rk_pipeline_release_output(uint8_t slot);
 bool u4rk_pipeline_has_pending_output(void);
 bool u4rk_pipeline_take_completion(uint32_t *sequence);

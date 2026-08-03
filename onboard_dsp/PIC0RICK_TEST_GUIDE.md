@@ -60,7 +60,7 @@ help
 Expected `status` fields include:
 
 ```text
-board=pic0rick package=RP2350A dsp_backend=f32-rfft-hilbert samples=4096 sample_rate=60000000 pulser=disarmed
+board=pic0rick package=RP2350A firmware=1.5 dsp_backend=f32-rfft-hilbert samples=4096 sample_rate=60000000 pulser=disarmed
 ```
 
 Expected `help` output lists acquisition, streaming, DSP, DAC, and pulser
@@ -77,7 +77,8 @@ python tools\pic0rick_capture.py --port COM7 --selftest --timeout 30 --output ca
 The firmware produces raw, envelope, and A-law output for seven deterministic
 signals: zero, DC, sinusoid, amplitude-modulated tone, two bursts, impulse,
 and clipping. The PC tool checks every binary header and CRC, verifies sequence
-numbers, and compares the firmware with `scipy.signal.hilbert`.
+numbers, and compares the firmware with `scipy.signal.hilbert`. It first checks
+that the board reports firmware `1.5`; an older UF2 is rejected.
 
 Pass criteria are:
 

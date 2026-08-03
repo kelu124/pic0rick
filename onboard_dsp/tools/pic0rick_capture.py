@@ -22,6 +22,7 @@ HEADER = struct.Struct("<4sBBHIIIIQfffIIIII")
 PAYLOAD_NAMES = {1: "raw", 2: "envelope", 3: "alaw"}
 PAYLOAD_BYTES = {1: SAMPLE_COUNT * 2, 2: SAMPLE_COUNT * 4, 3: SAMPLE_COUNT}
 A_LAW_A = 87.6
+EXPECTED_FIRMWARE = "1.5"
 FLAG_SELFTEST = 1 << 3
 SELFTEST_CASE_SHIFT = 8
 SELFTEST_NAMES = (
@@ -358,10 +359,31 @@ def run(args: argparse.Namespace) -> int:
             "pyserial is required; install tools/requirements.txt"
         ) from exc
 
-    port = serial.Serial(args.port, 115200, timeout=args.timeout)
+    serial_options: dict[str, object] = {}
+    if sys.platform != "win32":
+        # Prevent ModemManager or a second terminal from sharing ttyACM while
+        # a binary frame sequence is active.
+        serial_options["exclusive"] = True
+    port = serial.Serial(
+        args.port, 115200, timeout=args.timeout, **serial_options
+    )
     try:
+        # Assert the conventional CDC terminal state and let Linux complete
+        # its ACM control requests before sending the first command.
+        port.dtr = True
+        time.sleep(0.2)
         port.reset_input_buffer()
         port.reset_output_buffer()
+
+        port.write(b"status\n")
+        port.flush()
+        status = read_response_line(port)
+        print(status)
+        if f"firmware={EXPECTED_FIRMWARE}" not in status:
+            raise RuntimeError(
+                f"expected firmware {EXPECTED_FIRMWARE}; flash the UF2 "
+                "included with this tool"
+            )
 
         if args.selftest:
             command = "dsp selftest"

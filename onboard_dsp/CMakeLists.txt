@@ -78,7 +78,7 @@ target_compile_options(cmsisdsp_p0rk PRIVATE
 
 add_executable(pic0rick-envelope)
 pico_set_program_name(pic0rick-envelope "pic0rick-envelope")
-pico_set_program_version(pic0rick-envelope "1.2")
+pico_set_program_version(pic0rick-envelope "1.5")
 
 # USB is driven directly through TinyUSB so binary frames cannot be mixed with
 # Pico SDK stdio output.

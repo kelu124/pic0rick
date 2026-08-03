@@ -65,6 +65,8 @@ typedef struct {
     uint8_t payload_type;
     uint16_t flags;
     uint32_t sequence;
+    /* Internal USB-session tag; it is not serialized in the wire header. */
+    uint32_t session_id;
     uint32_t sample_rate_hz;
     uint64_t capture_timestamp_us;
     float alaw_reference;

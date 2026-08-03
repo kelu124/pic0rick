@@ -40,6 +40,8 @@ static char response_buffer[U4RK_RESPONSE_BUFFER_SIZE];
 
 static bool output_slot_active;
 static uint8_t active_output_slot;
+static uint32_t active_output_sequence;
+static uint32_t active_output_session;
 static bool stop_pending;
 static bool dma_fault_pending;
 static bool legacy_capture_pending;
@@ -47,8 +49,14 @@ static uint32_t legacy_capture_sequence;
 
 static bool selftest_active;
 static bool selftest_frame_pending;
+static uint32_t selftest_pending_sequence;
 static uint8_t selftest_case;
 static u4rk_payload_type_t selftest_type;
+
+/* Jobs and output frames are tagged so work from a closed CDC session can
+ * never be mistaken for work belonging to the next host connection. */
+static uint32_t usb_session_id = 1u;
+static bool usb_was_mounted;
 
 static uint16_t legacy_read_buffer[U4RK_SAMPLE_COUNT];
 
@@ -185,6 +193,7 @@ static bool begin_capture(u4rk_payload_type_t type, uint16_t extra_flags) {
         .payload_type = (uint8_t)type,
         .flags = flags,
         .sequence = next_sequence++,
+        .session_id = usb_session_id,
         .sample_rate_hz = U4RK_SAMPLE_RATE_HZ,
         .capture_timestamp_us = time_us_64(),
         .alaw_reference = alaw_reference,
@@ -219,30 +228,52 @@ static void drain_ready_outputs_as_drops(void) {
     uint8_t slot;
     const uint8_t *data;
     size_t size;
-    while (u4rk_pipeline_take_output(&slot, &data, &size)) {
+    uint32_t sequence;
+    uint32_t session_id;
+    while (u4rk_pipeline_take_output(
+            &slot, &data, &size, &sequence, &session_id)) {
         (void)data;
         (void)size;
+        if (selftest_frame_pending && session_id == usb_session_id &&
+            sequence == selftest_pending_sequence) {
+            selftest_active = false;
+            selftest_frame_pending = false;
+        }
         u4rk_pipeline_release_output(slot);
         u4rk_pipeline_note_usb_drop();
     }
 }
 
+static void advance_selftest(void) {
+    selftest_frame_pending = false;
+    if (selftest_type == U4RK_PAYLOAD_ALAW) {
+        selftest_type = U4RK_PAYLOAD_RAW;
+        ++selftest_case;
+        if (selftest_case >= u4rk_dsp_selftest_count()) {
+            selftest_active = false;
+        }
+    } else {
+        selftest_type =
+            (u4rk_payload_type_t)((uint8_t)selftest_type + 1u);
+    }
+}
+
 static void poll_output(void) {
     if (output_slot_active && !u4rk_usb_tx_busy()) {
+        bool failed = u4rk_usb_tx_take_failed();
         u4rk_pipeline_release_output(active_output_slot);
         output_slot_active = false;
-        if (selftest_frame_pending) {
-            selftest_frame_pending = false;
-            if (selftest_type == U4RK_PAYLOAD_ALAW) {
-                selftest_type = U4RK_PAYLOAD_RAW;
-                ++selftest_case;
-                if (selftest_case >= u4rk_dsp_selftest_count()) {
-                    selftest_active = false;
-                }
-            } else {
-                selftest_type =
-                    (u4rk_payload_type_t)((uint8_t)selftest_type + 1u);
+        bool was_pending_selftest = selftest_frame_pending &&
+            active_output_session == usb_session_id &&
+            active_output_sequence == selftest_pending_sequence;
+        if (failed) {
+            u4rk_pipeline_note_usb_drop();
+            if (was_pending_selftest) {
+                selftest_active = false;
+                selftest_frame_pending = false;
             }
+        } else if (was_pending_selftest) {
+            advance_selftest();
         }
     }
 
@@ -251,14 +282,32 @@ static void poll_output(void) {
         const uint8_t *data;
         size_t size;
         uint8_t slot;
-        if (u4rk_pipeline_take_output(&slot, &data, &size)) {
+        uint32_t sequence;
+        uint32_t session_id;
+        while (u4rk_pipeline_take_output(
+                &slot, &data, &size, &sequence, &session_id)) {
+            if (session_id != usb_session_id) {
+                /* Core 1 may finish an old job after its CDC session closes. */
+                u4rk_pipeline_release_output(slot);
+                u4rk_pipeline_note_usb_drop();
+                continue;
+            }
             if (u4rk_usb_tx_start(data, size)) {
                 output_slot_active = true;
                 active_output_slot = slot;
+                active_output_sequence = sequence;
+                active_output_session = session_id;
             } else {
                 u4rk_pipeline_release_output(slot);
                 u4rk_pipeline_note_usb_drop();
+                /* Never leave a failed self-test transfer permanently busy. */
+                if (selftest_frame_pending &&
+                    sequence == selftest_pending_sequence) {
+                    selftest_active = false;
+                    selftest_frame_pending = false;
+                }
             }
+            break;
         }
     }
 }
@@ -311,12 +360,14 @@ static void schedule_selftest(void) {
         .flags = (uint16_t)(U4RK_FLAG_SELFTEST |
             ((uint16_t)selftest_case << U4RK_FLAG_SELFTEST_CASE_SHIFT)),
         .sequence = next_sequence++,
+        .session_id = usb_session_id,
         .sample_rate_hz = U4RK_SAMPLE_RATE_HZ,
         .capture_timestamp_us = selftest_case,
         .alaw_reference = reference,
         .pulse = u4rk_pulser_get_config(),
     };
     if (u4rk_pipeline_submit(&job)) {
+        selftest_pending_sequence = job.sequence;
         selftest_frame_pending = true;
     }
 }
@@ -350,12 +401,14 @@ static void send_status(void) {
     u4rk_dsp_metrics_t metrics;
     u4rk_pipeline_get_metrics(&metrics);
     send_ok(
-        "board=pic0rick package=RP2350A dsp_backend=f32-rfft-hilbert "
+        "board=pic0rick package=RP2350A firmware=%s "
+        "dsp_backend=f32-rfft-hilbert "
         "samples=%u sample_rate=%u "
         "pulser=%s pulse=%u/%u/%u/%s dac=%u scale=%.6g "
         "stream=%s/%u drops=%u stages_us=%u/%u/%u/%u/%u/%u "
         "dsp_us=%u worst_us=%u performance=%s "
         "envelope_max_rate=%u alaw_max_rate=%u cmsis=%s",
+        PICO_PROGRAM_VERSION_STRING,
         U4RK_SAMPLE_COUNT, U4RK_SAMPLE_RATE_HZ,
         u4rk_pulser_is_armed() ? "armed" : "disarmed",
         pulse.negative_ns, pulse.damp_ns, pulse.positive_ns,
@@ -643,6 +696,14 @@ static void poll_command_input(void) {
 }
 
 static void finish_stop_or_fault(void) {
+    /* This cleanup path is destructive: it deliberately discards every
+     * completed output frame.  Run it only while finishing an explicit
+     * stream stop or reporting a DMA fault.  Without this guard, a Core 1
+     * result that became ready just after poll_output() was silently drained
+     * during normal acquisition and self-test operation. */
+    if (!stop_pending && !dma_fault_pending) {
+        return;
+    }
     if (output_slot_active || u4rk_usb_tx_busy()) {
         return;
     }
@@ -662,29 +723,39 @@ static void finish_stop_or_fault(void) {
     }
 }
 
-static void handle_disconnect(bool *was_connected) {
-    bool connected = u4rk_usb_connected();
-    if (*was_connected && !connected) {
-        stream.active = false;
-        stop_pending = false;
-        dma_fault_pending = false;
-        selftest_active = false;
-        selftest_frame_pending = false;
-        legacy_capture_pending = false;
-        command_length = 0;
-        u4rk_capture_abort();
-        if (capture_inflight) {
-            u4rk_pipeline_release_raw(capture_raw_index);
-            capture_inflight = false;
-        }
-        if (output_slot_active) {
-            u4rk_pipeline_release_output(active_output_slot);
-            output_slot_active = false;
-        }
-        u4rk_usb_tx_cancel();
-        drain_ready_outputs_as_drops();
+static void cancel_usb_session(void) {
+    /* Invalidate queued/in-flight Core 1 jobs before releasing USB slots. */
+    ++usb_session_id;
+    if (usb_session_id == 0u) {
+        usb_session_id = 1u;
     }
-    *was_connected = connected;
+    stream.active = false;
+    stop_pending = false;
+    dma_fault_pending = false;
+    selftest_active = false;
+    selftest_frame_pending = false;
+    legacy_capture_pending = false;
+    command_length = 0;
+    u4rk_capture_abort();
+    if (capture_inflight) {
+        u4rk_pipeline_release_raw(capture_raw_index);
+        capture_inflight = false;
+    }
+    u4rk_usb_tx_cancel();
+    if (output_slot_active) {
+        u4rk_pipeline_release_output(active_output_slot);
+        output_slot_active = false;
+        u4rk_pipeline_note_usb_drop();
+    }
+    drain_ready_outputs_as_drops();
+}
+
+static void handle_disconnect(void) {
+    bool mounted = u4rk_usb_mounted();
+    if (usb_was_mounted && !mounted) {
+        cancel_usb_session();
+    }
+    usb_was_mounted = mounted;
 }
 
 int main(void) {
@@ -722,10 +793,9 @@ int main(void) {
         }
     }
 
-    bool was_connected = false;
     while (true) {
         u4rk_usb_task();
-        handle_disconnect(&was_connected);
+        handle_disconnect();
         poll_capture();
         poll_completions();
         poll_output();
