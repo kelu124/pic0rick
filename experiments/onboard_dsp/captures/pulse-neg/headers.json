@@ -1,0 +1,22 @@
+[
+  {
+    "version": 1,
+    "payload_type": 1,
+    "flags": 16,
+    "sequence": 24,
+    "sample_count": 4096,
+    "sample_rate_hz": 60000000,
+    "payload_bytes": 8192,
+    "capture_timestamp_us": 34301137,
+    "adc_dc_mean": 509.846923828125,
+    "envelope_peak": 0.0,
+    "alaw_reference": 512.0,
+    "negative_ns": 96,
+    "damp_ns": 6000,
+    "positive_ns": 96,
+    "dropped_frames": 0,
+    "payload_crc32": 1930405257,
+    "payload_name": "raw",
+    "array_index": 0
+  }
+]

@@ -1030,6 +1030,7 @@
 		(at 191.25 71.5)
 		(descr "wire loop with bead as test point, loop diameter 1.8mm, hole diameter 1.0mm")
 		(tags "test point wire loop bead")
+		(attr exclude_from_pos_files exclude_from_bom)
 		(property "Reference" "REF**"
 			(at 0.7 2.5 0)
 			(layer "F.SilkS")
@@ -22398,10 +22399,23 @@
 		(at 168.943324 89.5 -135)
 		(descr "SMD pad as test Point, diameter 1.0mm")
 		(tags "test point SMD pad")
-		(property "Reference" "DAC SCK"
+		(property "Reference" "TP2"
 			(at 3.141905 3.141905 180)
 			(layer "B.SilkS")
+			(hide yes)
 			(uuid "c24bffbb-3c8f-4252-a54b-2aecbea60733")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+				(justify mirror)
+			)
+		)
+		(fp_text user "DAC SCK"
+			(at 3.141905 3.141905 180)
+			(layer "B.SilkS")
+			(uuid "7d7032ec-94c4-4d3d-a4ce-7f4846b70156")
 			(effects
 				(font
 					(size 1 1)
@@ -23033,10 +23047,23 @@
 		(at 169.8 87.65 -135)
 		(descr "SMD pad as test Point, diameter 1.0mm")
 		(tags "test point SMD pad")
-		(property "Reference" "DAC CS"
+		(property "Reference" "TP1"
 			(at 3.288047 3.500179 180)
 			(layer "B.SilkS")
+			(hide yes)
 			(uuid "e801257e-8586-42d3-9608-78c3c621ec1f")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+				(justify mirror)
+			)
+		)
+		(fp_text user "DAC CS"
+			(at 3.288047 3.500179 180)
+			(layer "B.SilkS")
+			(uuid "1eede15c-5479-4ae7-a9bb-2b6a87167867")
 			(effects
 				(font
 					(size 1 1)
@@ -23155,10 +23182,23 @@
 		(at 169.95 91.6 -135)
 		(descr "SMD pad as test Point, diameter 1.0mm")
 		(tags "test point SMD pad")
-		(property "Reference" "DAC SDI"
+		(property "Reference" "TP3"
 			(at 3.597826 3.739248 180)
 			(layer "B.SilkS")
+			(hide yes)
 			(uuid "1946667b-1fe4-418a-ba2d-f9b5d2e05300")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+				(justify mirror)
+			)
+		)
+		(fp_text user "DAC SDI"
+			(at 3.597826 3.739248 180)
+			(layer "B.SilkS")
+			(uuid "9340e06a-a739-48e9-a542-9d0aae2fd980")
 			(effects
 				(font
 					(size 1 1)
@@ -24033,10 +24073,23 @@
 		(at 185 90.3)
 		(descr "SMD pad as test Point, diameter 1.0mm")
 		(tags "test point SMD pad")
-		(property "Reference" "DAC_Output"
+		(property "Reference" "TP4"
 			(at 0 -2.3 180)
 			(layer "B.SilkS")
+			(hide yes)
 			(uuid "4c0844d4-a691-41c1-a437-6c33529ccf1d")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+				(justify mirror)
+			)
+		)
+		(fp_text user "DAC_Output"
+			(at 0 -2.3 180)
+			(layer "B.SilkS")
+			(uuid "4ada2796-83de-42a3-b083-bf36deeb9a05")
 			(effects
 				(font
 					(size 1 1)

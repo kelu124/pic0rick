@@ -1,3 +1,6 @@
 build/
 build2350
 build2040
+
+# Local secrets (Wi-Fi credentials etc.) — never commit
+.env

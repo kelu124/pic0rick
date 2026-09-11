@@ -5,19 +5,25 @@
 # (<vendor> is the config basename, so jlcpcb.kibot.yaml -> build_jlcpcb).
 #
 # Usage:
-#   ./build.sh [board_dir] [group]
+#   ./build.sh [board_dir|all] [group]
 #
-#   board_dir   Directory holding the .kicad_pcb/.kicad_sch (default: adc)
+#   board_dir   Directory holding the .kicad_pcb/.kicad_sch (default: adc).
+#               "all" builds every board in the BOARDS registry below.
 #   group       What to build (default: all):
 #                 all         everything below
-#                 production  gerbers, drill, zipped gerbers, CPL + BOM (CSV)
-#                 docs        schematic PDF, interactive HTML BOM
+#                 fab         gerbers, drill, zipped gerbers (no schematic needed)
+#                 production  fab + CPL + BOM (CSV)   [needs a schematic]
+#                 docs        schematic PDF, interactive HTML BOM  [needs a schematic]
 #                 models      STEP + top & bottom 3D renders
+#
+# Boards without a schematic (e.g. pulser_panel, a panel) automatically fall back
+# to fabrication + 3D only; their assembly CPL/BOM come from the single board / KiKit.
 #
 # Examples:
 #   ./build.sh                 # adc, everything
-#   ./build.sh vga production  # vga, JLCPCB upload files only
-#   ./build.sh psram models    # psram, STEP + renders only
+#   ./build.sh all             # every board, everything it supports
+#   ./build.sh mux production  # mux, JLCPCB upload files only
+#   ./build.sh pulser_panel    # panel: gerber zip + STEP + renders
 #
 # The KiCad python module (pcbnew) is compiled for the system Python 3.10,
 # so KiBot runs from a dedicated Python 3.10 venv with --system-site-packages.
@@ -31,6 +37,22 @@ VENV="${HARDWARE_DIR}/.venv-kibot"
 
 BOARD_DIR="${1:-adc}"
 GROUP="${2:-all}"
+
+# Registry of boards in this repo, for the "all" target. Each has a .kicad_pcb
+# under hardware/<name>/; pulser_panel is a schematic-less panel (fab + 3D only).
+BOARDS=(adc mux psram vga pulser_panel)
+
+# "./build.sh all [group]" regenerates every registered board's outputs so the
+# whole repo stays consistent. Recurses into this same script once per board.
+if [[ "${BOARD_DIR}" == "all" ]]; then
+    for b in "${BOARDS[@]}"; do
+        echo "==================== ${b} ===================="
+        CONFIG="${CONFIG:-}" "${BASH_SOURCE[0]}" "${b}" "${GROUP}" \
+            || echo ">> warning: build for '${b}' reported issues" >&2
+        echo
+    done
+    exit 0
+fi
 
 # Resolve board directory (accept "adc" or "hardware/adc" or absolute path).
 if [[ -d "${HARDWARE_DIR}/${BOARD_DIR}" ]]; then
@@ -148,11 +170,27 @@ render_pngs() {
 KIBOT_ARGS=(-D -c "${CONFIG}" -b "${PCB}" -d "${OUT_DIR}")
 [[ -n "${SCH}" ]] && KIBOT_ARGS+=(-e "${SCH}")
 
-case "${GROUP}" in
-    all) ;;                                   # run every output
-    production|docs|models) KIBOT_ARGS+=("${GROUP}");;
-    *) echo "error: unknown group '${GROUP}' (use production|docs|models|all)" >&2; exit 1;;
-esac
+# Pick which outputs/groups KiBot runs. An empty target list means "all outputs".
+# Boards without a schematic (e.g. panels) can only do fabrication (+ STEP);
+# their assembly CPL/BOM come from the single board / KiKit, not from here.
+KIBOT_TARGETS=()
+RUN_KIBOT=1
+if [[ -z "${SCH}" ]]; then
+    echo ">> No schematic in $(basename "${BOARD_DIR}") — fabrication + 3D only (CPL/BOM/schematic skipped)." >&2
+    case "${GROUP}" in
+        all)            KIBOT_TARGETS=(fab step);;
+        production|fab) KIBOT_TARGETS=(fab);;
+        models)         KIBOT_TARGETS=(step);;
+        docs)           RUN_KIBOT=0;;   # nothing KiBot can produce without a schematic
+        *) echo "error: unknown group '${GROUP}' (use fab|production|docs|models|all)" >&2; exit 1;;
+    esac
+else
+    case "${GROUP}" in
+        all) ;;                                        # empty targets => every output
+        fab|production|docs|models) KIBOT_TARGETS=("${GROUP}");;
+        *) echo "error: unknown group '${GROUP}' (use fab|production|docs|models|all)" >&2; exit 1;;
+    esac
+fi
 
 echo ">> Board : $(basename "${PCB}")"
 echo ">> Group : ${GROUP}"
@@ -161,7 +199,10 @@ echo
 
 # KiCad 10 prints harmless property assertions to stderr; keep them out of view.
 rc=0
-"${KIBOT}" "${KIBOT_ARGS[@]}" 2> >(grep -v 'property.h.*assert' >&2 || true) || rc=$?
+if [[ ${RUN_KIBOT} -eq 1 ]]; then
+    "${KIBOT}" "${KIBOT_ARGS[@]}" "${KIBOT_TARGETS[@]}" \
+        2> >(grep -v 'property.h.*assert' >&2 || true) || rc=$?
+fi
 
 echo
 if [[ ${rc} -ne 0 ]]; then

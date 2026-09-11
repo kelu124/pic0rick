@@ -1,0 +1,22 @@
+[
+  {
+    "version": 1,
+    "payload_type": 3,
+    "flags": 0,
+    "sequence": 23,
+    "sample_count": 4096,
+    "sample_rate_hz": 60000000,
+    "payload_bytes": 4096,
+    "capture_timestamp_us": 27549611,
+    "adc_dc_mean": 512.1962890625,
+    "envelope_peak": 201.5752716064453,
+    "alaw_reference": 512.0,
+    "negative_ns": 96,
+    "damp_ns": 6000,
+    "positive_ns": 96,
+    "dropped_frames": 0,
+    "payload_crc32": 473015363,
+    "payload_name": "alaw",
+    "array_index": 0
+  }
+]

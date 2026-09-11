@@ -182,7 +182,11 @@ outputs:
   # can move back into KiBot as render_3d outputs.
 
 groups:
-  # Files you upload to JLCPCB (fabrication + assembly)
+  # Fabrication only — needs no schematic (used for schematic-less boards such
+  # as panels, where assembly CPL/BOM come from the single board / KiKit).
+  - name: fab
+    outputs: [gerbers, drill, gerbers_zip]
+  # Files you upload to JLCPCB (fabrication + assembly). Needs a schematic.
   - name: production
     outputs: [gerbers, drill, gerbers_zip, jlc_position, jlc_bom]
   # Human-facing documentation
