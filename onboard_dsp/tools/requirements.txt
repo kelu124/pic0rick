@@ -1,3 +1,0 @@
-numpy>=1.26
-pyserial>=3.5
-scipy>=1.11
