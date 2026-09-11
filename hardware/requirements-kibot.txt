@@ -1,0 +1,27 @@
+# KiBot production-output toolchain — pinned dependencies for hardware/.venv-kibot
+#
+# WHY A SEPARATE VENV?
+#   KiCad's Python bindings (`pcbnew`) and `wx` are compiled C-extensions that
+#   ship only for the *system* Python (3.10 on this Ubuntu 22.04 box, installed
+#   by the `kicad` apt package). The repo's root .venv is Python 3.11 via pyenv,
+#   so it can never import pcbnew. KiBot needs pcbnew, hence a dedicated venv.
+#
+# HOW TO (RE)CREATE IT  (hardware/build.sh does this automatically):
+#   cd hardware
+#   /usr/bin/python3 -m venv --system-site-packages .venv-kibot
+#   #   ^ system Python 3.10  ^ so pcbnew + wx from the kicad apt pkg are visible
+#   .venv-kibot/bin/pip install --upgrade pip
+#   .venv-kibot/bin/pip install --no-compile -r requirements-kibot.txt
+#   #   ^ --no-compile is REQUIRED: KiBot's import-time macro system fails when
+#   #     its modules are byte-compiled by pip.
+#
+# SYSTEM PREREQUISITES (apt):
+#   kicad kicad-footprints kicad-symbols kicad-packages3d   # provides kicad-cli + pcbnew + 3D models
+#   python3-wxgtk4.0                                         # wx, required by KiBot at startup
+#
+# NOTE: the schematic PDF is produced with `kicad-cli` directly (see build.sh),
+#       not KiBot's KiAuto backend, so no X display / xvfb is needed.
+
+kibot
+kiauto                 # KiBot helper backends (kicad2step_do, etc.)
+InteractiveHtmlBom     # interactive HTML BOM generator (ibom output)

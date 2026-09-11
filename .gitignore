@@ -5,3 +5,10 @@ __pycache__
 .venv
 .env
 signals.npz
+.venv-kibot
+build2350
+build2040
+
+# KiBot production outputs (regenerable via hardware/build.sh): build_jlcpcb/, build_<vendor>/
+hardware/**/build_*/
+

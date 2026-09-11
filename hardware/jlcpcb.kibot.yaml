@@ -1,0 +1,193 @@
+# KiBot configuration — JLCPCB-friendly production outputs
+# ---------------------------------------------------------
+# Board-agnostic: point KiBot at any board's .kicad_pcb / .kicad_sch
+# (see hardware/build.sh). Artefacts land in <board>/build_jlcpcb/<type>/.
+#
+# Run:  hardware/build.sh [board_dir]         # default: adc, group "production"
+#       hardware/build.sh adc all             # production + docs
+#
+# JLCPCB upload checklist:
+#   * Gerbers + drill ....... build_jlcpcb/production/<board>-JLCPCB-gerbers.zip
+#   * Pick & place (CPL) .... build_jlcpcb/assembly/<board>-JLCPCB-CPL.csv
+#   * BOM ................... build_jlcpcb/assembly/<board>-JLCPCB-BOM.csv
+kibot:
+  version: 1
+
+globals:
+  # This schematic stores the LCSC/JLCPCB part number in a field named "JLCPCB".
+  field_lcsc_part: 'JLCPCB'
+  # The board references 3D models via the legacy ${KICAD6_3DMODEL_DIR} alias,
+  # which KiCad 10 no longer defines. Expand it to the system model library so
+  # KiBot rewrites the model paths to absolute before calling kicad-cli, which
+  # then swaps .wrl -> .step automatically. Override KICAD_3DMODELS_DIR to relocate.
+  environment:
+    models_3d: '${KICAD_3DMODELS_DIR}'
+    define_old: true
+
+filters:
+  # Silkscreen labels / logos / unannotated placeholders are footprints in the
+  # board but not real placed parts (some carry malformed refs like "DAC SCK"
+  # that break the pick & place export). Drop them from CPL & BOM.
+  - name: exclude_non_parts
+    comment: 'Drop silkscreen labels / logos / unannotated footprints'
+    type: generic
+    exclude_refs: ['REF**', 'G***', 'DAC CS', 'DAC SCK', 'DAC SDI']
+
+  # JLCPCB assembly uses a different rotation/origin convention than KiCad.
+  # This applies KiBot's built-in correction table + mirrors bottom parts.
+  - name: fix_rotations
+    comment: 'Rotation/offset corrections for JLCPCB assembly'
+    type: rot_footprint
+    extend: true            # start from KiBot's built-in JLCPCB rotations DB
+    negative_bottom: true
+    mirror_bottom: false
+
+outputs:
+  # ---- Fabrication -------------------------------------------------------
+  - name: gerbers
+    comment: 'Gerbers (JLCPCB / Protel extensions)'
+    type: gerber
+    dir: gerbers
+    options:
+      exclude_edge_layer: true
+      exclude_pads_from_silkscreen: true
+      plot_sheet_reference: false
+      plot_footprint_refs: true
+      plot_footprint_values: false
+      force_plot_invisible_refs_vals: false
+      tent_vias: true
+      use_protel_extensions: true
+      create_gerber_job_file: false
+      disable_aperture_macros: true
+      gerber_precision: 4.6
+      use_gerber_x2_attributes: false
+      use_gerber_net_attributes: false
+      line_width: 0.1
+      subtract_mask_from_silk: true
+    layers:
+      - copper          # F.Cu, B.Cu and all inner copper layers
+      - F.SilkS
+      - B.SilkS
+      - F.Mask
+      - B.Mask
+      - Edge.Cuts
+
+  - name: drill
+    comment: 'Excellon drill + gerber drill map'
+    type: excellon
+    dir: gerbers
+    options:
+      metric_units: true
+      pth_and_npth_single_file: false
+      minimal_header: false
+      route_mode_for_oval_holes: false
+      map:
+        type: gerber
+
+  - name: gerbers_zip
+    comment: 'Zipped gerbers + drill — upload this to JLCPCB'
+    type: compress
+    dir: production
+    options:
+      output: '%f-JLCPCB-gerbers.zip'
+      format: ZIP
+      files:
+        - from_output: gerbers
+        - from_output: drill
+
+  # ---- Assembly ----------------------------------------------------------
+  - name: jlc_position
+    comment: 'Pick & place (CPL) for JLCPCB'
+    type: position
+    dir: assembly
+    options:
+      pre_transform: fix_rotations
+      dnf_filter: exclude_non_parts
+      output: '%f-JLCPCB-CPL.%x'
+      format: CSV
+      units: millimeters
+      separate_files_for_front_and_back: false
+      only_smd: false
+      columns:
+        - id: Ref
+          name: Designator
+        - id: PosX
+          name: 'Mid X'
+        - id: PosY
+          name: 'Mid Y'
+        - id: Side
+          name: Layer
+        - id: Rot
+          name: Rotation
+
+  - name: jlc_bom
+    comment: 'BOM for JLCPCB assembly'
+    type: bom
+    dir: assembly
+    options:
+      output: '%f-JLCPCB-BOM.%x'
+      format: CSV
+      dnf_filter: exclude_non_parts
+      ref_separator: ','
+      columns:
+        - field: Value
+          name: Comment
+        - field: References
+          name: Designator
+        - field: Footprint
+          name: Footprint
+        - field: MPN
+          name: MPN
+        - field: Manufacturer
+          name: Manufacturer
+        - field: JLCPCB          # LCSC part number (schematic field, fill to enable assembly)
+          name: 'LCSC Part #'
+      group_fields: [MPN, Value, Footprint]
+      csv:
+        hide_pcb_info: true
+        hide_stats_info: true
+        quote_all: true
+
+  # ---- Documentation (group: docs) --------------------------------------
+  - name: sch_pdf
+    comment: 'Schematic PDF'
+    type: pdf_sch_print
+    dir: docs
+    options:
+      output: '%f-schematic.pdf'
+
+  - name: ibom
+    comment: 'Interactive HTML BOM (assembly aid)'
+    type: ibom
+    dir: docs
+    options:
+      dnp_field: 'dnp'
+      extra_fields: 'MPN,Manufacturer,JLCPCB'
+
+  - name: step
+    comment: '3D model (STEP)'
+    type: export_3d
+    dir: 3D
+    options:
+      format: step
+      output: '%f.step'
+      download: true          # KiBot downloads/caches + substitutes STEP models
+
+  # NOTE: the top/bottom PNG renders are NOT produced by KiBot here.
+  # KiBot's `render_3d` refuses the kicad-cli backend on KiCad < 10.0.5
+  # (check_kicad_cli_bug) and falls back to the KiAuto/pcbnew_do GUI path,
+  # which fails headless on KiCad 10. build.sh therefore renders the two PNGs
+  # (build_jlcpcb/3D/<board>-3D-top.png / -bottom.png) with `kicad-cli pcb render`
+  # directly, which works on 10.0.4. Once KiCad >= 10.0.5 is installed these
+  # can move back into KiBot as render_3d outputs.
+
+groups:
+  # Files you upload to JLCPCB (fabrication + assembly)
+  - name: production
+    outputs: [gerbers, drill, gerbers_zip, jlc_position, jlc_bom]
+  # Human-facing documentation
+  - name: docs
+    outputs: [sch_pdf, ibom]
+  # 3D deliverables (STEP only; PNG renders are done by build.sh via kicad-cli)
+  - name: models
+    outputs: [step]
