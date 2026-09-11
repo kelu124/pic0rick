@@ -34,11 +34,11 @@ And if you want to discuss the project - [meet us on our chat](https://matrix.to
 
 ## The three boards assemble look like this
 
-![](/documentation/images/v2/20250323_114927.jpg)
+![](/docs/images/v2/20250323_114927.jpg)
 
 ## Example of acquisitions
 
-![](/documentation/images/pic0gain_at_6.jpg)
+![](/docs/images/pic0gain_at_6.jpg)
 
 ## Demo of output to VGA 
 
@@ -46,18 +46,18 @@ Beware. This is not a standard development, more of a proof of concept. It lives
 
 Only using the pico to setup gain and trigger acquisitions. The screen displays the gain value (0 to 9, with a 100x divider). Displays raw buffer of acquisition.
 
-![](/documentation/images/VGA_demo.gif)
+![](/docs/images/VGA_demo.gif)
 
 
 ## Example of a compact assembly 
 
 Within a game card footprint
 
-![](/documentation/images/compact_assembly.jpg)
+![](/docs/images/compact_assembly.jpg)
 s
 # Along with the other boards
 
-![](/documentation/images/sister_boards.png)
+![](/docs/images/sister_boards.png)
 
 # Assembly
 
@@ -93,7 +93,7 @@ Copyright Luc Jonveaux (<kelu124@gmail.com>) 2024
 
 * The hardware is licensed under TAPR Open Hardware License (<www.tapr.org/OHL>)
 * The software components are free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
-* The documentation is licensed under a [Creative Commons Attribution-ShareAlike 3.0 Unported License](http://creativecommons.org/licenses/by-sa/3.0/).
+* The docs is licensed under a [Creative Commons Attribution-ShareAlike 3.0 Unported License](http://creativecommons.org/licenses/by-sa/3.0/).
 
 ## Disclaimer
 
