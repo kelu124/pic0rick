@@ -15,5 +15,13 @@ future instance would waste time rediscovering.
   outputs (gerbers/CPL/BOM/STEP + 3D renders), build groups incl. the fast
   `fab-fast` path, and the venv/3D-model gotchas.
 
+## Task tracking & commit logs
+
+- `TODO.md` — open, actionable items (with owner tags). `DONE.md` — completed.
+  Move items from one to the other as they finish.
+- `commits/` — one log file per commit (`<YYYY-MM-DD>-<slug>.md`) recording what
+  changed and why. **Add a log entry for every commit you make in this repo.**
+- Any new remark/discovery that needs an action goes in `TODO.md`.
+
 > These are working memories, not authoritative docs. Verify a claim against the
 > code before relying on it — file/line references can drift.
