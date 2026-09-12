@@ -11,6 +11,9 @@ future instance would waste time rediscovering.
   A-law firmware experiment: layout, outputs, gotchas, and the work done so far.
 - `python-host-tools.md` — the repo-root `python/` NDT stack (serial driver +
   echo/thickness analysis + HDF5) that drives the mainline firmware.
+- `hardware-build.md` — `hardware/build.sh`: KiBot + kicad-cli production
+  outputs (gerbers/CPL/BOM/STEP + 3D renders), build groups incl. the fast
+  `fab-fast` path, and the venv/3D-model gotchas.
 
 > These are working memories, not authoritative docs. Verify a claim against the
 > code before relying on it — file/line references can drift.

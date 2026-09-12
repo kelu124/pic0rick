@@ -19,3 +19,6 @@ Current topic notes:
   `experiments/onboard_dsp/understanding_figures.md`.
 - `docs/claude/python-host-tools.md` — the repo-root `python/` NDT host stack
   (serial driver + echo/thickness analysis + HDF5). See `python/Readme.md`.
+- `docs/claude/hardware-build.md` — `hardware/build.sh` production-output flow
+  (KiBot + kicad-cli): build groups incl. the fast `fab-fast` path, the
+  3D-always default, and the KiBot venv / 3D-model gotchas.

@@ -10,11 +10,12 @@
 #   board_dir   Directory holding the .kicad_pcb/.kicad_sch (default: adc).
 #               "all" builds every board in the BOARDS registry below.
 #   group       What to build (default: all). The 3D deliverables (STEP + top &
-#               bottom PNG renders) are ALWAYS produced, whatever the group:
+#               bottom PNG renders) are produced for every group EXCEPT fab-fast:
 #                 all         everything below
-#                 fab         gerbers, drill, zipped gerbers (no schematic needed)
-#                 production  fab + CPL + BOM (CSV)   [needs a schematic]
-#                 docs        schematic PDF, interactive HTML BOM  [needs a schematic]
+#                 fab         gerbers, drill, zipped gerbers (+ 3D)   (no schematic needed)
+#                 fab-fast    gerbers/drill/zip ONLY — no STEP, no PNG renders (fast)
+#                 production  fab + CPL + BOM (CSV) (+ 3D)   [needs a schematic]
+#                 docs        schematic PDF, interactive HTML BOM (+ 3D)  [needs a schematic]
 #                 models      STEP + top & bottom 3D renders only
 #
 # Boards without a schematic (e.g. pulser_panel, a panel) automatically fall back
@@ -23,7 +24,8 @@
 # Examples:
 #   ./build.sh                 # adc, everything
 #   ./build.sh all             # every board, everything it supports
-#   ./build.sh mux production  # mux, JLCPCB upload files only
+#   ./build.sh mux production  # mux, JLCPCB upload files (+ 3D)
+#   ./build.sh mux fab-fast    # mux, gerbers only — fast, no 3D renders
 #   ./build.sh pulser_panel    # panel: gerber zip + STEP + renders
 #
 # The KiCad python module (pcbnew) is compiled for the system Python 3.10,
@@ -178,21 +180,25 @@ KIBOT_TARGETS=()
 RUN_KIBOT=1
 # 3D deliverables (STEP + top/bottom PNG renders) are produced for EVERY group by
 # default, so the "step" KiBot target is folded into fab/production/docs below and
-# render_pngs always runs (see the unconditional call further down).
+# render_pngs runs unless WITH_3D is cleared. The "fab-fast" group is the fast
+# path: gerbers only, no STEP and no ~35 s of PNG rendering.
+WITH_3D=1
 if [[ -z "${SCH}" ]]; then
     echo ">> No schematic in $(basename "${BOARD_DIR}") — fabrication + 3D only (CPL/BOM/schematic skipped)." >&2
     case "${GROUP}" in
         all)                 KIBOT_TARGETS=(fab step);;
         production|fab|docs) KIBOT_TARGETS=(fab step);;
+        fab-fast)            KIBOT_TARGETS=(fab); WITH_3D=0;;   # gerbers only, no 3D
         models)              KIBOT_TARGETS=(step);;
-        *) echo "error: unknown group '${GROUP}' (use fab|production|docs|models|all)" >&2; exit 1;;
+        *) echo "error: unknown group '${GROUP}' (use fab|fab-fast|production|docs|models|all)" >&2; exit 1;;
     esac
 else
     case "${GROUP}" in
         all) ;;                                        # empty targets => every output
         models) KIBOT_TARGETS=(step);;
         fab|production|docs) KIBOT_TARGETS=("${GROUP}" step);;   # always fold in the 3D STEP
-        *) echo "error: unknown group '${GROUP}' (use fab|production|docs|models|all)" >&2; exit 1;;
+        fab-fast) KIBOT_TARGETS=(fab); WITH_3D=0;;               # gerbers only, no 3D
+        *) echo "error: unknown group '${GROUP}' (use fab|fab-fast|production|docs|models|all)" >&2; exit 1;;
     esac
 fi
 
@@ -213,9 +219,11 @@ if [[ ${rc} -ne 0 ]]; then
     echo ">> Completed with warnings (KiBot exit ${rc}); some 3D models may be absent from the STEP." >&2
 fi
 
-# Top/bottom 3D PNG renders are produced for every group by default.
-echo
-render_pngs
+# Top/bottom 3D PNG renders are produced for every group except the fast path.
+if [[ ${WITH_3D} -eq 1 ]]; then
+    echo
+    render_pngs
+fi
 
 echo
 echo ">> Done. Artefacts in ${OUT_DIR}"
