@@ -84,3 +84,30 @@ class Pic0rick:
         ans = self.sread()
         return ans
 
+    def write_mux(self, value):
+        """Load the MAX14866 mux shift register (write mux).
+
+        Firmware parses the argument as hexadecimal (strtol base 16), so an int
+        is sent as an uppercase hex string. A string is passed through verbatim,
+        allowing an explicit "0x" prefix if desired.
+
+        Args:
+            value: mux pattern as an int, or a hex string (e.g. 0xFFFF or "FFFF").
+        """
+        arg = format(value, "X") if isinstance(value, int) else str(value)
+        self.ser.write(bytearray("write mux " + arg + "\n", "ascii"))
+        ans = self.sread()
+        return ans
+
+    def set_mux(self):
+        """Pulse the MAX14866 SET line, enabling all switches (set mux)."""
+        self.ser.write(bytearray("set mux\n", "ascii"))
+        ans = self.sread()
+        return ans
+
+    def clear_mux(self):
+        """Pulse the MAX14866 CLR line, disabling all switches (clear mux)."""
+        self.ser.write(bytearray("clear mux\n", "ascii"))
+        ans = self.sread()
+        return ans
+

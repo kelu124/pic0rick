@@ -67,4 +67,12 @@ discoveries logged since.
 
 ## Discoveries (logged by Claude)
 
-<!-- New remarks/discoveries that need an action get appended here. -->
+- [ ] **[mixed]** MUX not wired into the high-level acquisition flow.
+  `device.py` now exposes `write_mux` / `set_mux` / `clear_mux`, but
+  `ndt_acquisition.py` (`UltrasonicAcquisition`) never selects a mux channel.
+  For multi-element / array probing, integrate mux selection into the
+  acquisition sequence. Needs a decision on the intended channel-map semantics
+  (found 2026-09-12 during firmware↔Python parity check).
+- [ ] **[maintainer]** Document the MAX14866 mux bit-map: which bits in the
+  16-bit `write mux` word map to which physical switch/channel. Needed before
+  `write_mux` can be used meaningfully from Python (found 2026-09-12).
