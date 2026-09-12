@@ -1,0 +1,12 @@
+# pic0rick firmware version.
+#
+# Format: A.B.C  (major.minor.patch)
+#   A (major)  0-99   -- managed by the maintainer (Luc)
+#   B (minor)  0-99   -- managed by the maintainer (Luc)
+#   C (patch)  0-999  -- bumped by Claude on every change to firmware/ files
+#
+# `changes` is a short, single-line, double-quoted summary of what changed vs
+# the previous version. It is embedded in the binary (the `version` CLI command)
+# and used as the GitHub release body by .github/workflows/firmware.yml.
+version: "0.1.0"
+changes: "First versioned firmware: add `version` CLI command (reads version.yaml); MAX14866 MUX board now optional at compile time via -DMUX."

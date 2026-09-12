@@ -5,6 +5,21 @@ finished. Each entry links to its commit log in `docs/claude/commits/`.
 
 ---
 
+## 2026-09-13
+
+- **Firmware `version` command + versioning.** `firmware/version.yaml` (A.B.C +
+  changes) → CMake-generated `version.h` → `version` CLI command. Firmware v0.1.0.
+  See `commits/2026-09-13-firmware-version-mux-ci.md`.
+- **MUX made optional at compile time (`-DMUX`).** Split the gain DAC out to
+  `max/dac.c` (always built); `max/max14866.c` + mux commands gated by `-DMUX`.
+  Same commit log.
+- **CI build + release workflow.** `.github/workflows/firmware.yml` builds all 4
+  variants (rp2040/rp2350 × mux/nomux), uploads artifacts, and releases on push
+  to main. `build.sh` now builds all 4 into `dist/`. Same commit log.
+- **Python library versioning.** `python/pic0rick/__init__.py` +
+  `version.yaml` expose `pic0rick.__version__`, v0.1.0. See
+  `commits/2026-09-13-python-versioning.md`.
+
 ## 2026-09-12
 
 - **Firmware↔Python command parity.** Audited the 6 firmware serial commands

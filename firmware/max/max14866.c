@@ -3,7 +3,11 @@
 //! \author     Abdelrahman Ali
 //! \date       2025-01-06
 //!
-//! \brief      max14866 spi bit banging.
+//! \brief      max14866 HV mux spi bit banging.
+//!
+//! Built only when -DMUX is set (the MAX14866 is a plug-in module board on the
+//! pulse-echo board). The MCP4812 gain DAC that used to live here has moved to
+//! dac.c so it is always available regardless of the MUX flag.
 //!
 
 //---------------------------------------------------------------------------
@@ -17,7 +21,6 @@
 
 PIO pio_max;
 uint sm4;
-uint sm5;
 
 //---------------------------------------------------------------------------
 // MAX INIT FUNCTION
@@ -82,63 +85,6 @@ void max14866(const char *input)
     printf("MAX14866 writing started\n");
     max14866_write(data);
     printf("MAX14866 writing ended\n");
-}
-
-//---------------------------------------------------------------------------
-// END OF FILE
-//---------------------------------------------------------------------------
-
-//---------------------------------------------------------------------------
-// DAC CODE
-//---------------------------------------------------------------------------
-
-uint16_t data;
-
-//---------------------------------------------------------------------------
-// DAC INIT FUNCTION
-//---------------------------------------------------------------------------
-void dac_init()
-{
-    pio_max = pio1;
-    sm5 = 1;
-    uint offset2 = pio_add_program(pio_max, &max14866_program);
-    max14866_program_init(pio_max, sm5, offset2, PIN_MOSI, PIN_SCLK, MAX14866_CLK);
-    gpio_init(PIN_CS);
-    gpio_set_dir(PIN_CS, GPIO_OUT);
-    gpio_put(PIN_CS, 1);
-}
-
-//---------------------------------------------------------------------------
-// DAC DATA PRESENTAGE CALCULATION
-//---------------------------------------------------------------------------
-void dac_data_calculation(uint16_t *data, uint16_t input, uint16_t config_bits)
-{
-    *data = 0;
-    *data = (uint16_t)(input);
-    *data = ((*data << 2) | config_bits);
-}
-
-//---------------------------------------------------------------------------
-// DAC WRITE FUNCTION
-//---------------------------------------------------------------------------
-void dac_write(uint16_t data)
-{
-    max14866_wait_idle(pio_max, sm5);
-    gpio_put(PIN_CS, 0);
-    max14866_put(pio_max, sm5, data);
-    max14866_wait_idle(pio_max, sm5);
-    gpio_put(PIN_CS, 1);
-}
-
-//---------------------------------------------------------------------------
-// DAC MAIN FUNCTION
-//---------------------------------------------------------------------------
-void dac(const char *input)
-{
-    printf("DAC writing started\n");
-    dac_data_calculation(&data, atoi(input), 0x3000);
-    dac_write(data);
-    printf("DAC writing ended\n");
 }
 
 //---------------------------------------------------------------------------

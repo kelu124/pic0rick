@@ -76,3 +76,16 @@ discoveries logged since.
 - [ ] **[maintainer]** Document the MAX14866 mux bit-map: which bits in the
   16-bit `write mux` word map to which physical switch/channel. Needed before
   `write_mux` can be used meaningfully from Python (found 2026-09-12).
+- [ ] **[maintainer]** Release cadence decision: CI cuts a release only when
+  `fw-v<version>` doesn't already exist, so a main push that doesn't bump the
+  firmware patch yields artifacts but no new release. Confirm this is desired, or
+  ask for per-commit releases (would need a unique tag e.g. `+<short-sha>`)
+  (found 2026-09-13).
+- [ ] **[maintainer]** First run of `.github/workflows/firmware.yml` needs
+  `Settings → Actions → Workflow permissions = Read and write` (or the release
+  step can't create tags/releases despite `permissions: contents: write`)
+  (found 2026-09-13).
+- [ ] **[claude]** The committed `firmware/rp2040.uf2` / `rp2350.uf2` are the
+  mux builds refreshed at v0.1.0. Decide whether to keep binaries in git at all
+  now that CI publishes releases, or drop them and point users to releases
+  (found 2026-09-13).

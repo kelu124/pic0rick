@@ -15,9 +15,16 @@ Two independent host paths coexist; don't cross-wire them.
 
 ## Files
 
+- `pic0rick/__init__.py` — exposes `pic0rick.__version__` / `__changes__`, parsed
+  from `pic0rick/version.yaml` (A.B.C, mirrors the firmware scheme). No pyserial
+  import at package import time (kept lightweight).
+- `pic0rick/version.yaml` — library version + `changes`. **Bump rule:** Claude
+  bumps only the **patch (C)** on changes to `python/` files; maintainer owns
+  major/minor. Independent of the firmware version.
 - `pic0rick/device.py` — `Pic0rick` serial driver. `_find_port()` auto-detects
   the CDC port per-OS; methods `dac(N)`, `pulse_adc_trigger(pon,poff,damp)`,
-  `read()`. 115200 baud, `Fech=60e6`.
+  `read()`, and `write_mux(v)` / `set_mux()` / `clear_mux()` (match firmware,
+  MUX builds). 115200 baud, `Fech=60e6`.
 - `pic0rick/ndt_acquisition.py` — the real logic. `UltrasonicAcquisition`
   dataclass + `from_probe`, `detect_echoes`, `calibrate`, `amplitude`, `plot`,
   `info`, and HDF5 `save_h5`/`load_h5`. Hardware import is **lazy** (`get_probe`)
@@ -43,3 +50,5 @@ Two independent host paths coexist; don't cross-wire them.
 
 - 2026-09-12: Surveyed the folder and wrote `python/Readme.md` (points at both
   notebooks and both modules). No code changes.
+- 2026-09-13: Added `write_mux`/`set_mux`/`clear_mux` to `Pic0rick` (firmware
+  parity); added versioning (`__init__.py` + `version.yaml`, v0.1.0).

@@ -23,5 +23,15 @@ future instance would waste time rediscovering.
   changed and why. **Add a log entry for every commit you make in this repo.**
 - Any new remark/discovery that needs an action goes in `TODO.md`.
 
+## Versioning rule
+
+Firmware and the Python library each carry `A.B.C` in their own `version.yaml`
+(`firmware/version.yaml`, `python/pic0rick/version.yaml`).
+- **Claude bumps only the patch (C)** — firmware patch on changes to `firmware/`
+  files, python patch on changes to `python/` files (independent). A/B 0-99,
+  C 0-999. **The maintainer owns major/minor — never change them.**
+- Always update that file's one-line, double-quoted `changes:` summary; the CI
+  release body and the firmware `version` command read it.
+
 > These are working memories, not authoritative docs. Verify a claim against the
 > code before relying on it — file/line references can drift.

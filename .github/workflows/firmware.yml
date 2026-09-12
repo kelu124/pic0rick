@@ -1,0 +1,89 @@
+name: firmware
+
+# Build every firmware variant on pushes and PRs to main. On pushes to main
+# (i.e. merged code), publish a GitHub release with all variants attached.
+# Branches other than main never create a release.
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+# Cancel superseded runs on the same ref.
+concurrency:
+  group: firmware-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write  # required to create releases / tags
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # need tags to detect an already-released version
+
+      - name: Install ARM GCC toolchain
+        uses: carlosperate/arm-none-eabi-gcc-action@v1
+
+      - name: Install build tools
+        run: sudo apt-get update && sudo apt-get install -y cmake
+
+      - name: Checkout pico-sdk
+        uses: actions/checkout@v4
+        with:
+          repository: raspberrypi/pico-sdk
+          ref: '2.2.0'
+          path: pico-sdk
+          submodules: recursive
+
+      - name: Build all firmware variants
+        env:
+          PICO_SDK_PATH: ${{ github.workspace }}/pico-sdk
+        run: |
+          cd firmware
+          ./build.sh
+
+      - name: Read firmware version
+        id: fw
+        run: |
+          v=$(grep -E '^version:' firmware/version.yaml | sed -E 's/version:[[:space:]]*"?([0-9.]+)"?.*/\1/')
+          c=$(grep -E '^changes:' firmware/version.yaml | sed -E 's/changes:[[:space:]]*"(.*)"[[:space:]]*$/\1/')
+          echo "version=$v" >> "$GITHUB_OUTPUT"
+          {
+            echo "changes<<__EOF__"
+            echo "$c"
+            echo "__EOF__"
+          } >> "$GITHUB_OUTPUT"
+          echo "Firmware version: $v"
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: pic0rick-firmware-v${{ steps.fw.outputs.version }}
+          path: firmware/dist/*.uf2
+          if-no-files-found: error
+
+      # ---- Release (push to main only) ----
+      - name: Check if release tag already exists
+        id: tag
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          if git rev-parse -q --verify "refs/tags/fw-v${{ steps.fw.outputs.version }}" >/dev/null; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+            echo "Tag fw-v${{ steps.fw.outputs.version }} already exists; skipping release."
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Create release
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main' && steps.tag.outputs.exists == 'false'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: fw-v${{ steps.fw.outputs.version }}
+          name: firmware v${{ steps.fw.outputs.version }}
+          body: ${{ steps.fw.outputs.changes }}
+          files: firmware/dist/*.uf2

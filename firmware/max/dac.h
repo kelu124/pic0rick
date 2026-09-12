@@ -1,16 +1,17 @@
 //!
-//! \file       max14866.h
-//! \author     Abdelrahman Ali
-//! \date       2025-01-06
+//! \file       dac.h
+//! \author     Abdelrahman Ali (split from max14866 by Claude, 2026-09-12)
+//! \brief      MCP4812 gain DAC over the shared SPI-shifter PIO program.
 //!
-//! \brief      max14866 HV mux spi bit banging.
-//!
-//! Built only when -DMUX is set. The MCP4812 gain DAC declarations have moved
-//! to dac.h (the DAC is always built).
+//! The DAC lives on the main pulse-echo board and is ALWAYS built. It reuses
+//! the SPI-shifter PIO program defined in max14866.pio (that program is a
+//! generic shifter; it is not specific to the MUX). Keeping the DAC separate
+//! from max14866.c lets the MAX14866 MUX driver be excluded via -DMUX without
+//! losing gain control.
 //!
 
-#ifndef MAX14866_H
-#define MAX14866_H
+#ifndef DAC_H
+#define DAC_H
 
 //---------------------------------------------------------------------------
 // INCLUDES
@@ -24,41 +25,33 @@
 #include "hardware/clocks.h"
 
 //---------------------------------------------------------------------------
-// CONSTANTS
+// CONSTANTS (MCP4812 DAC pins / clock)
 //---------------------------------------------------------------------------
 
-#define MAX14866_SPI_DIN 18
-#define MAX14866_SPI_SCLK  19
-#define MAX14866_SPI_LE   20
-#define MAX14866_SPI_SET   21
-#define MAX14866_SPI_CLR   28
-
-#define MAX14866_CLK   2000000
+#define DAC_MOSI 15
+#define DAC_CS   13
+#define DAC_SCLK 14
+#define DAC_CLK  2000000
 
 //---------------------------------------------------------------------------
-// MAX INIT FUNCTION
+// DAC INIT FUNCTION
 //---------------------------------------------------------------------------
-void max14866_init();
+void dac_init();
 
 //---------------------------------------------------------------------------
-// MAX WRITE FUNCTION
+// DAC DATA CALCULATION
 //---------------------------------------------------------------------------
-void max14866_write(uint16_t data);
+void dac_data_calculation(uint16_t *data, uint16_t input, uint16_t config_bits);
 
 //---------------------------------------------------------------------------
-// MAX SET FUNCTION
+// DAC WRITE FUNCTION
 //---------------------------------------------------------------------------
-void max14866_set(const char *input);
+void dac_write(uint16_t data);
 
 //---------------------------------------------------------------------------
-// MAX CLEAR FUNCTION
+// DAC MAIN FUNCTION
 //---------------------------------------------------------------------------
-void max14866_clear(const char *input);
-
-//---------------------------------------------------------------------------
-// MAX MAIN FUNCTION
-//---------------------------------------------------------------------------
-void max14866(const char *input);
+void dac(const char *input);
 
 //---------------------------------------------------------------------------
 // END OF FILE

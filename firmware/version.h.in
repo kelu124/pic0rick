@@ -1,0 +1,13 @@
+//!
+//! \file       version.h
+//! \brief      Firmware version, generated from version.yaml by CMake.
+//!             DO NOT EDIT the generated version.h; edit version.yaml instead.
+//!
+
+#ifndef VERSION_H
+#define VERSION_H
+
+#define FW_VERSION "@FW_VERSION@"
+#define FW_CHANGES "@FW_CHANGES@"
+
+#endif

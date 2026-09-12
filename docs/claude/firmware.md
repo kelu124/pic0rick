@@ -35,10 +35,11 @@ then loops printing a `run> ` prompt and reading a line. `main.c`'s
 |---|---|---|
 | `start acq` | `pulse_adc_trigger` | Fire the pulser + trigger an ADC/DMA acquisition |
 | `read` | `adc` | Dump the captured ADC samples |
-| `write dac <v>` | `dac` | Write the DAC |
-| `write mux <v>` | `max14866` | Write the MAX14866 mux word |
-| `set mux <v>` | `max14866_set` | MAX14866 SET |
-| `clear mux <v>` | `max14866_clear` | MAX14866 CLEAR |
+| `write dac <v>` | `dac` | Write the gain DAC (MCP4812) |
+| `version` | `version_cmd` | Print `FW_VERSION` + `changes` + mux on/off |
+| `write mux <v>` | `max14866` | Write the MAX14866 mux word *(MUX builds only)* |
+| `set mux` | `max14866_set` | MAX14866 SET *(MUX builds only)* |
+| `clear mux` | `max14866_clear` | MAX14866 CLEAR *(MUX builds only)* |
 
 Parsing is whitespace `strtok` (command + subcommand + rest-as-args); a missing
 arg defaults to `"0"`. Unknown input prints `Unknown command: ...`. Output is
@@ -55,14 +56,33 @@ human-oriented `printf` text, not framed binary.
 ## Build / flash
 
 ```
-cd firmware && ./build.sh          # builds BOTH:
-#   build2040 (-DPICO_BOARD=pico)  -> rp2040.uf2
-#   build2350 (-DPICO_BOARD=pico2) -> rp2350.uf2
+cd firmware && ./build.sh          # builds FOUR variants into firmware/dist/:
+#   rp2040-mux, rp2040-nomux, rp2350-mux, rp2350-nomux
+#   + copies the two mux builds to rp2040.uf2 / rp2350.uf2 (historical names)
 ```
 - SDK **2.2.0**, toolchain **14_2_Rel1** (per CMakeLists; note onboard_dsp uses
-  the newer SDK 2.3.0). SDK resolved via the pico-vscode cmake include.
+  the newer SDK 2.3.0). SDK resolved via the pico-vscode cmake include, else
+  `PICO_SDK_PATH` (that's what CI uses).
 - `PICO_BOARD` defaults to `pico` (RP2040) if not passed.
-- To build just one: `cmake -B build2350 -DPICO_BOARD=pico2 && cmake --build build2350`.
+- **`-DMUX=ON` (default) / `-DMUX=OFF`** toggles the MAX14866 mux module. It
+  gates `max/max14866.c` in/out of the build and defines/undefines `MUX`, which
+  in `main.c` registers or omits the `write/set/clear mux` commands and the
+  `max14866_init()` call. The gain DAC lives in `max/dac.c` and is **always**
+  built (it reuses the `max14866.pio` SPI-shifter program, always generated).
+- To build just one: `cmake -B build2350 -DPICO_BOARD=pico2 -DMUX=OFF && cmake --build build2350`.
+
+## Versioning & CI
+
+- **`firmware/version.yaml`** (`version: "A.B.C"` + `changes: "..."`) is the
+  single source of truth. CMake parses it, generates `version.h`
+  (`FW_VERSION` / `FW_CHANGES`), and the `version` CLI command prints them.
+- **Bump rule:** Claude bumps only the **patch (C)** on every change to
+  `firmware/` files; the maintainer owns major/minor. A/B 0-99, C 0-999.
+  (Python has its own identical scheme in `python/pic0rick/version.yaml`.)
+- **`.github/workflows/firmware.yml`** builds all four variants on push/PR to
+  `main`, uploads them as artifacts, and on **push to main** publishes a GitHub
+  release tagged `fw-v<version>` (body = `changes`). It skips the release if that
+  tag already exists; other branches never release.
 
 ## Gotchas
 
@@ -71,9 +91,11 @@ cd firmware && ./build.sh          # builds BOTH:
   (untracked), the build never read it (no CYW43/Wi-Fi linked). It has been
   **deleted** and `.env` is now in both the root and `firmware/.gitignore`.
   If a `firmware/.env` reappears, it's a local-only secret — do not commit it.
-- Two prebuilt UF2s (`rp2040.uf2`, `rp2350.uf2`) — pick by target board.
-- Version here is `0.1` and there is **no** `status`/`help`/version-check
-  handshake, unlike onboard_dsp. No host-side capture tool lives with it.
+- Two prebuilt UF2s (`rp2040.uf2`, `rp2350.uf2`) — pick by target board. These
+  are the **mux** builds; nomux variants come from CI releases / `dist/`.
+- There is a `version` command now (see Versioning above); still **no**
+  `status`/`help` handshake like onboard_dsp. No host-side capture tool lives
+  with it.
 
 ## Relationship to other firmware
 
@@ -87,3 +109,8 @@ cd firmware && ./build.sh          # builds BOTH:
 - 2026-09-12: First-glance survey and this note created. Removed the untracked
   `firmware/.env` (Wi-Fi creds) and added `.env` to `firmware/.gitignore`. No
   source-code changes made to `firmware/`.
+- 2026-09-13: Added `version` command + `version.yaml`/`version.h.in`; made the
+  MAX14866 mux optional via `-DMUX` (split the DAC out to `max/dac.c` so it is
+  always built); `build.sh` now builds 4 variants into `dist/`; added the
+  `.github/workflows/firmware.yml` build+release workflow. Firmware v0.1.0.
+  Verified all 4 variants build locally.

@@ -1,6 +1,12 @@
 build/
 build2350
 build2040
+build2040-nomux
+build2350-nomux
+dist/
+
+# Generated version header (from version.yaml)
+generated/version.h
 
 # Local secrets (Wi-Fi credentials etc.) — never commit
 .env

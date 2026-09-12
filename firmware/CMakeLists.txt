@@ -38,29 +38,62 @@ project(adc-pulse C CXX ASM)
 # Initialise the Raspberry Pi Pico SDK
 pico_sdk_init()
 
-# Add executable. Default name is the project name, version 0.1
+# ---- Firmware version (single source of truth: version.yaml) ----
+file(READ ${CMAKE_CURRENT_LIST_DIR}/version.yaml _version_yaml)
+string(REGEX MATCH "version:[ \t]*\"?([0-9]+\\.[0-9]+\\.[0-9]+)\"?" _ "${_version_yaml}")
+set(FW_VERSION "${CMAKE_MATCH_1}")
+string(REGEX MATCH "changes:[ \t]*\"([^\"]*)\"" _ "${_version_yaml}")
+set(FW_CHANGES "${CMAKE_MATCH_1}")
+if(NOT FW_VERSION)
+    message(FATAL_ERROR "Could not parse 'version:' from version.yaml")
+endif()
+message(STATUS "pic0rick firmware version: ${FW_VERSION}")
+configure_file(
+    ${CMAKE_CURRENT_LIST_DIR}/version.h.in
+    ${CMAKE_CURRENT_BINARY_DIR}/generated/version.h
+    @ONLY
+)
+
+# ---- MUX (MAX14866 plug-in module board) toggle ----
+# Enable/disable at configure time: -DMUX=ON (default) or -DMUX=OFF.
+option(MUX "Build with MAX14866 HV mux module board support" ON)
+
+# Add executable. Default name is the project name.
 
 add_executable(adc-pulse)
 
 pico_set_program_name(adc-pulse "adc-pulse")
-pico_set_program_version(adc-pulse "0.1")
+pico_set_program_version(adc-pulse "${FW_VERSION}")
 
 # Modify the below lines to enable/disable output over UART/USB
 pico_enable_stdio_uart(adc-pulse 0)
 pico_enable_stdio_usb(adc-pulse 1)
 
 pico_generate_pio_header(adc-pulse ${CMAKE_CURRENT_LIST_DIR}/adc/adc.pio)
+# max14866.pio is the generic SPI-shifter program; the DAC uses it too, so it is
+# always generated regardless of MUX.
 pico_generate_pio_header(adc-pulse ${CMAKE_CURRENT_LIST_DIR}/max/max14866.pio)
 
+# Always-built sources (DAC gain control lives in max/dac.c).
 target_sources(adc-pulse PRIVATE
     ${CMAKE_CURRENT_LIST_DIR}/main.c
     ${CMAKE_CURRENT_LIST_DIR}/adc/adc.c
-    ${CMAKE_CURRENT_LIST_DIR}/max/max14866.c
+    ${CMAKE_CURRENT_LIST_DIR}/max/dac.c
 )
+
+# MUX-only sources + define, included when -DMUX=ON.
+if(MUX)
+    target_sources(adc-pulse PRIVATE ${CMAKE_CURRENT_LIST_DIR}/max/max14866.c)
+    target_compile_definitions(adc-pulse PRIVATE MUX=1)
+    message(STATUS "MUX (MAX14866) support: ENABLED")
+else()
+    message(STATUS "MUX (MAX14866) support: DISABLED")
+endif()
 
 # Add the standard include files to the build
 target_include_directories(adc-pulse PRIVATE
     ${CMAKE_CURRENT_LIST_DIR}
+    ${CMAKE_CURRENT_BINARY_DIR}/generated
 )
 
 target_link_libraries(adc-pulse PRIVATE

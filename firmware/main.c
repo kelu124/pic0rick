@@ -2,7 +2,11 @@
 // INCLUDES
 //--------------------------------------------------------------------------
 #include "adc/adc.h"
+#include "max/dac.h"
+#include "version.h"
+#ifdef MUX
 #include "max/max14866.h"
+#endif
 
 //---------------------------------------------------------------------------
 // GLOBALS
@@ -16,13 +20,30 @@ typedef struct
     command_func_t func;
 } command_t;
 
+//---------------------------------------------------------------------------
+// VERSION COMMAND
+//--------------------------------------------------------------------------
+void version_cmd(const char *args)
+{
+    printf("pic0rick firmware v%s\n", FW_VERSION);
+    printf("changes: %s\n", FW_CHANGES);
+#ifdef MUX
+    printf("mux: enabled (MAX14866)\n");
+#else
+    printf("mux: disabled\n");
+#endif
+}
+
 command_t command_list[] = {
     {"start acq", pulse_adc_trigger},
     {"write dac", dac},
+    {"read", adc},
+    {"version", version_cmd},
+#ifdef MUX
     {"write mux", max14866},
     {"set mux", max14866_set},
     {"clear mux", max14866_clear},
-    {"read", adc},
+#endif
 };
 
 void process_command(char *input)
@@ -112,8 +133,10 @@ int main()
     sleep_ms(100);
     dac_init();
     sleep_ms(100);
+#ifdef MUX
     max14866_init();
     sleep_ms(100);
+#endif
     char input[128];
     while (true)
     {

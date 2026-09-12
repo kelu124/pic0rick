@@ -1,0 +1,11 @@
+# pic0rick Python library version.
+#
+# Format: A.B.C  (major.minor.patch)  -- mirrors the firmware scheme.
+#   A (major)  0-99   -- managed by the maintainer (Luc)
+#   B (minor)  0-99   -- managed by the maintainer (Luc)
+#   C (patch)  0-999  -- bumped by Claude on every change to python/ files
+#
+# `changes` is a short, single-line, double-quoted summary of what changed vs
+# the previous version. Exposed as pic0rick.__changes__.
+version: "0.1.0"
+changes: "First versioned Python library: add version scheme (pic0rick.__version__) and MUX methods (write_mux/set_mux/clear_mux) matching the firmware CLI."
