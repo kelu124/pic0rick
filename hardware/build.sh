@@ -9,12 +9,13 @@
 #
 #   board_dir   Directory holding the .kicad_pcb/.kicad_sch (default: adc).
 #               "all" builds every board in the BOARDS registry below.
-#   group       What to build (default: all):
+#   group       What to build (default: all). The 3D deliverables (STEP + top &
+#               bottom PNG renders) are ALWAYS produced, whatever the group:
 #                 all         everything below
 #                 fab         gerbers, drill, zipped gerbers (no schematic needed)
 #                 production  fab + CPL + BOM (CSV)   [needs a schematic]
 #                 docs        schematic PDF, interactive HTML BOM  [needs a schematic]
-#                 models      STEP + top & bottom 3D renders
+#                 models      STEP + top & bottom 3D renders only
 #
 # Boards without a schematic (e.g. pulser_panel, a panel) automatically fall back
 # to fabrication + 3D only; their assembly CPL/BOM come from the single board / KiKit.
@@ -175,19 +176,22 @@ KIBOT_ARGS=(-D -c "${CONFIG}" -b "${PCB}" -d "${OUT_DIR}")
 # their assembly CPL/BOM come from the single board / KiKit, not from here.
 KIBOT_TARGETS=()
 RUN_KIBOT=1
+# 3D deliverables (STEP + top/bottom PNG renders) are produced for EVERY group by
+# default, so the "step" KiBot target is folded into fab/production/docs below and
+# render_pngs always runs (see the unconditional call further down).
 if [[ -z "${SCH}" ]]; then
     echo ">> No schematic in $(basename "${BOARD_DIR}") — fabrication + 3D only (CPL/BOM/schematic skipped)." >&2
     case "${GROUP}" in
-        all)            KIBOT_TARGETS=(fab step);;
-        production|fab) KIBOT_TARGETS=(fab);;
-        models)         KIBOT_TARGETS=(step);;
-        docs)           RUN_KIBOT=0;;   # nothing KiBot can produce without a schematic
+        all)                 KIBOT_TARGETS=(fab step);;
+        production|fab|docs) KIBOT_TARGETS=(fab step);;
+        models)              KIBOT_TARGETS=(step);;
         *) echo "error: unknown group '${GROUP}' (use fab|production|docs|models|all)" >&2; exit 1;;
     esac
 else
     case "${GROUP}" in
         all) ;;                                        # empty targets => every output
-        fab|production|docs|models) KIBOT_TARGETS=("${GROUP}");;
+        models) KIBOT_TARGETS=(step);;
+        fab|production|docs) KIBOT_TARGETS=("${GROUP}" step);;   # always fold in the 3D STEP
         *) echo "error: unknown group '${GROUP}' (use fab|production|docs|models|all)" >&2; exit 1;;
     esac
 fi
@@ -209,11 +213,9 @@ if [[ ${rc} -ne 0 ]]; then
     echo ">> Completed with warnings (KiBot exit ${rc}); some 3D models may be absent from the STEP." >&2
 fi
 
-# PNG renders belong to the "models" deliverables (and "all").
-if [[ "${GROUP}" == "all" || "${GROUP}" == "models" ]]; then
-    echo
-    render_pngs
-fi
+# Top/bottom 3D PNG renders are produced for every group by default.
+echo
+render_pngs
 
 echo
 echo ">> Done. Artefacts in ${OUT_DIR}"
