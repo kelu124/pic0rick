@@ -76,11 +76,14 @@ firmware sources yet. Verified: default builds unchanged; guard rejects rp2040;
 `libcmsisdsp_p0rk.a`. Note: the CMSIS-DSP shallow clone takes >2 min — CI time
 cost to watch in P6.
 
-**P2 — Land the modules.** Copy into `firmware/dsp/` (new subdir):
-`dsp.[ch]`, `pipeline.[ch]`, `protocol.[ch]`, `acquisition.[ch]` + `.pio`,
-`u4rk.h`, `usb_transport.[ch]`, `usb_descriptors.c`, `tusb_config.h`,
-`pulser.pio`, and the spi1 `dac`. Compile them only under `if(DSP)`. Keep the
-`u4rk_`/`U4RK_` names to minimise churn.
+**P2 — Land the modules. ✅ DONE (fw v0.1.5, 2026-09-13).** Copied all onboard
+sources into `firmware/dsp/` (kept `u4rk_`/`U4RK_` names). Built the USB-free
+compute/hardware set (`dsp`, `pipeline`, `protocol`, `acquisition`, spi1 `dac`)
+as a **`p0rk_dsp` static library** under `if(DSP)` (with `acquisition.pio` +
+`pulser.pio` headers, CMSIS-DSP link). `usb_transport.c`/`usb_descriptors.c`/
+`tusb_config.h` are copied in-tree but **not compiled yet** — they belong with
+the P3 raw-TinyUSB swap (they conflict with the stdio_usb REPL). Verified:
+default builds unchanged; `libp0rk_dsp.a` builds under `-DDSP=ON -DPICO_BOARD=pico2`.
 
 **P3 — Command loop (needs USB decision).** Under `-DDSP`, build the
 raw-TinyUSB main loop (from onboard_dsp `main.c`) instead of the stdio REPL;

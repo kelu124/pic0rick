@@ -7,6 +7,10 @@ finished. Each entry links to its commit log in `docs/claude/commits/`.
 
 ## 2026-09-13
 
+- **P2 — land onboard-DSP modules (fw v0.1.5).** Copied sources to
+  `firmware/dsp/`; built the USB-free set as `p0rk_dsp` static lib under
+  `if(DSP)`. USB transport deferred to P3. Default builds unchanged;
+  `libp0rk_dsp.a` verified. See `commits/2026-09-13-p2-land-dsp-modules.md`.
 - **P1 — `-DDSP` scaffolding + CMSIS-DSP (fw v0.1.4).** pico2-guarded DSP option
   and `cmsisdsp_p0rk` lib; no sources yet, default builds unchanged. Verified
   guard + CMSIS-DSP fetch/build. See `commits/2026-09-13-p1-dsp-scaffolding.md`.

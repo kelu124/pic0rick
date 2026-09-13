@@ -144,3 +144,7 @@ cd firmware && ./build.sh          # builds FOUR variants into firmware/dist/:
 - 2026-09-13: v0.1.4 — **P1**: `-DDSP` option scaffolding (pico2-guarded) +
   CMSIS-DSP `cmsisdsp_p0rk` lib. No firmware sources yet; default builds
   unchanged. Verified guard + CMSIS-DSP fetch/build.
+- 2026-09-13: v0.1.5 — **P2**: landed onboard-DSP modules in `firmware/dsp/`;
+  built the USB-free set as the `p0rk_dsp` static lib (under `if(DSP)`). USB
+  transport files copied but not compiled (P3). Default builds unchanged;
+  `libp0rk_dsp.a` verified.

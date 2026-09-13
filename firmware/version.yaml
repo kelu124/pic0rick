@@ -8,5 +8,5 @@
 # `changes` is a short, single-line, double-quoted summary of what changed vs
 # the previous version. It is embedded in the binary (the `version` CLI command)
 # and used as the GitHub release body by .github/workflows/firmware.yml.
-version: "0.1.4"
-changes: "Add -DDSP build option scaffolding (RP2350/pico2-guarded) that fetches CMSIS-DSP; onboard-DSP firmware sources are wired in a later phase. Default builds unchanged."
+version: "0.1.5"
+changes: "Land the onboard-DSP modules under firmware/dsp/ as the p0rk_dsp static library (compiled only when -DDSP=ON). Not yet wired into the command loop; default builds unchanged."

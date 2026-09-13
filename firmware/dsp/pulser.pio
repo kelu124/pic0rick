@@ -1,0 +1,57 @@
+; A single program is shared by two synchronously started PIO1 state machines.
+;
+; State machine 0 drives GPIO11/12 as {P+, P-}:
+;   0 = idle/damping, 1 = positive, 2 = negative.
+; State machine 1 drives GPIO16/17 as {PDAMP, OE}:
+;   0 = idle, 2 = pulse enabled, 3 = damping enabled.
+;
+; Each state machine receives three pairs of FIFO words:
+;   state1, compensated_ticks1, state2, compensated_ticks2,
+;   state3, compensated_ticks3.
+; Both TX FIFOs are joined to provide the required eight-word depth.
+.program u4rk_pulser
+
+.wrap_target
+    pull block
+    out pins, 2
+    pull block
+    mov x, osr
+first_loop:
+    jmp x-- first_loop
+
+    pull block
+    out pins, 2
+    pull block
+    mov x, osr
+second_loop:
+    jmp x-- second_loop
+
+    pull block
+    out pins, 2
+    pull block
+    mov x, osr
+third_loop:
+    jmp x-- third_loop
+    nop
+    set pins, 0
+.wrap
+
+% c-sdk {
+static inline void u4rk_pulser_program_init(PIO pio, uint sm, uint offset,
+                                            float instruction_hz,
+                                            uint pin_base) {
+    pio_sm_config config = u4rk_pulser_program_get_default_config(offset);
+    pio_gpio_init(pio, pin_base);
+    pio_gpio_init(pio, pin_base + 1u);
+    sm_config_set_out_pins(&config, pin_base, 2);
+    sm_config_set_set_pins(&config, pin_base, 2);
+    sm_config_set_out_shift(&config, true, false, 32);
+    sm_config_set_fifo_join(&config, PIO_FIFO_JOIN_TX);
+    sm_config_set_clkdiv(&config,
+        (float)clock_get_hz(clk_sys) / instruction_hz);
+    pio_sm_set_consecutive_pindirs(pio, sm, pin_base, 2, true);
+    pio_sm_init(pio, sm, offset, &config);
+    pio_sm_set_enabled(pio, sm, false);
+    pio_sm_set_pins_with_mask(pio, sm, 0u, 3u << pin_base);
+}
+%}

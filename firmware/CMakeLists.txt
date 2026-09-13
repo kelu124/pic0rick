@@ -164,6 +164,38 @@ if(DSP)
         -ffunction-sections
         -fdata-sections
     )
+
+    # ---- p0rk_dsp: the onboard-DSP modules (firmware/dsp/) as a static lib ----
+    # P2 lands the USB-free compute/hardware modules. The USB transport
+    # (usb_transport.c / usb_descriptors.c) is wired in P3 together with the
+    # raw-TinyUSB command loop, since it conflicts with the stdio_usb REPL.
+    add_library(p0rk_dsp STATIC
+        ${CMAKE_CURRENT_LIST_DIR}/dsp/dsp.c
+        ${CMAKE_CURRENT_LIST_DIR}/dsp/pipeline.c
+        ${CMAKE_CURRENT_LIST_DIR}/dsp/protocol.c
+        ${CMAKE_CURRENT_LIST_DIR}/dsp/acquisition.c
+        ${CMAKE_CURRENT_LIST_DIR}/dsp/dac.c
+    )
+    pico_generate_pio_header(p0rk_dsp ${CMAKE_CURRENT_LIST_DIR}/dsp/acquisition.pio)
+    pico_generate_pio_header(p0rk_dsp ${CMAKE_CURRENT_LIST_DIR}/dsp/pulser.pio)
+    target_include_directories(p0rk_dsp PUBLIC
+        ${CMAKE_CURRENT_LIST_DIR}/dsp
+    )
+    target_compile_definitions(p0rk_dsp PUBLIC
+        ARM_MATH_CM33
+        DISABLEFLOAT16
+    )
+    target_link_libraries(p0rk_dsp PUBLIC
+        pico_stdlib
+        pico_multicore
+        pico_util
+        hardware_pio
+        hardware_dma
+        hardware_clocks
+        hardware_gpio
+        hardware_spi
+        cmsisdsp_p0rk
+    )
 else()
     message(STATUS "Onboard-DSP feature: disabled")
 endif()
