@@ -85,11 +85,16 @@ as a **`p0rk_dsp` static library** under `if(DSP)` (with `acquisition.pio` +
 the P3 raw-TinyUSB swap (they conflict with the stdio_usb REPL). Verified:
 default builds unchanged; `libp0rk_dsp.a` builds under `-DDSP=ON -DPICO_BOARD=pico2`.
 
-**P3 — Command loop (needs USB decision).** Under `-DDSP`, build the
-raw-TinyUSB main loop (from onboard_dsp `main.c`) instead of the stdio REPL;
-add the `version` command and `#ifdef MUX` mux commands to it. Under no-DSP,
-keep today's stdio `main.c`. Split `main.c` accordingly (e.g. `main_stdio.c` /
-`main_dsp.c`, selected in CMake).
+**P3 — Command loop. ✅ DONE (fw v0.1.6, 2026-09-13).** Added `main_dsp.c` (from
+onboard_dsp `main.c`) selected in CMake under `if(DSP)`: SDK stdio OFF, links
+`p0rk_dsp` + `usb_transport.c`/`usb_descriptors.c` + `tinyusb_device`, adds the
+`version` + `reboot-dfu` commands and, under `-DMUX`, `write/set/clear mux`.
+Non-DSP builds keep `main.c` (stdio) unchanged. Also fixed a missing
+`U4RK_CMSIS_DSP_VERSION` compile define on the exe. **Verified on hardware
+(RP2350A/Pico 2 W):** flashed the DSP+MUX build via reboot-dfu; `version`/`help`/
+`status` return correctly over the raw-TinyUSB CDC and `acq raw` returns the
+64-byte header + 8192-byte payload (8256 B). DSP+noMUX and all 4 default variants
+also build.
 
 **P4 — Reconcile hardware** per the table above (DAC unify decision; pulser
 pending hardware confirm).

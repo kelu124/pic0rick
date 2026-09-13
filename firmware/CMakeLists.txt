@@ -210,45 +210,80 @@ pico_set_program_version(adc-pulse "${FW_VERSION}")
 # Ensure the git hash header is refreshed before adc-pulse compiles.
 add_dependencies(adc-pulse gen_git_version)
 
-# Modify the below lines to enable/disable output over UART/USB
 pico_enable_stdio_uart(adc-pulse 0)
-pico_enable_stdio_usb(adc-pulse 1)
 
-pico_generate_pio_header(adc-pulse ${CMAKE_CURRENT_LIST_DIR}/adc/adc.pio)
-# max14866.pio is the generic SPI-shifter program; the DAC uses it too, so it is
-# always generated regardless of MUX.
-pico_generate_pio_header(adc-pulse ${CMAKE_CURRENT_LIST_DIR}/max/max14866.pio)
-
-# Always-built sources (DAC gain control lives in max/dac.c).
-target_sources(adc-pulse PRIVATE
-    ${CMAKE_CURRENT_LIST_DIR}/main.c
-    ${CMAKE_CURRENT_LIST_DIR}/adc/adc.c
-    ${CMAKE_CURRENT_LIST_DIR}/max/dac.c
-)
-
-# MUX-only sources + define, included when -DMUX=ON.
-if(MUX)
-    target_sources(adc-pulse PRIVATE ${CMAKE_CURRENT_LIST_DIR}/max/max14866.c)
-    target_compile_definitions(adc-pulse PRIVATE MUX=1)
-    message(STATUS "MUX (MAX14866) support: ENABLED")
-else()
-    message(STATUS "MUX (MAX14866) support: DISABLED")
-endif()
-
-# Add the standard include files to the build
+# Common include dirs (firmware root for max/*, and the generated version headers)
 target_include_directories(adc-pulse PRIVATE
     ${CMAKE_CURRENT_LIST_DIR}
     ${CMAKE_CURRENT_BINARY_DIR}/generated
 )
 
-target_link_libraries(adc-pulse PRIVATE
-    pico_stdlib
-    pico_bootrom
-    hardware_pio
-    hardware_dma
-    hardware_clocks
-    hardware_gpio
-    hardware_irq
-)
+if(DSP)
+    # ---- RP2350 DSP build: raw-TinyUSB command loop (main_dsp.c) ----
+    # SDK stdio is OFF; usb_transport/usb_descriptors drive TinyUSB directly so
+    # text + binary frames share one CDC.
+    pico_enable_stdio_usb(adc-pulse 0)
+    target_sources(adc-pulse PRIVATE
+        ${CMAKE_CURRENT_LIST_DIR}/main_dsp.c
+        ${CMAKE_CURRENT_LIST_DIR}/dsp/usb_transport.c
+        ${CMAKE_CURRENT_LIST_DIR}/dsp/usb_descriptors.c
+    )
+    target_include_directories(adc-pulse PRIVATE ${CMAKE_CURRENT_LIST_DIR}/dsp)
+    target_compile_definitions(adc-pulse PRIVATE
+        DSP=1
+        U4RK_CMSIS_DSP_VERSION="1.17.0"
+    )
+    target_link_libraries(adc-pulse PRIVATE
+        pico_stdlib
+        pico_bootrom
+        pico_multicore
+        pico_util
+        hardware_pio
+        hardware_dma
+        hardware_clocks
+        hardware_gpio
+        hardware_spi
+        tinyusb_device
+        p0rk_dsp
+    )
+    # In the DSP build the gain DAC is the spi1 driver inside p0rk_dsp; the PIO
+    # DAC (max/dac.c) and the mainline PIO ADC/pulser (adc/adc.c) are not used.
+    if(MUX)
+        pico_generate_pio_header(adc-pulse ${CMAKE_CURRENT_LIST_DIR}/max/max14866.pio)
+        target_sources(adc-pulse PRIVATE ${CMAKE_CURRENT_LIST_DIR}/max/max14866.c)
+        target_compile_definitions(adc-pulse PRIVATE MUX=1)
+        message(STATUS "MUX (MAX14866) support: ENABLED (DSP build)")
+    else()
+        message(STATUS "MUX (MAX14866) support: DISABLED (DSP build)")
+    endif()
+else()
+    # ---- stdio REPL build (RP2040, or RP2350 without DSP) ----
+    pico_enable_stdio_usb(adc-pulse 1)
+    pico_generate_pio_header(adc-pulse ${CMAKE_CURRENT_LIST_DIR}/adc/adc.pio)
+    # max14866.pio is the generic SPI-shifter; the PIO DAC uses it too, so it is
+    # always generated regardless of MUX.
+    pico_generate_pio_header(adc-pulse ${CMAKE_CURRENT_LIST_DIR}/max/max14866.pio)
+    target_sources(adc-pulse PRIVATE
+        ${CMAKE_CURRENT_LIST_DIR}/main.c
+        ${CMAKE_CURRENT_LIST_DIR}/adc/adc.c
+        ${CMAKE_CURRENT_LIST_DIR}/max/dac.c
+    )
+    if(MUX)
+        target_sources(adc-pulse PRIVATE ${CMAKE_CURRENT_LIST_DIR}/max/max14866.c)
+        target_compile_definitions(adc-pulse PRIVATE MUX=1)
+        message(STATUS "MUX (MAX14866) support: ENABLED")
+    else()
+        message(STATUS "MUX (MAX14866) support: DISABLED")
+    endif()
+    target_link_libraries(adc-pulse PRIVATE
+        pico_stdlib
+        pico_bootrom
+        hardware_pio
+        hardware_dma
+        hardware_clocks
+        hardware_gpio
+        hardware_irq
+    )
+endif()
 
 pico_add_extra_outputs(adc-pulse)

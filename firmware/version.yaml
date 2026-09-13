@@ -8,5 +8,5 @@
 # `changes` is a short, single-line, double-quoted summary of what changed vs
 # the previous version. It is embedded in the binary (the `version` CLI command)
 # and used as the GitHub release body by .github/workflows/firmware.yml.
-version: "0.1.5"
-changes: "Land the onboard-DSP modules under firmware/dsp/ as the p0rk_dsp static library (compiled only when -DDSP=ON). Not yet wired into the command loop; default builds unchanged."
+version: "0.1.6"
+changes: "First runnable DSP build (-DDSP=ON, RP2350): raw-TinyUSB command loop (main_dsp.c) with the onboard-DSP commands (status/help/pulser/pulse config/dac write/dsp/acq/stream/start acq/read) plus version, reboot-dfu and (with -DMUX) write/set/clear mux. Non-DSP stdio builds unchanged."

@@ -7,6 +7,11 @@ finished. Each entry links to its commit log in `docs/claude/commits/`.
 
 ## 2026-09-13
 
+- **P3 — runnable DSP build (fw v0.1.6).** `main_dsp.c` raw-TinyUSB command loop
+  (DSP builds; stdio OFF) with version/reboot-dfu/mux; non-DSP stdio unchanged.
+  Verified on RP2350A hardware (version/help/status + `acq raw` 8256-B frame);
+  DSP+noMUX and default variants build. See
+  `commits/2026-09-13-p3-dsp-command-loop.md`.
 - **P2 — land onboard-DSP modules (fw v0.1.5).** Copied sources to
   `firmware/dsp/`; built the USB-free set as `p0rk_dsp` static lib under
   `if(DSP)`. USB transport deferred to P3. Default builds unchanged;

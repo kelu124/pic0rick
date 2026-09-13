@@ -63,6 +63,22 @@ needed between flashes:
 - `reboot-dfu` reliably re-entered BOOTSEL; reflashing from `/media/kelu/RP2350`
   restored the running firmware.
 
+## DSP build (`-DDSP=ON`, RP2350) specifics
+
+The DSP firmware (`main_dsp.c`) uses **raw TinyUSB** (SDK stdio off), but still
+enumerates as a CDC serial port at `/dev/ttyACM0`. Differences from the stdio
+REPL:
+- Control replies are `OK …` / `ERR <code> …` lines; there is no `run>` prompt.
+- Commands: `status`, `help`, `version`, `reboot-dfu`, `pulser arm|disarm`,
+  `pulse config …`, `dac write <0..1023>`, `dsp scale|selftest`,
+  `acq raw|envelope|alaw`, `stream start|stop`, `write/set/clear mux` (MUX
+  builds), legacy `start acq` / `read`.
+- Data is returned as 64-byte-header binary frames (raw=type1 uint16,
+  envelope=type2 f32, alaw=type3 u8) — e.g. `acq raw` → `OK capture started …`
+  then a 64-byte header + 8192-byte payload (8256 B total for 4096 samples).
+- No text is emitted while a stream is in flight.
+- Verified 2026-09-13 on the RP2350A: version/help/status + `acq raw` frame.
+
 ## Gotchas
 
 - The `-dirty` in the `build:` line just means the uf2 was built before
