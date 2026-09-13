@@ -63,9 +63,10 @@ Sample count differs by build (8000 vs 4096) — keep per-build constants.
 
 ## Phases (incremental; each ends buildable + committed with a commit log)
 
-**P0 — SDK 2.3.0.** Bump `firmware/CMakeLists.txt` sdk/toolchain/picotool to
-2.3.0/15_2_Rel1/2.3.0. Rebuild all 4 current variants; confirm still green.
-Firmware patch bump.
+**P0 — SDK 2.3.0. ✅ DONE (fw v0.1.3, 2026-09-13).** Bumped
+`firmware/CMakeLists.txt` sdk/picotool 2.2.0→2.3.0 (toolchain kept 14_2_Rel1 —
+the installed one; onboard_dsp's 15_2 not required) and CI workflow pico-sdk ref
+→2.3.0. All 4 variants build; rp2350 flashed + confirmed running on hardware.
 
 **P1 — DSP option scaffolding.** Add `option(DSP ... OFF)`. Guard:
 `if(DSP AND NOT PICO_BOARD STREQUAL "pico2") -> FATAL_ERROR`. Add the CMSIS-DSP

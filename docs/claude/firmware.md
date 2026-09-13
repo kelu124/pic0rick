@@ -61,9 +61,10 @@ cd firmware && ./build.sh          # builds FOUR variants into firmware/dist/:
 #   rp2040-mux, rp2040-nomux, rp2350-mux, rp2350-nomux
 #   + copies the two mux builds to rp2040.uf2 / rp2350.uf2 (historical names)
 ```
-- SDK **2.2.0**, toolchain **14_2_Rel1** (per CMakeLists; note onboard_dsp uses
-  the newer SDK 2.3.0). SDK resolved via the pico-vscode cmake include, else
-  `PICO_SDK_PATH` (that's what CI uses).
+- SDK **2.3.0**, toolchain **14_2_Rel1** (per CMakeLists; bumped from 2.2.0 in
+  fw v0.1.3 on the unify branch — needed for the onboard-DSP/CMSIS-DSP merge).
+  SDK resolved via the pico-vscode cmake include, else `PICO_SDK_PATH` (that's
+  what CI uses; the workflow checks out pico-sdk `2.3.0`).
 - `PICO_BOARD` defaults to `pico` (RP2040) if not passed.
 - **`-DMUX=ON` (default) / `-DMUX=OFF`** toggles the MAX14866 mux module. It
   gates `max/max14866.c` in/out of the build and defines/undefines `MUX`, which
@@ -133,3 +134,7 @@ cd firmware && ./build.sh          # builds FOUR variants into firmware/dist/:
   `pico_bootrom`). **Flashed + tested on real RP2350A/Pico 2 W hardware**:
   `version` and the flash→run→`reboot-dfu`→BOOTSEL loop confirmed. See
   `hardware-testing.md`. (On branch `feature/unify-firmware-dsp`.)
+- 2026-09-13: v0.1.3 — **P0 of the unify plan**: SDK 2.2.0→2.3.0 (CMakeLists +
+  CI workflow ref). All 4 variants build; flashed rp2350 to hardware via the
+  reboot-dfu loop and confirmed v0.1.3 runs. Toolchain kept at 14_2_Rel1 (the
+  one installed; onboard_dsp nominally used 15_2 but 14_2 builds SDK 2.3.0 fine).

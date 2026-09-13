@@ -7,6 +7,9 @@ finished. Each entry links to its commit log in `docs/claude/commits/`.
 
 ## 2026-09-13
 
+- **P0 — SDK bump to 2.3.0 (fw v0.1.3).** CMakeLists + CI workflow ref; all 4
+  variants build; rp2350 flashed + confirmed on hardware. First phase of the
+  onboard-DSP unification. See `commits/2026-09-13-p0-sdk-2.3.0.md`.
 - **`reboot-dfu` command + hardware test (fw v0.1.2).** Added `reboot-dfu`
   (reset_usb_boot → BOOTSEL). Flashed and verified on a real RP2350A/Pico 2 W:
   `version` + the flash→run→`reboot-dfu`→BOOTSEL loop. New `hardware-testing.md`.
