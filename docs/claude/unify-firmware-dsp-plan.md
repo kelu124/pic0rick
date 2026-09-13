@@ -105,9 +105,15 @@ locations (or fold into `firmware.md`).
 
 ---
 
-## Open items to confirm before starting
-1. **USB model: Design A** (adopt raw-TinyUSB on the DSP build) — confirm.
-2. **DAC:** unify RP2040 onto spi1 too, or leave RP2040 on the PIO DAC?
-3. **Pulser pin map:** which pins do the real RP2040 vs RP2350 boards wire? (blocks P4 pulser merge)
-4. **Version handshake:** replace onboard_dsp's `EXPECTED_FIRMWARE == "1.6"` gate
-   with the `version.yaml` A.B.C scheme (proposed) — confirm.
+## Decisions (locked 2026-09-13)
+1. **USB model: Design A** — DSP build adopts onboard_dsp's raw-TinyUSB transport
+   + CLI loop; RP2040 keeps SDK stdio. ✅
+2. **DAC: spi1 on the DSP build, PIO DAC unchanged on RP2040.** ✅ (no RP2040
+   behaviour change; PIO DAC + `max14866.pio` shifter stay for the non-DSP path.)
+
+## Still needed (later phases, not blocking P0–P3)
+3. **Pulser pin map:** which pins the real RP2040 vs RP2350 boards wire — blocks
+   the P4 pulser merge. Until then each build keeps its own pulser.
+4. **Version handshake:** intend to replace onboard_dsp's
+   `EXPECTED_FIRMWARE == "1.6"` gate with the `version.yaml` A.B.C scheme in P5 —
+   confirm when we get there.
