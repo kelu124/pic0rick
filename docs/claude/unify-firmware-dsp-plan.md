@@ -134,7 +134,25 @@ TODO). Updated all references (CLAUDE.md, docs/claude notes, python/Readme,
 dsp.py) and rewrote `onboard-dsp-firmware.md` as a pointer. `check-links`: no
 genuine local breaks.
 
-**P8 — Docs + versions.** Update `firmware.md`, README, DONE/commit logs, memory.
+**P8 — Docs + versions. ✅ DONE (2026-09-13).** Root `README.md` updated
+(building section, `-DDSP`/`-DMUX`, `version`/`reboot-dfu` commands, a DSP-build
+section pointing at `pic0rick.dsp` + `docs/dsp_output_formats.md`). `firmware.md`,
+`python-host-tools.md`, `CLAUDE.md`, DONE/commit logs and memory kept current
+throughout P0–P7.
+
+---
+
+## ✅ Unification complete (2026-09-13)
+
+All phases P0–P8 done on `feature/unify-firmware-dsp` (pushed). One firmware
+source tree (`firmware/`) with `-DMUX` and `-DDSP` build options; shared drivers
+in `firmware/hw/`; DSP feature set in `firmware/dsp/`; one host stack in
+`python/` (`pic0rick.dsp`); `experiments/onboard_dsp/` removed. Firmware at
+v0.1.9, python at v0.1.3. Verified on RP2350A hardware at each phase.
+
+**Not merged to main** — awaiting the maintainer's PR/merge (merging cuts a
+GitHub release fw-v0.1.9 via CI). Open follow-ups in `TODO.md`: DSP test
+guide + example notebook; optional pulser scope validation; optional capture CLI.
 
 ---
 

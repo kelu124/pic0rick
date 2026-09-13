@@ -7,6 +7,10 @@ finished. Each entry links to its commit log in `docs/claude/commits/`.
 
 ## 2026-09-13
 
+- **P8 — docs consolidation; unification complete.** README building/DSP
+  sections + command table; plan marked done (P0–P8). Firmware v0.1.9, python
+  v0.1.3, on `feature/unify-firmware-dsp` (not merged). See
+  `commits/2026-09-13-p8-docs.md`.
 - **P7 — retire experiments/onboard_dsp (py v0.1.3).** Removed `experiments/`;
   kept the format spec as `docs/dsp_output_formats.md`; fixed all references.
   See `commits/2026-09-13-p7-retire-onboard-dsp.md`.
