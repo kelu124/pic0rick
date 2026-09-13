@@ -8,5 +8,5 @@
 # `changes` is a short, single-line, double-quoted summary of what changed vs
 # the previous version. It is embedded in the binary (the `version` CLI command)
 # and used as the GitHub release body by .github/workflows/firmware.yml.
-version: "0.1.6"
-changes: "First runnable DSP build (-DDSP=ON, RP2350): raw-TinyUSB command loop (main_dsp.c) with the onboard-DSP commands (status/help/pulser/pulse config/dac write/dsp/acq/stream/start acq/read) plus version, reboot-dfu and (with -DMUX) write/set/clear mux. Non-DSP stdio builds unchanged."
+version: "0.1.7"
+changes: "Two-length acquisition: read_raw = 8000-sample raw ADC (no FFT), read_fft = 4096-sample Hilbert envelope. Sample count is now per-capture (threaded through acquisition/pipeline); frames self-describe via the header sample_count."

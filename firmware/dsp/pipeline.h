@@ -21,7 +21,10 @@ bool u4rk_pipeline_processing_idle(void);
 void u4rk_pipeline_note_processing_drop(void);
 void u4rk_pipeline_note_usb_drop(void);
 uint32_t u4rk_pipeline_dropped_frames(void);
-bool u4rk_pipeline_copy_latest_raw(uint16_t destination[U4RK_SAMPLE_COUNT]);
+/* Copies the most recent raw capture into destination and returns its sample
+ * count (0 if none yet). destination must hold U4RK_MAX_SAMPLE_COUNT samples. */
+uint32_t u4rk_pipeline_copy_latest_raw(
+    uint16_t destination[U4RK_MAX_SAMPLE_COUNT]);
 void u4rk_pipeline_get_metrics(u4rk_dsp_metrics_t *metrics);
 
 #endif

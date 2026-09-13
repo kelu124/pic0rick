@@ -5,10 +5,18 @@
 #include <stddef.h>
 #include <stdint.h>
 
-#define U4RK_SAMPLE_COUNT             4096u
+/* Sample counts are mode-dependent, not build-dependent:
+ *   - FFT/envelope path (read_fft) is fixed at 4096, the max power-of-two the
+ *     CMSIS arm_rfft_fast_f32 supports.
+ *   - Raw path (read_raw) captures 8000 (matches the historical mainline depth).
+ * Buffers are sized to U4RK_MAX_SAMPLE_COUNT. */
+#define U4RK_SAMPLE_COUNT             4096u   /* FFT/envelope length */
+#define U4RK_RAW_SAMPLE_COUNT         8000u   /* raw-only length */
+#define U4RK_MAX_SAMPLE_COUNT         U4RK_RAW_SAMPLE_COUNT
 #define U4RK_SAMPLE_RATE_HZ           60000000u
 #define U4RK_PROTOCOL_VERSION         1u
 #define U4RK_HEADER_SIZE              64u
+/* Largest payload across modes: 4096 floats (16384 B) > 8000 u16 (16000 B). */
 #define U4RK_MAX_PAYLOAD_SIZE         (U4RK_SAMPLE_COUNT * sizeof(float))
 #define U4RK_MAX_FRAME_SIZE           (U4RK_HEADER_SIZE + U4RK_MAX_PAYLOAD_SIZE)
 #define U4RK_RAW_BUFFER_COUNT         2u
@@ -67,6 +75,7 @@ typedef struct {
     uint32_t sequence;
     /* Internal USB-session tag; it is not serialized in the wire header. */
     uint32_t session_id;
+    uint32_t sample_count;   /* captured length: 8000 raw, 4096 fft/envelope */
     uint32_t sample_rate_hz;
     uint64_t capture_timestamp_us;
     float alaw_reference;

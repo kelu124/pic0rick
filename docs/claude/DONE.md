@@ -7,6 +7,10 @@ finished. Each entry links to its commit log in `docs/claude/commits/`.
 
 ## 2026-09-13
 
+- **P4a — two-length acquisition (fw v0.1.7).** `read_raw` (8000, raw) /
+  `read_fft` (4096, envelope); per-job sample_count threaded through
+  acquisition/pipeline/dsp. Verified frame sizes on RP2350A hardware. See
+  `commits/2026-09-13-p4a-two-length-reads.md`.
 - **P3 — runnable DSP build (fw v0.1.6).** `main_dsp.c` raw-TinyUSB command loop
   (DSP builds; stdio OFF) with version/reboot-dfu/mux; non-DSP stdio unchanged.
   Verified on RP2350A hardware (version/help/status + `acq raw` 8256-B frame);

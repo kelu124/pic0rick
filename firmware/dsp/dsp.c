@@ -49,14 +49,15 @@ bool u4rk_dsp_init(void) {
     return true;
 }
 
-float u4rk_dsp_extract(const uint16_t *dma_samples, uint16_t *raw_out) {
+float u4rk_dsp_extract(const uint16_t *dma_samples, uint16_t *raw_out,
+                       uint32_t sample_count) {
     uint32_t sum = 0;
-    for (uint32_t i = 0; i < U4RK_SAMPLE_COUNT; ++i) {
+    for (uint32_t i = 0; i < sample_count; ++i) {
         uint16_t value = (uint16_t)((dma_samples[i] >> 1) & 0x03ffu);
         raw_out[i] = value;
         sum += value;
     }
-    return (float)sum / (float)U4RK_SAMPLE_COUNT;
+    return sample_count ? (float)sum / (float)sample_count : 0.0f;
 }
 
 void u4rk_dsp_envelope(const uint16_t *dma_samples, uint16_t *raw_out,
@@ -67,7 +68,7 @@ void u4rk_dsp_envelope(const uint16_t *dma_samples, uint16_t *raw_out,
     uint64_t total_started = time_us_64();
     uint64_t stage_started = total_started;
 
-    float mean = u4rk_dsp_extract(dma_samples, raw_out);
+    float mean = u4rk_dsp_extract(dma_samples, raw_out, U4RK_SAMPLE_COUNT);
     for (uint32_t i = 0; i < U4RK_SAMPLE_COUNT; ++i) {
         rfft_buffer[i] = (float32_t)raw_out[i] - mean;
     }

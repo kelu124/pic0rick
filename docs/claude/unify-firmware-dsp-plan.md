@@ -96,8 +96,20 @@ Non-DSP builds keep `main.c` (stdio) unchanged. Also fixed a missing
 64-byte header + 8192-byte payload (8256 B). DSP+noMUX and all 4 default variants
 also build.
 
-**P4 — Reconcile hardware** per the table above (DAC unify decision; pulser
-pending hardware confirm).
+**P4 — Reconcile hardware.** Decisions (2026-09-13):
+- **DAC:** unify both builds on the spi1 `u4rk_dac` (bit-identical to the PIO DAC:
+  `0x3000|(value<<2)`, same pins 13/14/15). PIO DAC (`max/dac.c`) retired.
+- **Pulser pins already match** (11/12/16/17) across both firmwares.
+- **Two-length acquisition (user design):** sample count is **mode-dependent**,
+  not build-dependent, because the 4096 cap is only the CMSIS `arm_rfft_fast_f32`
+  limit (max power-of-two = 4096), not memory/ADC.
+  - `read_raw` → **8000** samples, raw ADC, no FFT (both builds).
+  - `read_fft` → **4096** samples, envelope/FFT (DSP build only).
+  Frame header already carries `sample_count`; max payload unchanged (4096 floats
+  = 16384 B ≥ 8000×u16 = 16000 B). Threaded a per-job `sample_count` through
+  acquisition/pipeline/dsp; raw buffers sized to 8000.
+- **stdio/RP2040 build:** uses the shared acquisition+pulser+dac in raw-8000 mode
+  (one implementation).
 
 **P5 — Host + version.** Fold `experiments/onboard_dsp/tools/pic0rick_capture.py`
 into `python/pic0rick/` (frame/CRC/status parser); reconcile the

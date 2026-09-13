@@ -4,7 +4,8 @@
 #include "u4rk.h"
 
 bool u4rk_dsp_init(void);
-float u4rk_dsp_extract(const uint16_t *dma_samples, uint16_t *raw_out);
+float u4rk_dsp_extract(const uint16_t *dma_samples, uint16_t *raw_out,
+                       uint32_t sample_count);
 void u4rk_dsp_envelope(const uint16_t *dma_samples, uint16_t *raw_out,
                        float reference, bool make_alaw,
                        float **envelope_out, uint8_t **alaw_out,

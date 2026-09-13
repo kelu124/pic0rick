@@ -168,8 +168,9 @@ static void queue_pulse(void) {
     queue_state(pulser_gate_sm, 2u, last_ticks);  /* OE */
 }
 
-bool u4rk_capture_start(uint16_t *destination) {
-    if (capture_active || destination == NULL) {
+bool u4rk_capture_start(uint16_t *destination, uint32_t sample_count) {
+    if (capture_active || destination == NULL || sample_count == 0u ||
+        sample_count > U4RK_MAX_SAMPLE_COUNT) {
         return false;
     }
 
@@ -178,14 +179,14 @@ bool u4rk_capture_start(uint16_t *destination) {
     pio_sm_restart(adc_pio, adc_sm);
     pio_sm_exec(adc_pio, adc_sm, pio_encode_jmp(adc_offset));
     force_pulser_idle();
-    memset(destination, 0, U4RK_SAMPLE_COUNT * sizeof(*destination));
+    memset(destination, 0, sample_count * sizeof(*destination));
 
     dma_channel_configure(
         dma_channel, &dma_config, destination,
-        &adc_pio->rxf[adc_sm], U4RK_SAMPLE_COUNT, false);
+        &adc_pio->rxf[adc_sm], sample_count, false);
 
-    /* x-- executes x+1 iterations, hence N-1 for exactly 4096 samples. */
-    pio_sm_put(adc_pio, adc_sm, U4RK_SAMPLE_COUNT - 1u);
+    /* x-- executes x+1 iterations, hence N-1 for exactly sample_count samples. */
+    pio_sm_put(adc_pio, adc_sm, sample_count - 1u);
     if (pulser_armed) {
         queue_pulse();
     }

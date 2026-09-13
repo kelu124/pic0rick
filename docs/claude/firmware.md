@@ -148,6 +148,9 @@ cd firmware && ./build.sh          # builds FOUR variants into firmware/dist/:
   built the USB-free set as the `p0rk_dsp` static lib (under `if(DSP)`). USB
   transport files copied but not compiled (P3). Default builds unchanged;
   `libp0rk_dsp.a` verified.
+- 2026-09-13: v0.1.7 — **P4a**: two-length acquisition — `read_raw` (8000 raw)
+  / `read_fft` (4096 envelope); per-job sample_count threaded through
+  acquisition/pipeline/dsp. Verified frame sizes on hardware.
 - 2026-09-13: v0.1.6 — **P3**: first runnable DSP build. `main_dsp.c` (raw
   TinyUSB command loop, selected under `if(DSP)`; stdio OFF) links `p0rk_dsp` +
   `usb_transport`/`usb_descriptors`; adds `version`/`reboot-dfu`/`write-set-clear

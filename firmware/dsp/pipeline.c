@@ -15,10 +15,11 @@ typedef struct {
     uint8_t bytes[U4RK_MAX_FRAME_SIZE];
 } output_slot_t;
 
-static uint16_t raw_buffers[U4RK_RAW_BUFFER_COUNT][U4RK_SAMPLE_COUNT]
+static uint16_t raw_buffers[U4RK_RAW_BUFFER_COUNT][U4RK_MAX_SAMPLE_COUNT]
     __attribute__((aligned(16)));
-static uint16_t latest_raw[U4RK_SAMPLE_COUNT] __attribute__((aligned(16)));
-static uint16_t raw_work[U4RK_SAMPLE_COUNT] __attribute__((aligned(16)));
+static uint16_t latest_raw[U4RK_MAX_SAMPLE_COUNT] __attribute__((aligned(16)));
+static uint16_t raw_work[U4RK_MAX_SAMPLE_COUNT] __attribute__((aligned(16)));
+static uint32_t latest_count;
 static output_slot_t output_slots[U4RK_OUTPUT_SLOT_COUNT]
     __attribute__((aligned(16)));
 
@@ -46,6 +47,7 @@ bool u4rk_pipeline_init(void) {
     queue_init(&completion_queue, sizeof(uint32_t), U4RK_RAW_BUFFER_COUNT);
     critical_section_init(&shared_lock);
     latest_valid = false;
+    latest_count = 0;
     processing_drops = 0;
     usb_drops = 0;
     memset(&latest_metrics, 0, sizeof(latest_metrics));
@@ -93,10 +95,11 @@ uint32_t u4rk_pipeline_dropped_frames(void) {
            __atomic_load_n(&usb_drops, __ATOMIC_RELAXED);
 }
 
-static void copy_latest(const uint16_t *source,
+static void copy_latest(const uint16_t *source, uint32_t count,
                         const u4rk_dsp_metrics_t *metrics) {
     critical_section_enter_blocking(&shared_lock);
-    memcpy(latest_raw, source, sizeof(latest_raw));
+    memcpy(latest_raw, source, count * sizeof(uint16_t));
+    latest_count = count;
     if (metrics != NULL) {
         latest_metrics = *metrics;
     }
@@ -104,16 +107,16 @@ static void copy_latest(const uint16_t *source,
     critical_section_exit(&shared_lock);
 }
 
-bool u4rk_pipeline_copy_latest_raw(
-        uint16_t destination[U4RK_SAMPLE_COUNT]) {
-    bool valid;
+uint32_t u4rk_pipeline_copy_latest_raw(
+        uint16_t destination[U4RK_MAX_SAMPLE_COUNT]) {
+    uint32_t count = 0;
     critical_section_enter_blocking(&shared_lock);
-    valid = latest_valid;
-    if (valid) {
-        memcpy(destination, latest_raw, sizeof(latest_raw));
+    if (latest_valid) {
+        count = latest_count;
+        memcpy(destination, latest_raw, count * sizeof(uint16_t));
     }
     critical_section_exit(&shared_lock);
-    return valid;
+    return count;
 }
 
 void u4rk_pipeline_get_metrics(u4rk_dsp_metrics_t *metrics) {
@@ -152,14 +155,14 @@ bool u4rk_pipeline_processing_idle(void) {
            queue_is_empty(&job_queue);
 }
 
-static uint32_t payload_size_for(uint8_t payload_type) {
+static uint32_t payload_size_for(uint8_t payload_type, uint32_t sample_count) {
     switch ((u4rk_payload_type_t)payload_type) {
         case U4RK_PAYLOAD_RAW:
-            return U4RK_SAMPLE_COUNT * sizeof(uint16_t);
+            return sample_count * sizeof(uint16_t);
         case U4RK_PAYLOAD_ENVELOPE:
-            return U4RK_SAMPLE_COUNT * sizeof(float);
+            return sample_count * sizeof(float);
         case U4RK_PAYLOAD_ALAW:
-            return U4RK_SAMPLE_COUNT;
+            return sample_count;
         default:
             return 0;
     }
@@ -169,9 +172,9 @@ static void process_job(const u4rk_capture_job_t *job) {
     if (job->payload_type == U4RK_PAYLOAD_NONE) {
         u4rk_dsp_metrics_t metrics;
         memset(&metrics, 0, sizeof(metrics));
-        metrics.dc_mean =
-            u4rk_dsp_extract(raw_buffers[job->raw_index], raw_work);
-        copy_latest(raw_work, &metrics);
+        metrics.dc_mean = u4rk_dsp_extract(
+            raw_buffers[job->raw_index], raw_work, job->sample_count);
+        copy_latest(raw_work, job->sample_count, &metrics);
         u4rk_pipeline_release_raw(job->raw_index);
         queue_try_add(&completion_queue, &job->sequence);
         return;
@@ -193,18 +196,19 @@ static void process_job(const u4rk_capture_job_t *job) {
     bool saturated = false;
 
     if (job->payload_type == U4RK_PAYLOAD_RAW) {
-        metrics.dc_mean =
-            u4rk_dsp_extract(raw_buffers[job->raw_index], raw_work);
-        for (uint32_t i = 0; i < U4RK_SAMPLE_COUNT; ++i) {
+        metrics.dc_mean = u4rk_dsp_extract(
+            raw_buffers[job->raw_index], raw_work, job->sample_count);
+        for (uint32_t i = 0; i < job->sample_count; ++i) {
             store_u16_le(payload + 2u * i, raw_work[i]);
         }
-        copy_latest(raw_work, &metrics);
+        copy_latest(raw_work, job->sample_count, &metrics);
     } else {
+        /* Envelope / A-law are always the fixed FFT length. */
         u4rk_dsp_envelope(
             raw_buffers[job->raw_index], raw_work, job->alaw_reference,
             job->payload_type == U4RK_PAYLOAD_ALAW,
             &envelope, &alaw, &saturated, &metrics);
-        copy_latest(raw_work, &metrics);
+        copy_latest(raw_work, U4RK_SAMPLE_COUNT, &metrics);
         if (job->payload_type == U4RK_PAYLOAD_ENVELOPE) {
             memcpy(payload, envelope, U4RK_SAMPLE_COUNT * sizeof(float));
         } else {
@@ -212,7 +216,8 @@ static void process_job(const u4rk_capture_job_t *job) {
         }
     }
 
-    uint32_t payload_size = payload_size_for(job->payload_type);
+    uint32_t payload_size =
+        payload_size_for(job->payload_type, job->sample_count);
     uint16_t flags = job->flags;
     uint32_t processing_drop_count =
         __atomic_load_n(&processing_drops, __ATOMIC_RELAXED);
@@ -232,7 +237,7 @@ static void process_job(const u4rk_capture_job_t *job) {
         .payload_type = job->payload_type,
         .flags = flags,
         .sequence = job->sequence,
-        .sample_count = U4RK_SAMPLE_COUNT,
+        .sample_count = job->sample_count,
         .sample_rate_hz = job->sample_rate_hz,
         .payload_bytes = payload_size,
         .capture_timestamp_us = job->capture_timestamp_us,

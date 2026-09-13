@@ -64,7 +64,7 @@ static u4rk_payload_type_t selftest_type;
 static uint32_t usb_session_id = 1u;
 static bool usb_was_mounted;
 
-static uint16_t legacy_read_buffer[U4RK_SAMPLE_COUNT];
+static uint16_t legacy_read_buffer[U4RK_MAX_SAMPLE_COUNT];
 
 static bool send_formatted(const char *prefix, const char *format, va_list args) {
     int used = snprintf(response_buffer, sizeof(response_buffer), "%s", prefix);
@@ -183,6 +183,13 @@ static bool operation_busy(void) {
            !u4rk_pipeline_processing_idle();
 }
 
+/* Raw captures the long window; envelope/A-law use the fixed FFT length. */
+static uint32_t sample_count_for(u4rk_payload_type_t type) {
+    return (type == U4RK_PAYLOAD_ENVELOPE || type == U4RK_PAYLOAD_ALAW)
+               ? U4RK_SAMPLE_COUNT
+               : U4RK_RAW_SAMPLE_COUNT;
+}
+
 static bool begin_capture(u4rk_payload_type_t type, uint16_t extra_flags) {
     uint16_t *raw_buffer;
     uint8_t raw_index;
@@ -194,18 +201,20 @@ static bool begin_capture(u4rk_payload_type_t type, uint16_t extra_flags) {
     if (u4rk_pulser_is_armed()) {
         flags |= U4RK_FLAG_PULSER_ARMED;
     }
+    uint32_t count = sample_count_for(type);
     capture_job = (u4rk_capture_job_t){
         .raw_index = raw_index,
         .payload_type = (uint8_t)type,
         .flags = flags,
         .sequence = next_sequence++,
         .session_id = usb_session_id,
+        .sample_count = count,
         .sample_rate_hz = U4RK_SAMPLE_RATE_HZ,
         .capture_timestamp_us = time_us_64(),
         .alaw_reference = alaw_reference,
         .pulse = u4rk_pulser_get_config(),
     };
-    if (!u4rk_capture_start(raw_buffer)) {
+    if (!u4rk_capture_start(raw_buffer, count)) {
         u4rk_pipeline_release_raw(raw_index);
         return false;
     }
@@ -367,6 +376,7 @@ static void schedule_selftest(void) {
             ((uint16_t)selftest_case << U4RK_FLAG_SELFTEST_CASE_SHIFT)),
         .sequence = next_sequence++,
         .session_id = usb_session_id,
+        .sample_count = U4RK_SAMPLE_COUNT,
         .sample_rate_hz = U4RK_SAMPLE_RATE_HZ,
         .capture_timestamp_us = selftest_case,
         .alaw_reference = reference,
@@ -423,7 +433,7 @@ static void send_help(void) {
         "pulse config <negative_ns> <damp_ns> <positive_ns> "
         "<neg-first|pos-first>|dac write <0..1023>|"
         "dsp scale <reference>|dsp selftest|"
-        "acq <raw|envelope|alaw>|"
+        "acq <raw|envelope|alaw>|read_raw|read_fft|"
         "stream start <raw|envelope|alaw> <rate_hz>|stream stop|"
 #ifdef MUX
         "write mux <hex>|set mux|clear mux|"
@@ -461,26 +471,29 @@ static void send_status(void) {
 }
 
 static void legacy_read(void) {
-    if (!u4rk_pipeline_copy_latest_raw(legacy_read_buffer)) {
+    uint32_t sample_count = u4rk_pipeline_copy_latest_raw(legacy_read_buffer);
+    if (sample_count == 0u) {
         send_error("NO_DATA", "no completed acquisition");
         return;
     }
-    static const char prefix[] = "OK raw-hex 4096\r\n";
-    if (!u4rk_usb_write_blocking(prefix, sizeof(prefix) - 1u,
-                                 U4RK_CONTROL_TIMEOUT_MS)) {
+    char prefix[32];
+    int plen = snprintf(prefix, sizeof(prefix), "OK raw-hex %u\r\n",
+                        (unsigned)sample_count);
+    if (plen < 0 || !u4rk_usb_write_blocking(prefix, (size_t)plen,
+                                             U4RK_CONTROL_TIMEOUT_MS)) {
         return;
     }
     char chunk[192];
     size_t used = 0;
-    for (uint32_t i = 0; i < U4RK_SAMPLE_COUNT; ++i) {
+    for (uint32_t i = 0; i < sample_count; ++i) {
         int count = snprintf(chunk + used, sizeof(chunk) - used, "%03X%s",
                              legacy_read_buffer[i],
-                             i + 1u == U4RK_SAMPLE_COUNT ? "\r\n" : ",");
+                             i + 1u == sample_count ? "\r\n" : ",");
         if (count < 0) {
             return;
         }
         used += (size_t)count;
-        if (used > sizeof(chunk) - 8u || i + 1u == U4RK_SAMPLE_COUNT) {
+        if (used > sizeof(chunk) - 8u || i + 1u == sample_count) {
             if (!u4rk_usb_write_blocking(chunk, used,
                                          U4RK_CONTROL_TIMEOUT_MS)) {
                 return;
@@ -683,6 +696,32 @@ static void process_command(char *line) {
             send_error("BUSY", "no acquisition buffer");
         } else {
             send_ok("capture started type=%s", second);
+        }
+        return;
+    }
+
+    /* read_raw: one-shot 8000-sample raw ADC capture (no FFT). */
+    if (strcmp(first, "read_raw") == 0 && second == NULL) {
+        if (operation_busy()) {
+            send_error("BUSY", "operation in progress");
+        } else if (!begin_capture(U4RK_PAYLOAD_RAW, 0)) {
+            send_error("BUSY", "no acquisition buffer");
+        } else {
+            send_ok("capture started type=raw samples=%u",
+                    (unsigned)U4RK_RAW_SAMPLE_COUNT);
+        }
+        return;
+    }
+
+    /* read_fft: one-shot 4096-sample Hilbert-envelope capture. */
+    if (strcmp(first, "read_fft") == 0 && second == NULL) {
+        if (operation_busy()) {
+            send_error("BUSY", "operation in progress");
+        } else if (!begin_capture(U4RK_PAYLOAD_ENVELOPE, 0)) {
+            send_error("BUSY", "no acquisition buffer");
+        } else {
+            send_ok("capture started type=envelope samples=%u",
+                    (unsigned)U4RK_SAMPLE_COUNT);
         }
         return;
     }
