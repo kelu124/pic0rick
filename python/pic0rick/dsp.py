@@ -226,3 +226,42 @@ def parse_status(line: str) -> dict:
         else:
             out[key] = value
     return out
+
+
+def describe_status(status) -> str:
+    """Human-readable multi-line summary of a status line or parsed dict,
+    including the per-stage DSP microsecond times."""
+    s = parse_status(status) if isinstance(status, str) else dict(status)
+    rows = ["pic0rick status"]
+
+    def add(label, value):
+        rows.append(f"  {label:<16} {value}")
+
+    add("board/package", f"{s.get('board', '?')} / {s.get('package', '?')}")
+    add("firmware", s.get("firmware", "?"))
+    add("dsp backend", s.get("dsp_backend", "?"))
+    add("cmsis-dsp", s.get("cmsis", "?"))
+    add("acquisition",
+        f"{s.get('samples', '?')} samples @ {s.get('sample_rate', 0) / 1e6:g} MS/s")
+    add("pulser", s.get("pulser", "?"))
+    pulse = s.get("pulse")
+    if isinstance(pulse, dict):
+        add("pulse (ns)", f"neg {pulse['negative_ns']} / damp {pulse['damp_ns']} "
+                          f"/ pos {pulse['positive_ns']}, {pulse['order']}")
+    add("dac / scale", f"{s.get('dac', '?')} / {s.get('scale', '?')}")
+    stream = s.get("stream")
+    if isinstance(stream, dict):
+        add("stream", f"{stream['state']} @ {stream['rate_hz']} Hz")
+    add("dropped frames", s.get("drops", "?"))
+    stages = s.get("stages_us")
+    if isinstance(stages, dict):
+        rows.append("  DSP stage times (us):")
+        for k in STATUS_STAGE_NAMES:
+            rows.append(f"      {k:<12} {stages.get(k, '?')}")
+    add("dsp_us / worst",
+        f"{s.get('dsp_us', '?')} / {s.get('worst_us', '?')} "
+        f"({s.get('performance', '?')})")
+    add("max rates (Hz)",
+        f"envelope {s.get('envelope_max_rate', '?')}, "
+        f"alaw {s.get('alaw_max_rate', '?')}")
+    return "\n".join(rows)

@@ -7,6 +7,10 @@ finished. Each entry links to its commit log in `docs/claude/commits/`.
 
 ## 2026-09-14
 
+- **DSP notebook shows Pico text replies + us times (py v0.1.6).** Added
+  `dsp.describe_status()`, `status()['raw']`, `capture().last_reply`; the notebook
+  now prints version/status/OK replies and per-stage DSP µs. Hardware-verified.
+  See `commits/2026-09-14-dsp-notebook-show-replies.md`.
 - **docs/fw_history convention.** README for the maintainer-curated firmware
   baseline archive; rule that only the maintainer adds `.uf2` there (Claude never
   does). See `commits/2026-09-14-fw-history-convention.md`.

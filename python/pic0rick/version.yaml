@@ -7,5 +7,5 @@
 #
 # `changes` is a short, single-line, double-quoted summary of what changed vs
 # the previous version. Exposed as pic0rick.__changes__.
-version: "0.1.5"
-changes: "Add python/example_dsp.ipynb (step-by-step notebook of the DSP example) and fix the DAC command in example_dsp.py (DSP build uses `dac write`, not `write dac`). Both hardware-tested."
+version: "0.1.6"
+changes: "Surface the Pico's text replies: add dsp.describe_status() (params + per-stage us times), status() now includes the raw line, capture() records last_reply. The DSP notebook now displays these replies (version/status/OK lines + DSP stage times)."

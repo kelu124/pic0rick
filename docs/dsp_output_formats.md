@@ -234,6 +234,8 @@ The host library `python/pic0rick/dsp.py` parses this protocol:
   `read_raw` (8000) and `read_fft` (4096) both parse.
 - `pic0rick.dsp.parse_status(line)` → a typed `dict` (with `pulse`, `stream`,
   `stages_us` broken out as sub-dicts).
+- `pic0rick.dsp.describe_status(line_or_dict)` → a human-readable multi-line
+  summary (parameters + per-stage DSP µs times).
 
 From the device driver: `Pic0rick.status()`, `.read_fft()`, `.read_raw()`,
 `.capture(payload)` (see `docs/claude/python-host-tools.md`).

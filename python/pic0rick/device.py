@@ -171,7 +171,9 @@ class Pic0rick:
         self.ser.reset_input_buffer()
         self.ser.write(b"status\n")
         line = self.ser.readline().decode("utf-8", "replace")
-        return dsp.parse_status(line)
+        info = dsp.parse_status(line)
+        info["raw"] = line.strip()  # the Pico's exact status text
+        return info
 
     def capture(self, payload="envelope"):
         """Trigger a one-shot DSP capture and return the parsed `dsp.Frame`.
@@ -187,7 +189,9 @@ class Pic0rick:
             raise ValueError("payload must be raw, envelope or alaw")
         self.ser.reset_input_buffer()
         self.ser.write((command + "\n").encode("ascii"))
-        # FrameReader skips the leading "OK ..." text line and any noise.
+        # The firmware sends an "OK capture started ..." text line before the
+        # binary frame; capture it (self.last_reply) so callers can display it.
+        self.last_reply = self.ser.readline().decode("utf-8", "replace").strip()
         return dsp.FrameReader(self.ser).read_frame()
 
     def read_fft(self):
