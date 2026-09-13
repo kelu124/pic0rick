@@ -57,6 +57,9 @@ The DSP (`-DDSP`) firmware's binary framed protocol is handled by
   parity); added versioning (`__init__.py` + `version.yaml`, v0.1.0).
 - 2026-09-13: v0.1.1 — added `Pic0rick.version()` parsing the firmware `version`
   report into a dict.
+- 2026-09-13: v0.1.4 — added `python/example_dsp.py` (end-to-end DSP example) +
+  `docs/dsp_test_guide.md`; hardware-tested. (v0.1.3 = docs-only after onboard_dsp
+  retirement.)
 - 2026-09-13: v0.1.2 — added `pic0rick/dsp.py` (DSP-build binary frame protocol:
   FrameReader+CRC, A-law decode, parse_status; length-agnostic for read_raw 8000
   / read_fft 4096) and `Pic0rick.status()/capture()/read_fft()/read_raw()`.

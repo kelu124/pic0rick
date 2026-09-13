@@ -37,6 +37,10 @@ Firmware and the Python library each carry `A.B.C` in their own `version.yaml`
   C 0-999. **The maintainer owns major/minor — never change them.**
 - Always update that file's one-line, double-quoted `changes:` summary; the CI
   release body and the firmware `version` command read it.
+- **On every firmware version bump, add a matching entry to
+  `firmware/CHANGELOG.md`** (`## A.B.C — YYYY-MM-DD`, newest first). `version.yaml`
+  and `CHANGELOG.md` are the version record — editing only those does not trigger
+  a bump.
 
 > These are working memories, not authoritative docs. Verify a claim against the
 > code before relying on it — file/line references can drift.

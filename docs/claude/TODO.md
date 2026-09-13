@@ -67,10 +67,10 @@ discoveries logged since.
 
 ## Discoveries (logged by Claude)
 
-- [ ] **[claude]** Rewrite a DSP **test guide** (docs/) and a `python/` **example
-  notebook** against the unified firmware: `read_raw`/`read_fft` commands +
-  `pic0rick.dsp` / `Pic0rick.capture()`. The old `test_guide.md` + `DSP_Tests.ipynb`
-  were dropped in P7 (tied to the removed `pic0rick_capture.py` CLI) (2026-09-13).
+- [x] **[claude]** DSP **test guide** (`docs/dsp_test_guide.md`) and `python/`
+  example (`python/example_dsp.py`) rewritten against the new API and
+  hardware-tested (2026-09-13). *(A notebook version could still be added if the
+  maintainer prefers one over the script.)*
 - [ ] **[claude]** Optional: port the old capture tool's CLI (self-test
   validation, `save_frames`) onto `pic0rick.dsp` if a standalone DSP capture CLI
   is wanted (2026-09-13).

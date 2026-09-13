@@ -7,6 +7,10 @@ finished. Each entry links to its commit log in `docs/claude/commits/`.
 
 ## 2026-09-13
 
+- **DSP test guide + example + firmware CHANGELOG (py v0.1.4).**
+  `docs/dsp_test_guide.md` + `python/example_dsp.py` (new API, hardware-tested);
+  `firmware/CHANGELOG.md` created and made a rule (update on every fw bump). See
+  `commits/2026-09-13-dsp-guide-example-changelog.md`.
 - **P8 — docs consolidation; unification complete.** README building/DSP
   sections + command table; plan marked done (P0–P8). Firmware v0.1.9, python
   v0.1.3, on `feature/unify-firmware-dsp` (not merged). See
