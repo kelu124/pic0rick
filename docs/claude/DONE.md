@@ -5,6 +5,12 @@ finished. Each entry links to its commit log in `docs/claude/commits/`.
 
 ---
 
+## 2026-09-14
+
+- **docs/fw_history convention.** README for the maintainer-curated firmware
+  baseline archive; rule that only the maintainer adds `.uf2` there (Claude never
+  does). See `commits/2026-09-14-fw-history-convention.md`.
+
 ## 2026-09-13
 
 - **MUX/pulser PIO1 SM conflict fix — echoes restored (fw v0.1.11).**

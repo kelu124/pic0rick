@@ -20,6 +20,13 @@ future instance would waste time rediscovering.
 - `hardware-testing.md` — flashing a connected board (UF2 → BOOTSEL mass storage)
   and talking to the REPL over `/dev/ttyACM0`; the `reboot-dfu` iterate loop.
 
+## `docs/fw_history/` — maintainer-only firmware baselines
+
+`docs/fw_history/` holds known-good reference `.uf2` binaries (regression
+baselines). **Claude must never add/copy/build/commit `.uf2` files there** — only
+the maintainer curates them. Claude may edit its README and *flash* them for
+diagnostics. Claude build output goes to `firmware/dist/` (gitignored) + releases.
+
 ## Task tracking & commit logs
 
 - `TODO.md` — open, actionable items (with owner tags). `DONE.md` — completed.
