@@ -7,5 +7,5 @@
 #
 # `changes` is a short, single-line, double-quoted summary of what changed vs
 # the previous version. Exposed as pic0rick.__changes__.
-version: "0.1.4"
-changes: "Add python/example_dsp.py: end-to-end DSP-firmware example (status -> read_raw -> read_fft -> pulsed capture) using the new pic0rick.dsp API."
+version: "0.1.5"
+changes: "Add python/example_dsp.ipynb (step-by-step notebook of the DSP example) and fix the DAC command in example_dsp.py (DSP build uses `dac write`, not `write dac`). Both hardware-tested."

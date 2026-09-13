@@ -78,6 +78,9 @@ python example_dsp.py --save out/     # + raw.npy / envelope.npy
 python example_dsp.py --plot out/     # + capture.png (needs matplotlib)
 ```
 
+For an interactive, step-by-step version with inline plots, open the notebook
+`python/example_dsp.ipynb` and run the cells top to bottom (set `PORT` in cell 2).
+
 Expected output resembles:
 
 ```

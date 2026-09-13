@@ -7,6 +7,9 @@ finished. Each entry links to its commit log in `docs/claude/commits/`.
 
 ## 2026-09-13
 
+- **DSP example notebook + DAC fix (py v0.1.5).** `python/example_dsp.ipynb`
+  (step-by-step, executed via nbconvert on hardware); fixed the DSP DAC command
+  (`dac write`). See `commits/2026-09-13-dsp-example-notebook.md`.
 - **DSP test guide + example + firmware CHANGELOG (py v0.1.4).**
   `docs/dsp_test_guide.md` + `python/example_dsp.py` (new API, hardware-tested);
   `firmware/CHANGELOG.md` created and made a rule (update on every fw bump). See

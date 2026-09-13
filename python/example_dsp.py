@@ -65,8 +65,10 @@ def main(argv=None):
     print("Board:", st.get("board"), st.get("package"),
           "| firmware", st.get("firmware"), "| backend", st.get("dsp_backend"))
 
-    # 2) Set the TGC gain (spi1 DAC, shared with the stdio build).
-    probe.dac(args.gain)
+    # 2) Set the TGC gain. The DSP build's command is `dac write <n>` (note:
+    #    the stdio build uses `write dac <n>` / Pic0rick.dac()).
+    probe.ser.write(f"dac write {args.gain}\n".encode("ascii"))
+    probe.sread()
 
     # 3) One-shot captures with the pulser disarmed (idle input).
     print("Captures (pulser disarmed):")

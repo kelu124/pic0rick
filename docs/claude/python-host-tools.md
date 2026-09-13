@@ -57,6 +57,9 @@ The DSP (`-DDSP`) firmware's binary framed protocol is handled by
   parity); added versioning (`__init__.py` + `version.yaml`, v0.1.0).
 - 2026-09-13: v0.1.1 — added `Pic0rick.version()` parsing the firmware `version`
   report into a dict.
+- 2026-09-13: v0.1.5 — added `python/example_dsp.ipynb` (step-by-step notebook;
+  executed via nbconvert against the RP2350A) and fixed the DAC command in
+  `example_dsp.py` (DSP build uses `dac write`, not `write dac`).
 - 2026-09-13: v0.1.4 — added `python/example_dsp.py` (end-to-end DSP example) +
   `docs/dsp_test_guide.md`; hardware-tested. (v0.1.3 = docs-only after onboard_dsp
   retirement.)
