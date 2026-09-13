@@ -7,6 +7,9 @@ finished. Each entry links to its commit log in `docs/claude/commits/`.
 
 ## 2026-09-13
 
+- **P1 — `-DDSP` scaffolding + CMSIS-DSP (fw v0.1.4).** pico2-guarded DSP option
+  and `cmsisdsp_p0rk` lib; no sources yet, default builds unchanged. Verified
+  guard + CMSIS-DSP fetch/build. See `commits/2026-09-13-p1-dsp-scaffolding.md`.
 - **P0 — SDK bump to 2.3.0 (fw v0.1.3).** CMakeLists + CI workflow ref; all 4
   variants build; rp2350 flashed + confirmed on hardware. First phase of the
   onboard-DSP unification. See `commits/2026-09-13-p0-sdk-2.3.0.md`.

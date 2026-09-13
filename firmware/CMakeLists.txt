@@ -106,6 +106,68 @@ add_custom_target(gen_git_version
 # Enable/disable at configure time: -DMUX=ON (default) or -DMUX=OFF.
 option(MUX "Build with MAX14866 HV mux module board support" ON)
 
+# ---- Onboard-DSP feature (RP2350 only) toggle ----
+# Enable with -DDSP=ON (requires -DPICO_BOARD=pico2). Pulls in CMSIS-DSP for the
+# float32 Hilbert-envelope / A-law pipeline. Firmware sources are wired in a
+# later phase; P1 only sets up the option, the RP2350 guard and the CMSIS-DSP
+# static library (cmsisdsp_p0rk).
+option(DSP "Build with the onboard-DSP feature set (RP2350/pico2 only)" OFF)
+if(DSP AND NOT PICO_BOARD STREQUAL "pico2")
+    message(FATAL_ERROR
+        "DSP=ON requires -DPICO_BOARD=pico2 (RP2350): the DSP pipeline needs the "
+        "RP2350 FPU. Reconfigure with -DPICO_BOARD=pico2 or drop -DDSP.")
+endif()
+
+if(DSP)
+    message(STATUS "Onboard-DSP feature: ENABLED (fetching CMSIS-DSP v1.17.0)")
+    include(FetchContent)
+    FetchContent_Declare(
+        CMSISDSP
+        GIT_REPOSITORY https://github.com/ARM-software/CMSIS-DSP.git
+        GIT_TAG v1.17.0
+        GIT_SHALLOW TRUE
+    )
+    set(CMSISCORE
+        ${PICO_SDK_PATH}/src/rp2_common/cmsis/stub/CMSIS/Core
+        CACHE PATH "CMSIS Core headers" FORCE
+    )
+    set(DISABLEFLOAT16 ON CACHE BOOL "Disable CMSIS-DSP float16" FORCE)
+    FetchContent_MakeAvailable(CMSISDSP)
+
+    # Build only the float32 transform sources the Hilbert backend needs, not the
+    # whole CMSIS-DSP archive.
+    set_property(TARGET CMSISDSP PROPERTY EXCLUDE_FROM_ALL TRUE)
+    add_library(cmsisdsp_p0rk STATIC
+        ${cmsisdsp_SOURCE_DIR}/Source/TransformFunctions/arm_bitreversal2.c
+        ${cmsisdsp_SOURCE_DIR}/Source/TransformFunctions/arm_cfft_f32.c
+        ${cmsisdsp_SOURCE_DIR}/Source/TransformFunctions/arm_cfft_init_f32.c
+        ${cmsisdsp_SOURCE_DIR}/Source/TransformFunctions/arm_cfft_radix8_f32.c
+        ${cmsisdsp_SOURCE_DIR}/Source/TransformFunctions/arm_rfft_fast_f32.c
+        ${cmsisdsp_SOURCE_DIR}/Source/TransformFunctions/arm_rfft_fast_init_f32.c
+        ${cmsisdsp_SOURCE_DIR}/Source/CommonTables/arm_common_tables.c
+        ${cmsisdsp_SOURCE_DIR}/Source/CommonTables/arm_const_structs.c
+    )
+    target_include_directories(cmsisdsp_p0rk PUBLIC
+        ${cmsisdsp_SOURCE_DIR}/Include
+        ${CMSISCORE}/Include
+    )
+    target_include_directories(cmsisdsp_p0rk PRIVATE
+        ${cmsisdsp_SOURCE_DIR}/PrivateInclude
+    )
+    target_compile_definitions(cmsisdsp_p0rk PUBLIC
+        ARM_MATH_CM33
+        DISABLEFLOAT16
+    )
+    target_compile_options(cmsisdsp_p0rk PRIVATE
+        -O3
+        -ffast-math
+        -ffunction-sections
+        -fdata-sections
+    )
+else()
+    message(STATUS "Onboard-DSP feature: disabled")
+endif()
+
 # Add executable. Default name is the project name.
 
 add_executable(adc-pulse)

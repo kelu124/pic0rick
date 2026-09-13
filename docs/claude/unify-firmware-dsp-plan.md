@@ -68,10 +68,13 @@ Sample count differs by build (8000 vs 4096) — keep per-build constants.
 the installed one; onboard_dsp's 15_2 not required) and CI workflow pico-sdk ref
 →2.3.0. All 4 variants build; rp2350 flashed + confirmed running on hardware.
 
-**P1 — DSP option scaffolding.** Add `option(DSP ... OFF)`. Guard:
-`if(DSP AND NOT PICO_BOARD STREQUAL "pico2") -> FATAL_ERROR`. Add the CMSIS-DSP
-`FetchContent` + `cmsisdsp_p0rk` static lib (copy from onboard_dsp CMake), all
-inside `if(DSP)`. No sources yet. Configure-only check.
+**P1 — DSP option scaffolding. ✅ DONE (fw v0.1.4, 2026-09-13).** Added
+`option(DSP ... OFF)`, the `pico2` guard (FATAL_ERROR on rp2040), and the
+CMSIS-DSP `FetchContent` + `cmsisdsp_p0rk` static lib inside `if(DSP)`. No
+firmware sources yet. Verified: default builds unchanged; guard rejects rp2040;
+`-DDSP=ON -DPICO_BOARD=pico2` configures (fetches CMSIS-DSP v1.17.0) and builds
+`libcmsisdsp_p0rk.a`. Note: the CMSIS-DSP shallow clone takes >2 min — CI time
+cost to watch in P6.
 
 **P2 — Land the modules.** Copy into `firmware/dsp/` (new subdir):
 `dsp.[ch]`, `pipeline.[ch]`, `protocol.[ch]`, `acquisition.[ch]` + `.pio`,

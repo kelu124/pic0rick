@@ -72,6 +72,9 @@ cd firmware && ./build.sh          # builds FOUR variants into firmware/dist/:
   `max14866_init()` call. The gain DAC lives in `max/dac.c` and is **always**
   built (it reuses the `max14866.pio` SPI-shifter program, always generated).
 - To build just one: `cmake -B build2350 -DPICO_BOARD=pico2 -DMUX=OFF && cmake --build build2350`.
+- **`-DDSP=ON`** (RP2350/`pico2` only; guarded with a FATAL_ERROR otherwise)
+  enables the onboard-DSP feature set. As of P1 it only sets up the option +
+  CMSIS-DSP (`cmsisdsp_p0rk` static lib); firmware sources land in later phases.
 
 ## Versioning & CI
 
@@ -138,3 +141,6 @@ cd firmware && ./build.sh          # builds FOUR variants into firmware/dist/:
   CI workflow ref). All 4 variants build; flashed rp2350 to hardware via the
   reboot-dfu loop and confirmed v0.1.3 runs. Toolchain kept at 14_2_Rel1 (the
   one installed; onboard_dsp nominally used 15_2 but 14_2 builds SDK 2.3.0 fine).
+- 2026-09-13: v0.1.4 — **P1**: `-DDSP` option scaffolding (pico2-guarded) +
+  CMSIS-DSP `cmsisdsp_p0rk` lib. No firmware sources yet; default builds
+  unchanged. Verified guard + CMSIS-DSP fetch/build.
