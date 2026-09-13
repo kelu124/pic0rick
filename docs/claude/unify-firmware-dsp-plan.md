@@ -112,9 +112,13 @@ Decisions (2026-09-13):
 - **stdio/RP2040 build:** uses the shared acquisition+pulser+dac in raw-8000 mode
   (one implementation).
 
-**P5 — Host + version.** Fold `experiments/onboard_dsp/tools/pic0rick_capture.py`
-into `python/pic0rick/` (frame/CRC/status parser); reconcile the
-`EXPECTED_FIRMWARE` handshake with our `version.yaml` scheme. Python patch bump.
+**P5 — Host + version. ✅ DONE (python v0.1.2, 2026-09-13).** Added
+`python/pic0rick/dsp.py` (binary frame reader + CRC, A-law decode, `parse_status`),
+made **length-agnostic** (payload size derived from the header `sample_count`, so
+read_raw 8000 / read_fft 4096 both parse). Added `Pic0rick.status()` /
+`capture()` / `read_fft()` / `read_raw()`. Dropped the hard `EXPECTED_FIRMWARE
+== "1.6"` gate — the host now just parses whatever `firmware=A.B.C` the board
+reports. Verified on hardware: status + read_fft (4096 f32) + read_raw (8000 u16).
 
 **P6 — Build matrix + CI.** `build.sh` variants: rp2040 (mux/nomux),
 rp2350 (mux/nomux × dsp/nodsp) = 6 uf2. Update `.github/workflows/firmware.yml`

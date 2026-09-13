@@ -7,5 +7,5 @@
 #
 # `changes` is a short, single-line, double-quoted summary of what changed vs
 # the previous version. Exposed as pic0rick.__changes__.
-version: "0.1.1"
-changes: "Add Pic0rick.version(): queries the firmware `version` command and parses it into a dict (version/changes/board/chip/mux/build/release)."
+version: "0.1.2"
+changes: "Add DSP-build host support: pic0rick.dsp (binary frame protocol reader, CRC, status parser, A-law decode; length-agnostic for read_raw 8000 / read_fft 4096) and Pic0rick.status()/capture()/read_fft()/read_raw()."

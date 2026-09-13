@@ -7,6 +7,10 @@ finished. Each entry links to its commit log in `docs/claude/commits/`.
 
 ## 2026-09-13
 
+- **P5 — DSP host protocol in python (py v0.1.2).** `pic0rick/dsp.py`
+  (length-agnostic frame reader + CRC + status parser) and
+  `Pic0rick.status()/capture()/read_fft()/read_raw()`; dropped the hard version
+  gate. Verified on hardware. See `commits/2026-09-13-p5-host-dsp-protocol.md`.
 - **P4b — unified HW drivers (fw v0.1.8).** Moved acquisition+pulser+spi1 DAC to
   shared `firmware/hw/`; stdio build now uses them (raw 8000); retired `adc/` +
   `max/dac.c`. Verified on RP2350 hardware. See
