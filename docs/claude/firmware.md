@@ -37,6 +37,7 @@ then loops printing a `run> ` prompt and reading a line. `main.c`'s
 | `read` | `adc` | Dump the captured ADC samples |
 | `write dac <v>` | `dac` | Write the gain DAC (MCP4812) |
 | `version` | `version_cmd` | Print version, changes, board/chip, mux, git hash, release URL |
+| `reboot-dfu` | `reboot_dfu_cmd` | Reboot into the USB bootloader (BOOTSEL) via `reset_usb_boot` |
 | `write mux <v>` | `max14866` | Write the MAX14866 mux word *(MUX builds only)* |
 | `set mux` | `max14866_set` | MAX14866 SET *(MUX builds only)* |
 | `clear mux` | `max14866_clear` | MAX14866 CLEAR *(MUX builds only)* |
@@ -128,3 +129,7 @@ cd firmware && ./build.sh          # builds FOUR variants into firmware/dist/:
   `-dirty` when firmware/ is dirty) and the derived release URL. CI release body
   now lists both firmware + python versions. Verified generated headers per
   variant.
+- 2026-09-13: v0.1.2 — added `reboot-dfu` (reset_usb_boot → BOOTSEL; links
+  `pico_bootrom`). **Flashed + tested on real RP2350A/Pico 2 W hardware**:
+  `version` and the flash→run→`reboot-dfu`→BOOTSEL loop confirmed. See
+  `hardware-testing.md`. (On branch `feature/unify-firmware-dsp`.)

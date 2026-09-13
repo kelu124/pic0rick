@@ -1,6 +1,8 @@
 //---------------------------------------------------------------------------
 // INCLUDES
 //--------------------------------------------------------------------------
+#include "pico/bootrom.h"
+
 #include "adc/adc.h"
 #include "max/dac.h"
 #include "version.h"
@@ -38,11 +40,25 @@ void version_cmd(const char *args)
     printf("release: %s\n", FW_RELEASE_URL);
 }
 
+//---------------------------------------------------------------------------
+// REBOOT-DFU COMMAND
+//--------------------------------------------------------------------------
+// Reboot into the RP2040/RP2350 USB bootloader (BOOTSEL / UF2 mass storage,
+// colloquially "DFU") so a new UF2 can be flashed without pressing BOOTSEL.
+void reboot_dfu_cmd(const char *args)
+{
+    printf("Rebooting into USB bootloader (BOOTSEL)...\n");
+    fflush(stdout);
+    sleep_ms(100);          // give USB CDC time to drain the message
+    reset_usb_boot(0, 0);   // does not return
+}
+
 command_t command_list[] = {
     {"start acq", pulse_adc_trigger},
     {"write dac", dac},
     {"read", adc},
     {"version", version_cmd},
+    {"reboot-dfu", reboot_dfu_cmd},
 #ifdef MUX
     {"write mux", max14866},
     {"set mux", max14866_set},

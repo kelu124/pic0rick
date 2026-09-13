@@ -149,6 +149,7 @@ target_include_directories(adc-pulse PRIVATE
 
 target_link_libraries(adc-pulse PRIVATE
     pico_stdlib
+    pico_bootrom
     hardware_pio
     hardware_dma
     hardware_clocks

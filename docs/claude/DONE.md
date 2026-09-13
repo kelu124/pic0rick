@@ -7,6 +7,10 @@ finished. Each entry links to its commit log in `docs/claude/commits/`.
 
 ## 2026-09-13
 
+- **`reboot-dfu` command + hardware test (fw v0.1.2).** Added `reboot-dfu`
+  (reset_usb_boot → BOOTSEL). Flashed and verified on a real RP2350A/Pico 2 W:
+  `version` + the flash→run→`reboot-dfu`→BOOTSEL loop. New `hardware-testing.md`.
+  See `commits/2026-09-13-reboot-dfu.md`. (branch feature/unify-firmware-dsp)
 - **Python parses the firmware `version` command (py v0.1.1).**
   `Pic0rick.version()` queries `version` and returns a parsed dict. See
   `commits/2026-09-13-python-version-parse.md`.

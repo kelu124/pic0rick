@@ -14,6 +14,8 @@ future instance would waste time rediscovering.
 - `hardware-build.md` — `hardware/build.sh`: KiBot + kicad-cli production
   outputs (gerbers/CPL/BOM/STEP + 3D renders), build groups incl. the fast
   `fab-fast` path, and the venv/3D-model gotchas.
+- `hardware-testing.md` — flashing a connected board (UF2 → BOOTSEL mass storage)
+  and talking to the REPL over `/dev/ttyACM0`; the `reboot-dfu` iterate loop.
 
 ## Task tracking & commit logs
 
