@@ -7,5 +7,5 @@
 #
 # `changes` is a short, single-line, double-quoted summary of what changed vs
 # the previous version. Exposed as pic0rick.__changes__.
-version: "0.1.0"
-changes: "First versioned Python library: add version scheme (pic0rick.__version__) and MUX methods (write_mux/set_mux/clear_mux) matching the firmware CLI."
+version: "0.1.1"
+changes: "Add Pic0rick.version(): queries the firmware `version` command and parses it into a dict (version/changes/board/chip/mux/build/release)."

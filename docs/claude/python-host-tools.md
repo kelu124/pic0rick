@@ -25,6 +25,9 @@ Two independent host paths coexist; don't cross-wire them.
   the CDC port per-OS; methods `dac(N)`, `pulse_adc_trigger(pon,poff,damp)`,
   `read()`, and `write_mux(v)` / `set_mux()` / `clear_mux()` (match firmware,
   MUX builds). 115200 baud, `Fech=60e6`.
+  - `version()` sends the firmware `version` command and parses the reply into a
+    dict (`version`, `changes`, `board`, `chip`, `mux`, `mux_enabled`, `build`,
+    `release`, `raw`); tolerates REPL echo/prompt lines.
 - `pic0rick/ndt_acquisition.py` — the real logic. `UltrasonicAcquisition`
   dataclass + `from_probe`, `detect_echoes`, `calibrate`, `amplitude`, `plot`,
   `info`, and HDF5 `save_h5`/`load_h5`. Hardware import is **lazy** (`get_probe`)
@@ -52,3 +55,5 @@ Two independent host paths coexist; don't cross-wire them.
   notebooks and both modules). No code changes.
 - 2026-09-13: Added `write_mux`/`set_mux`/`clear_mux` to `Pic0rick` (firmware
   parity); added versioning (`__init__.py` + `version.yaml`, v0.1.0).
+- 2026-09-13: v0.1.1 — added `Pic0rick.version()` parsing the firmware `version`
+  report into a dict.

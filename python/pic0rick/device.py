@@ -1,5 +1,6 @@
 # Main libs
 import os
+import re
 import sys
 import glob
 import time
@@ -78,6 +79,51 @@ class Pic0rick:
         self.ser.write(bytearray("read\n", "ascii"))
         ans = self.sread()
         return ans
+
+    def version(self):
+        """Query the firmware `version` command and parse its report.
+
+        Returns a dict with whatever the firmware reported. Keys (all optional,
+        present only if the firmware emits the corresponding line):
+            version : firmware version string, e.g. "0.1.1"
+            changes : one-line change summary
+            board   : PICO_BOARD, e.g. "pico2"
+            chip    : e.g. "RP2350"
+            mux     : raw mux line, e.g. "enabled (MAX14866)"
+            mux_enabled : bool derived from `mux`
+            build   : git build hash, e.g. "b0d9435" or "b0d9435-dirty"
+            release : GitHub release URL for this version
+            raw     : the full decoded response text
+        """
+        self.ser.write(bytearray("version\n", "ascii"))
+        text = pprint(self.sread())
+        info = {"raw": text}
+
+        m = re.search(r"firmware\s+v(\d+\.\d+\.\d+)", text)
+        if m:
+            info["version"] = m.group(1)
+
+        for line in text.splitlines():
+            line = line.strip()
+            if line.startswith("changes:"):
+                info["changes"] = line.split(":", 1)[1].strip()
+            elif line.startswith("board:"):
+                rest = line.split(":", 1)[1].strip()
+                bm = re.match(r"(\S+)(?:\s*\(([^)]*)\))?", rest)
+                if bm:
+                    info["board"] = bm.group(1)
+                    if bm.group(2):
+                        info["chip"] = bm.group(2)
+            elif line.startswith("mux:"):
+                mux = line.split(":", 1)[1].strip()
+                info["mux"] = mux
+                info["mux_enabled"] = mux.lower().startswith("enabled")
+            elif line.startswith("build:"):
+                info["build"] = line.split(":", 1)[1].strip()
+            elif line.startswith("release:"):
+                info["release"] = line.split(":", 1)[1].strip()
+
+        return info
     
     def pulse_adc_trigger(self, pon: int=200,poff:int=200,damp:int=2000):
         self.ser.write(bytearray("start acq "+str(pon)+" "+str(poff)+" "+str(damp)+"\n",'ascii'))

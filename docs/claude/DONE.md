@@ -7,6 +7,9 @@ finished. Each entry links to its commit log in `docs/claude/commits/`.
 
 ## 2026-09-13
 
+- **Python parses the firmware `version` command (py v0.1.1).**
+  `Pic0rick.version()` queries `version` and returns a parsed dict. See
+  `commits/2026-09-13-python-version-parse.md`.
 - **`version` command build metadata + dual-version release notes (fw v0.1.1).**
   `version` now prints board/chip, git build hash (`-dirty` aware) and the
   release URL; CI release body lists both firmware + python versions. See
