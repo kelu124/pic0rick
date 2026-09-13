@@ -5,10 +5,11 @@ ADC traces into ultrasonic NDT (non-destructive testing) measurements: pulse
 tuning, gain sweeps, back-wall echo detection, thickness estimation, and HDF5
 storage.
 
-> Targets the **mainline `adc-pulse` firmware** (repo-root `firmware/`), whose
-> text REPL exposes `write dac`, `start acq`, and `read`. This is **not** the
-> binary-protocol firmware in `experiments/onboard_dsp/` — that build ships its
-> own host tool (`experiments/onboard_dsp/tools/pic0rick_capture.py`).
+> Works with both firmware builds from `firmware/`:
+> - the **stdio (non-DSP)** build's text REPL (`write dac`, `start acq`, `read`),
+>   used by `Pic0rick.dac/pulse_adc_trigger/read`;
+> - the **DSP (`-DDSP`, RP2350)** build's binary frame protocol, via
+>   `pic0rick.dsp` and `Pic0rick.status/capture/read_fft/read_raw`.
 
 ## Layout
 

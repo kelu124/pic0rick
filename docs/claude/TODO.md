@@ -67,6 +67,14 @@ discoveries logged since.
 
 ## Discoveries (logged by Claude)
 
+- [ ] **[claude]** Rewrite a DSP **test guide** (docs/) and a `python/` **example
+  notebook** against the unified firmware: `read_raw`/`read_fft` commands +
+  `pic0rick.dsp` / `Pic0rick.capture()`. The old `test_guide.md` + `DSP_Tests.ipynb`
+  were dropped in P7 (tied to the removed `pic0rick_capture.py` CLI) (2026-09-13).
+- [ ] **[claude]** Optional: port the old capture tool's CLI (self-test
+  validation, `save_frames`) onto `pic0rick.dsp` if a standalone DSP capture CLI
+  is wanted (2026-09-13).
+
 - [ ] **[mixed]** MUX not wired into the high-level acquisition flow.
   `device.py` now exposes `write_mux` / `set_mux` / `clear_mux`, but
   `ndt_acquisition.py` (`UltrasonicAcquisition`) never selects a mux channel.

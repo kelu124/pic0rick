@@ -7,8 +7,11 @@ future instance would waste time rediscovering.
 
 - `firmware.md` — the repo-root `firmware/` folder: the original mainline
   `adc-pulse` Pico firmware (uses the MAX14866; RP2040 + RP2350 builds).
-- `onboard-dsp-firmware.md` — the `experiments/onboard_dsp/` RP2350A envelope/
-  A-law firmware experiment: layout, outputs, gotchas, and the work done so far.
+- `onboard-dsp-firmware.md` — **retired**: the old `experiments/onboard_dsp/`
+  firmware is now the mainline `-DDSP` build (`firmware/dsp` + `firmware/hw`);
+  this note is now a pointer to where everything went.
+- `dsp_output_formats.md` (in `docs/`, not here) — the DSP binary frame / status
+  format reference (moved from onboard_dsp's `understanding_figures.md`).
 - `python-host-tools.md` — the repo-root `python/` NDT stack (serial driver +
   echo/thickness analysis + HDF5) that drives the mainline firmware.
 - `hardware-build.md` — `hardware/build.sh`: KiBot + kicad-cli production

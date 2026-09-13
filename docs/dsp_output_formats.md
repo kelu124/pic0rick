@@ -227,10 +227,17 @@ sinusoid     nrms=8.389e-08 peak_delta=0 alaw_delta=0
 
 ## Parsing helpers
 
-`tools/pic0rick_capture.py` provides two helpers for the `status` line:
+The host library `python/pic0rick/dsp.py` parses this protocol:
 
-- `parse_status(line)` → a typed `dict` (with `pulse`, `stream`, `stages_us`
-  broken out as sub-dicts).
-- `describe_status(line)` → a human-readable multi-line summary.
+- `pic0rick.dsp.FrameReader(port).read_frame()` → a `Frame` (header + payload;
+  CRC-checked; `.samples()` decodes to a numpy array). Length-agnostic:
+  `read_raw` (8000) and `read_fft` (4096) both parse.
+- `pic0rick.dsp.parse_status(line)` → a typed `dict` (with `pulse`, `stream`,
+  `stages_us` broken out as sub-dicts).
 
-See the DSP test notebook (`DSP_Tests.ipynb`, section 3) for a live example.
+From the device driver: `Pic0rick.status()`, `.read_fft()`, `.read_raw()`,
+`.capture(payload)` (see `docs/claude/python-host-tools.md`).
+
+> This spec was written for the retired `experiments/onboard_dsp/` firmware; that
+> firmware is now the mainline `-DDSP` build (`firmware/dsp` + `firmware/hw`).
+> The formats are unchanged except that `sample_count` is now per-mode.

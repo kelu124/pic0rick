@@ -9,9 +9,9 @@ estimate thickness, and store to HDF5. Full user-facing description lives in
 
 `python/` speaks to the **mainline `adc-pulse` firmware** (repo-root
 `firmware/`) via its **text** commands `write dac` / `start acq` / `read`. It is
-**not** the onboard_dsp stack — that firmware uses a binary framed protocol and
-ships its own host tool (`experiments/onboard_dsp/tools/pic0rick_capture.py`).
-Two independent host paths coexist; don't cross-wire them.
+The DSP (`-DDSP`) firmware's binary framed protocol is handled by
+`pic0rick/dsp.py` + `Pic0rick.status()/capture()/read_fft()/read_raw()` (added
+2026-09-13 when the onboard_dsp experiment was folded into the mainline tree).
 
 ## Files
 

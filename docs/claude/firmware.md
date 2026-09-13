@@ -1,11 +1,10 @@
 # firmware/ (root) — working notes
 
-Scope: the repo-root **`firmware/`** folder. This is the **original / mainline**
-pic0rick Pico firmware — CMake project **`adc-pulse`**, version `0.1`, authored by
-Abdelrahman Ali. Do **not** confuse it with `experiments/onboard_dsp/firmware/`
-(the newer RP2350A envelope/A-law DSP build). Key difference at a glance: this
-mainline build **uses the MAX14866** HV mux; the onboard_dsp experiment
-deliberately drops it.
+Scope: the repo-root **`firmware/`** folder — the **unified** pic0rick Pico
+firmware (CMake project `adc-pulse`). One tree with build variants: `-DMUX`
+(MAX14866 mux, default on) and `-DDSP` (RP2350 Hilbert-envelope DSP + binary
+protocol, off by default). The former `experiments/onboard_dsp/` firmware was
+merged in here on 2026-09-13 (see `onboard-dsp-firmware.md`).
 
 ## First-glance layout
 
@@ -117,16 +116,18 @@ cd firmware && ./build.sh          # builds SIX variants into firmware/dist/:
   If a `firmware/.env` reappears, it's a local-only secret — do not commit it.
 - Two prebuilt UF2s (`rp2040.uf2`, `rp2350.uf2`) — pick by target board. These
   are the **mux** builds; nomux variants come from CI releases / `dist/`.
-- There is a `version` command now (see Versioning above); still **no**
-  `status`/`help` handshake like onboard_dsp. No host-side capture tool lives
-  with it.
+- There is a `version` command now (see Versioning above); the stdio build has
+  **no** `status`/`help` handshake (those live in the DSP build's `main_dsp.c`).
 
-## Relationship to other firmware
+## The two build flavours (one tree)
 
-- `experiments/onboard_dsp/firmware/` — see `onboard-dsp-firmware.md`. Newer,
-  RP2350A-only, binary framed protocol, real-FFT Hilbert envelope, no MAX14866,
-  its own `status` line (documented in
-  `experiments/onboard_dsp/understanding_figures.md`).
+- **stdio / non-DSP** (`main.c`): text REPL over SDK `stdio_usb`; RP2040 or
+  RP2350. `start acq` / `write dac` / `read` (raw 8000).
+- **DSP** (`main_dsp.c`, `-DDSP`, RP2350 only): raw-TinyUSB command loop with the
+  binary framed protocol + Hilbert envelope; adds `read_fft` (4096), `read_raw`
+  (8000), `acq`/`stream`/`dsp`/`status`. Frame/status formats:
+  `docs/dsp_output_formats.md`. Host side: `pic0rick.dsp` (see
+  `python-host-tools.md`).
 
 ## Work log
 

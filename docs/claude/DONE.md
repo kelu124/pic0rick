@@ -7,6 +7,9 @@ finished. Each entry links to its commit log in `docs/claude/commits/`.
 
 ## 2026-09-13
 
+- **P7 — retire experiments/onboard_dsp (py v0.1.3).** Removed `experiments/`;
+  kept the format spec as `docs/dsp_output_formats.md`; fixed all references.
+  See `commits/2026-09-13-p7-retire-onboard-dsp.md`.
 - **P6 — 6-variant build matrix + CI (fw v0.1.9).** build.sh builds all 6
   (adds rp2350 mux/nomux +DSP) into dist/ with a shared CMSIS-DSP cache; CI
   caches it and releases all 6. See `commits/2026-09-13-p6-build-matrix-ci.md`.

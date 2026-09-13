@@ -4,7 +4,7 @@ Parses the binary framed protocol emitted by the RP2350 DSP firmware
 (``-DDSP`` build): a 64-byte little-endian header + CRC32 payload, plus the
 ``OK …`` / ``ERR …`` text control lines and the ``status`` line.
 
-Ported from ``experiments/onboard_dsp/tools/pic0rick_capture.py`` and made
+Ported from the former onboard_dsp capture tool and made
 **length-agnostic**: the unified firmware uses per-mode sample counts
 (``read_raw`` = 8000, ``read_fft`` = 4096), so payload sizes are derived from the
 header's ``sample_count`` rather than a fixed constant.

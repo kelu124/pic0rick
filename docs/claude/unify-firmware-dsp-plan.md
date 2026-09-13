@@ -126,11 +126,13 @@ sharing one CMSIS-DSP clone (`firmware/.deps`, gitignored, via
 `FETCHCONTENT_BASE_DIR`). CI caches `firmware/.deps` and its artifact/release
 globs (`dist/*.uf2`) pick up all 6 automatically. Firmware patch bump.
 
-**P7 — Retire onboard_dsp.** Move keep-worthy docs (`understanding_figures.md`,
-`test_guide.md`, notebooks) under `docs/` or `python/`; `git rm -r
-experiments/onboard_dsp`; fix all references (README, docs/claude notes,
-`check-links`). Update `docs/claude/onboard-dsp-firmware.md` to point at the new
-locations (or fold into `firmware.md`).
+**P7 — Retire onboard_dsp. ✅ DONE (py v0.1.3, 2026-09-13).** Removed
+`experiments/` entirely. Kept the format spec (`understanding_figures.md` →
+`docs/dsp_output_formats.md`). Dropped `test_guide.md` + `DSP_Tests.ipynb` +
+`tools/pic0rick_capture.py` (superseded by `pic0rick.dsp`; rewrite logged in
+TODO). Updated all references (CLAUDE.md, docs/claude notes, python/Readme,
+dsp.py) and rewrote `onboard-dsp-firmware.md` as a pointer. `check-links`: no
+genuine local breaks.
 
 **P8 — Docs + versions.** Update `firmware.md`, README, DONE/commit logs, memory.
 
