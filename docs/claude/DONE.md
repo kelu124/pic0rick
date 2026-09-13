@@ -7,6 +7,11 @@ finished. Each entry links to its commit log in `docs/claude/commits/`.
 
 ## 2026-09-13
 
+- **Pulser echo regression fix (fw v0.1.10).** `queue_pulse` now fires the
+  bipolar pulse back-to-back then damps (was: damp between polarities, a P4b
+  regression that killed echoes). Not OE (that's correct/active-high). Transmit
+  confirmed strong on hardware; echo-vs-target left to the user's setup. See
+  `commits/2026-09-13-pulser-echo-fix.md`.
 - **DSP example notebook + DAC fix (py v0.1.5).** `python/example_dsp.ipynb`
   (step-by-step, executed via nbconvert on hardware); fixed the DSP DAC command
   (`dac write`). See `commits/2026-09-13-dsp-example-notebook.md`.

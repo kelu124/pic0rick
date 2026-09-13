@@ -162,6 +162,12 @@ cd firmware && ./build.sh          # builds SIX variants into firmware/dist/:
 - 2026-09-13: v0.1.7 — **P4a**: two-length acquisition — `read_raw` (8000 raw)
   / `read_fft` (4096 envelope); per-job sample_count threaded through
   acquisition/pipeline/dsp. Verified frame sizes on hardware.
+- 2026-09-13: v0.1.10 — **pulser echo fix**: `hw/acquisition.c` `queue_pulse`
+  now fires the bipolar pulse (both polarities back-to-back) **then** damps, as
+  in v0.1.0. The shared `pulser.pio` path (P4b) had put PDAMP *between* the
+  polarities, splitting the excitation (regression — user lost echoes). Transmit
+  confirmed strong on hardware (~200 counts at sample ~31); echo-vs-target
+  confirmation is up to the user's setup.
 - 2026-09-13: v0.1.9 — **P6**: `build.sh` builds all 6 variants (adds the two
   rp2350 DSP builds) into `dist/`, sharing one CMSIS-DSP cache (`firmware/.deps`);
   CI caches it and builds/releases all 6.

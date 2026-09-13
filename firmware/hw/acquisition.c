@@ -159,13 +159,17 @@ static void queue_pulse(void) {
     }
     uint32_t damp_ticks = pulse_config.damp_ns / U4RK_PULSE_TICK_NS;
 
+    /* Fire the bipolar pulse (both polarities back-to-back), THEN damp -- as in
+     * the original stdio firmware (v0.1.0) and standard pulser practice. An
+     * earlier revision put the damp phase *between* the two polarities, which
+     * split the bipolar excitation and killed the echo. */
     queue_state(pulser_drive_sm, first_drive_state, first_ticks);
-    queue_state(pulser_drive_sm, 0u, damp_ticks);
     queue_state(pulser_drive_sm, last_drive_state, last_ticks);
+    queue_state(pulser_drive_sm, 0u, damp_ticks);
 
-    queue_state(pulser_gate_sm, 2u, first_ticks); /* OE */
-    queue_state(pulser_gate_sm, 3u, damp_ticks);  /* OE + PDAMP */
-    queue_state(pulser_gate_sm, 2u, last_ticks);  /* OE */
+    queue_state(pulser_gate_sm, 2u, first_ticks); /* OE, first polarity */
+    queue_state(pulser_gate_sm, 2u, last_ticks);  /* OE, second polarity */
+    queue_state(pulser_gate_sm, 3u, damp_ticks);  /* OE + PDAMP damping */
 }
 
 bool u4rk_capture_start(uint16_t *destination, uint32_t sample_count) {

@@ -8,6 +8,14 @@ This file and `version.yaml` are the version record — editing them does not
 itself trigger a version bump. Every firmware version bump must add an entry
 here (see `docs/claude/README.md`).
 
+## 0.1.10 — 2026-09-13
+- **Pulser fix (echo regression):** fire the bipolar pulse (both polarities
+  back-to-back) **then** damp, matching the original stdio firmware (v0.1.0).
+  The shared `pulser.pio` path (from P4b) had inserted the PDAMP damp phase
+  *between* the negative and positive drive, splitting the bipolar excitation —
+  which produced only a weak transmit and no echo. Reordered in
+  `hw/acquisition.c` `queue_pulse` (no PIO change).
+
 ## 0.1.9 — 2026-09-13
 - `build.sh` builds all 6 variants (rp2040 mux/nomux, rp2350 mux/nomux, rp2350
   mux/nomux +DSP) into `dist/`, sharing one CMSIS-DSP clone (`firmware/.deps`).
