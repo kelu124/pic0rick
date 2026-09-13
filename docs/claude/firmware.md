@@ -65,9 +65,11 @@ human-oriented `printf` text, not framed binary.
 ## Build / flash
 
 ```
-cd firmware && ./build.sh          # builds FOUR variants into firmware/dist/:
-#   rp2040-mux, rp2040-nomux, rp2350-mux, rp2350-nomux
-#   + copies the two mux builds to rp2040.uf2 / rp2350.uf2 (historical names)
+cd firmware && ./build.sh          # builds SIX variants into firmware/dist/:
+#   rp2040-mux, rp2040-nomux, rp2350-mux, rp2350-nomux    (stdio / non-DSP)
+#   rp2350-mux-dsp, rp2350-nomux-dsp                      (raw-TinyUSB DSP)
+#   + copies the two rp2350/rp2040 mux non-DSP builds to rp2040.uf2 / rp2350.uf2
+# DSP builds share one CMSIS-DSP clone in firmware/.deps (gitignored).
 ```
 - SDK **2.3.0**, toolchain **14_2_Rel1** (per CMakeLists; bumped from 2.2.0 in
   fw v0.1.3 on the unify branch — needed for the onboard-DSP/CMSIS-DSP merge).
@@ -159,6 +161,9 @@ cd firmware && ./build.sh          # builds FOUR variants into firmware/dist/:
 - 2026-09-13: v0.1.7 — **P4a**: two-length acquisition — `read_raw` (8000 raw)
   / `read_fft` (4096 envelope); per-job sample_count threaded through
   acquisition/pipeline/dsp. Verified frame sizes on hardware.
+- 2026-09-13: v0.1.9 — **P6**: `build.sh` builds all 6 variants (adds the two
+  rp2350 DSP builds) into `dist/`, sharing one CMSIS-DSP cache (`firmware/.deps`);
+  CI caches it and builds/releases all 6.
 - 2026-09-13: v0.1.8 — **P4b**: unified HW drivers. Moved the USB-free
   acquisition+pulser+spi1 DAC to `firmware/hw/` (shared by both builds); the
   stdio build's `start acq`/`write dac`/`read` now use them (raw 8000). Retired

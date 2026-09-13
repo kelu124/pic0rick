@@ -7,6 +7,9 @@ finished. Each entry links to its commit log in `docs/claude/commits/`.
 
 ## 2026-09-13
 
+- **P6 — 6-variant build matrix + CI (fw v0.1.9).** build.sh builds all 6
+  (adds rp2350 mux/nomux +DSP) into dist/ with a shared CMSIS-DSP cache; CI
+  caches it and releases all 6. See `commits/2026-09-13-p6-build-matrix-ci.md`.
 - **P5 — DSP host protocol in python (py v0.1.2).** `pic0rick/dsp.py`
   (length-agnostic frame reader + CRC + status parser) and
   `Pic0rick.status()/capture()/read_fft()/read_raw()`; dropped the hard version

@@ -8,5 +8,5 @@
 # `changes` is a short, single-line, double-quoted summary of what changed vs
 # the previous version. It is embedded in the binary (the `version` CLI command)
 # and used as the GitHub release body by .github/workflows/firmware.yml.
-version: "0.1.8"
-changes: "Unify hardware drivers: both the stdio and DSP builds now share one acquisition + pulser + spi1 DAC (firmware/hw). The stdio build's start acq/write dac/read use the shared drivers (raw 8000); the old PIO pulser (adc/) and PIO DAC (max/dac.c) are retired."
+version: "0.1.9"
+changes: "build.sh now builds all 6 variants (rp2040 mux/nomux, rp2350 mux/nomux, rp2350 mux/nomux +DSP) into dist/, sharing one CMSIS-DSP cache; CI builds and releases all 6."

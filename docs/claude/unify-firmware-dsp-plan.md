@@ -120,9 +120,11 @@ read_raw 8000 / read_fft 4096 both parse). Added `Pic0rick.status()` /
 == "1.6"` gate — the host now just parses whatever `firmware=A.B.C` the board
 reports. Verified on hardware: status + read_fft (4096 f32) + read_raw (8000 u16).
 
-**P6 — Build matrix + CI.** `build.sh` variants: rp2040 (mux/nomux),
-rp2350 (mux/nomux × dsp/nodsp) = 6 uf2. Update `.github/workflows/firmware.yml`
-artifact/release list. Firmware patch bump.
+**P6 — Build matrix + CI. ✅ DONE (fw v0.1.9, 2026-09-13).** `build.sh` builds
+all 6 (rp2040 mux/nomux, rp2350 mux/nomux, rp2350 mux/nomux +DSP) into `dist/`,
+sharing one CMSIS-DSP clone (`firmware/.deps`, gitignored, via
+`FETCHCONTENT_BASE_DIR`). CI caches `firmware/.deps` and its artifact/release
+globs (`dist/*.uf2`) pick up all 6 automatically. Firmware patch bump.
 
 **P7 — Retire onboard_dsp.** Move keep-worthy docs (`understanding_figures.md`,
 `test_guide.md`, notebooks) under `docs/` or `python/`; `git rm -r

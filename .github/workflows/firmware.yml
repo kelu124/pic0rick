@@ -40,6 +40,14 @@ jobs:
           path: pico-sdk
           submodules: recursive
 
+      # The DSP builds fetch CMSIS-DSP v1.17.0 via FetchContent into
+      # firmware/.deps (shared by build.sh). Cache it to avoid re-cloning.
+      - name: Cache CMSIS-DSP
+        uses: actions/cache@v4
+        with:
+          path: firmware/.deps
+          key: cmsis-dsp-v1.17.0
+
       - name: Build all firmware variants
         env:
           PICO_SDK_PATH: ${{ github.workspace }}/pico-sdk

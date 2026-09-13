@@ -3,7 +3,10 @@ build2350
 build2040
 build2040-nomux
 build2350-nomux
+build2350-dsp
+build2350-dsp-nomux
 dist/
+.deps/
 
 # Generated version header (from version.yaml)
 generated/version.h
