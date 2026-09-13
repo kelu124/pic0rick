@@ -7,6 +7,10 @@ finished. Each entry links to its commit log in `docs/claude/commits/`.
 
 ## 2026-09-13
 
+- **P4b — unified HW drivers (fw v0.1.8).** Moved acquisition+pulser+spi1 DAC to
+  shared `firmware/hw/`; stdio build now uses them (raw 8000); retired `adc/` +
+  `max/dac.c`. Verified on RP2350 hardware. See
+  `commits/2026-09-13-p4b-unify-hw-drivers.md`.
 - **P4a — two-length acquisition (fw v0.1.7).** `read_raw` (8000, raw) /
   `read_fft` (4096, envelope); per-job sample_count threaded through
   acquisition/pipeline/dsp. Verified frame sizes on RP2350A hardware. See

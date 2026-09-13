@@ -173,13 +173,14 @@ if(DSP)
         ${CMAKE_CURRENT_LIST_DIR}/dsp/dsp.c
         ${CMAKE_CURRENT_LIST_DIR}/dsp/pipeline.c
         ${CMAKE_CURRENT_LIST_DIR}/dsp/protocol.c
-        ${CMAKE_CURRENT_LIST_DIR}/dsp/acquisition.c
-        ${CMAKE_CURRENT_LIST_DIR}/dsp/dac.c
+        ${CMAKE_CURRENT_LIST_DIR}/hw/acquisition.c
+        ${CMAKE_CURRENT_LIST_DIR}/hw/dac.c
     )
-    pico_generate_pio_header(p0rk_dsp ${CMAKE_CURRENT_LIST_DIR}/dsp/acquisition.pio)
-    pico_generate_pio_header(p0rk_dsp ${CMAKE_CURRENT_LIST_DIR}/dsp/pulser.pio)
+    pico_generate_pio_header(p0rk_dsp ${CMAKE_CURRENT_LIST_DIR}/hw/acquisition.pio)
+    pico_generate_pio_header(p0rk_dsp ${CMAKE_CURRENT_LIST_DIR}/hw/pulser.pio)
     target_include_directories(p0rk_dsp PUBLIC
         ${CMAKE_CURRENT_LIST_DIR}/dsp
+        ${CMAKE_CURRENT_LIST_DIR}/hw
     )
     target_compile_definitions(p0rk_dsp PUBLIC
         ARM_MATH_CM33
@@ -228,7 +229,10 @@ if(DSP)
         ${CMAKE_CURRENT_LIST_DIR}/dsp/usb_transport.c
         ${CMAKE_CURRENT_LIST_DIR}/dsp/usb_descriptors.c
     )
-    target_include_directories(adc-pulse PRIVATE ${CMAKE_CURRENT_LIST_DIR}/dsp)
+    target_include_directories(adc-pulse PRIVATE
+        ${CMAKE_CURRENT_LIST_DIR}/dsp
+        ${CMAKE_CURRENT_LIST_DIR}/hw
+    )
     target_compile_definitions(adc-pulse PRIVATE
         DSP=1
         U4RK_CMSIS_DSP_VERSION="1.17.0"
@@ -258,17 +262,19 @@ if(DSP)
     endif()
 else()
     # ---- stdio REPL build (RP2040, or RP2350 without DSP) ----
+    # Uses the SAME shared acquisition + pulser + spi1 DAC as the DSP build
+    # (firmware/hw), in raw-8000 mode. No FFT/CMSIS.
     pico_enable_stdio_usb(adc-pulse 1)
-    pico_generate_pio_header(adc-pulse ${CMAKE_CURRENT_LIST_DIR}/adc/adc.pio)
-    # max14866.pio is the generic SPI-shifter; the PIO DAC uses it too, so it is
-    # always generated regardless of MUX.
-    pico_generate_pio_header(adc-pulse ${CMAKE_CURRENT_LIST_DIR}/max/max14866.pio)
+    pico_generate_pio_header(adc-pulse ${CMAKE_CURRENT_LIST_DIR}/hw/acquisition.pio)
+    pico_generate_pio_header(adc-pulse ${CMAKE_CURRENT_LIST_DIR}/hw/pulser.pio)
     target_sources(adc-pulse PRIVATE
         ${CMAKE_CURRENT_LIST_DIR}/main.c
-        ${CMAKE_CURRENT_LIST_DIR}/adc/adc.c
-        ${CMAKE_CURRENT_LIST_DIR}/max/dac.c
+        ${CMAKE_CURRENT_LIST_DIR}/hw/acquisition.c
+        ${CMAKE_CURRENT_LIST_DIR}/hw/dac.c
     )
+    target_include_directories(adc-pulse PRIVATE ${CMAKE_CURRENT_LIST_DIR}/hw)
     if(MUX)
+        pico_generate_pio_header(adc-pulse ${CMAKE_CURRENT_LIST_DIR}/max/max14866.pio)
         target_sources(adc-pulse PRIVATE ${CMAKE_CURRENT_LIST_DIR}/max/max14866.c)
         target_compile_definitions(adc-pulse PRIVATE MUX=1)
         message(STATUS "MUX (MAX14866) support: ENABLED")
@@ -282,7 +288,7 @@ else()
         hardware_dma
         hardware_clocks
         hardware_gpio
-        hardware_irq
+        hardware_spi
     )
 endif()
 

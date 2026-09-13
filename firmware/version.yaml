@@ -8,5 +8,5 @@
 # `changes` is a short, single-line, double-quoted summary of what changed vs
 # the previous version. It is embedded in the binary (the `version` CLI command)
 # and used as the GitHub release body by .github/workflows/firmware.yml.
-version: "0.1.7"
-changes: "Two-length acquisition: read_raw = 8000-sample raw ADC (no FFT), read_fft = 4096-sample Hilbert envelope. Sample count is now per-capture (threaded through acquisition/pipeline); frames self-describe via the header sample_count."
+version: "0.1.8"
+changes: "Unify hardware drivers: both the stdio and DSP builds now share one acquisition + pulser + spi1 DAC (firmware/hw). The stdio build's start acq/write dac/read use the shared drivers (raw 8000); the old PIO pulser (adc/) and PIO DAC (max/dac.c) are retired."

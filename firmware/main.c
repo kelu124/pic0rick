@@ -1,10 +1,16 @@
 //---------------------------------------------------------------------------
 // INCLUDES
 //--------------------------------------------------------------------------
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#include "pico/stdlib.h"
 #include "pico/bootrom.h"
 
-#include "adc/adc.h"
-#include "max/dac.h"
+#include "acquisition.h"   // shared pulser + ADC capture (firmware/hw)
+#include "dac.h"           // shared spi1 MCP4812 DAC (firmware/hw)
+#include "u4rk.h"
 #include "version.h"
 #include "version_git.h"
 #ifdef MUX
@@ -22,6 +28,10 @@ typedef struct
     const char *command_name;
     command_func_t func;
 } command_t;
+
+// Single-threaded stdio build: one raw capture buffer (8000 samples).
+static uint16_t capture_buf[U4RK_RAW_SAMPLE_COUNT];
+static bool capture_valid;
 
 //---------------------------------------------------------------------------
 // VERSION COMMAND
@@ -53,10 +63,84 @@ void reboot_dfu_cmd(const char *args)
     reset_usb_boot(0, 0);   // does not return
 }
 
+//---------------------------------------------------------------------------
+// DAC COMMAND (shared spi1 MCP4812)
+//--------------------------------------------------------------------------
+void write_dac_cmd(const char *args)
+{
+    int value = atoi(args);
+    if (value < 0 || value > 1023) {
+        printf("DAC value must be 0..1023\n");
+        return;
+    }
+    u4rk_dac_write((uint16_t)value);
+    printf("dac=%d\n", value);
+}
+
+//---------------------------------------------------------------------------
+// START ACQ COMMAND (shared pulser + ADC capture)
+//--------------------------------------------------------------------------
+// Usage: start acq [pon_ns] [poff_ns] [damp_ns]  (defaults 200/200/2000)
+// Mapped onto the shared pulser: positive_ns=pon, negative_ns=poff,
+// damp_ns=damp, positive-first. Captures U4RK_RAW_SAMPLE_COUNT (8000) samples.
+void start_acq_cmd(const char *args)
+{
+    uint32_t pon = 200, poff = 200, damp = 2000;
+    if (args != NULL) {
+        char copy[64];
+        strncpy(copy, args, sizeof(copy) - 1);
+        copy[sizeof(copy) - 1] = '\0';
+        char *tok = strtok(copy, " ");
+        if (tok) { pon = (uint32_t)atoi(tok); tok = strtok(NULL, " "); }
+        if (tok) { poff = (uint32_t)atoi(tok); tok = strtok(NULL, " "); }
+        if (tok) { damp = (uint32_t)atoi(tok); }
+    }
+
+    if (!u4rk_pulser_configure(poff, damp, pon, U4RK_PULSE_POSITIVE_FIRST)) {
+        printf("pulse config out of range (min 40 ns each)\n");
+        return;
+    }
+    u4rk_pulser_arm();
+
+    if (!u4rk_capture_start(capture_buf, U4RK_RAW_SAMPLE_COUNT)) {
+        u4rk_pulser_disarm();
+        printf("acquisition busy\n");
+        return;
+    }
+    printf("Acquisition of %u samples started\n",
+           (unsigned)U4RK_RAW_SAMPLE_COUNT);
+
+    u4rk_capture_state_t state;
+    do {
+        state = u4rk_capture_poll();
+    } while (state == U4RK_CAPTURE_ACTIVE);
+    u4rk_pulser_disarm();
+
+    if (state == U4RK_CAPTURE_DONE) {
+        capture_valid = true;
+        printf("Acquisition ended\n");
+    } else {
+        capture_valid = false;
+        printf("ADC timeout occured\n");
+    }
+}
+
+//---------------------------------------------------------------------------
+// READ COMMAND (dump last capture as hex, matching the historical format)
+//--------------------------------------------------------------------------
+void read_cmd(const char *args)
+{
+    printf("----------Start of ACQ----------\n");
+    for (uint32_t i = 0; i < U4RK_RAW_SAMPLE_COUNT; ++i) {
+        printf("%X,", ((capture_buf[i] >> 1) & 0x3FF));
+    }
+    printf("\n-----------End of ACQ-----------\n");
+}
+
 command_t command_list[] = {
-    {"start acq", pulse_adc_trigger},
-    {"write dac", dac},
-    {"read", adc},
+    {"start acq", start_acq_cmd},
+    {"write dac", write_dac_cmd},
+    {"read", read_cmd},
     {"version", version_cmd},
     {"reboot-dfu", reboot_dfu_cmd},
 #ifdef MUX
@@ -149,9 +233,9 @@ int main()
         tight_loop_contents();
     }
     sleep_ms(100);
-    pio_adc_init();
+    u4rk_acquisition_init();
     sleep_ms(100);
-    dac_init();
+    u4rk_dac_init();
     sleep_ms(100);
 #ifdef MUX
     max14866_init();

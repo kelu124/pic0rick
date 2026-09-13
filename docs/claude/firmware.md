@@ -11,17 +11,23 @@ deliberately drops it.
 
 ```
 firmware/
-├── main.c              # tiny USB-stdio REPL + command dispatch
-├── CMakeLists.txt      # project adc-pulse; PICO_BOARD default = pico (rp2040)
-├── build.sh            # builds BOTH rp2040 and rp2350 targets
-├── pico_sdk_import.cmake
-├── adc/                # ADC capture over PIO + DMA, and the pulser
-│   ├── adc.c / adc.h / adc.pio
+├── main.c              # stdio REPL (non-DSP builds) + command dispatch
+├── main_dsp.c          # raw-TinyUSB command loop (-DDSP builds)
+├── CMakeLists.txt      # project adc-pulse; -DDSP / -DMUX / PICO_BOARD toggles
+├── build.sh            # builds all 4 non-DSP variants into dist/
+├── version.yaml        # single source of truth for the version
+├── hw/                 # SHARED, USB-free drivers (both builds)
+│   ├── acquisition.c/.h/.pio   # ADC capture + pulser (u4rk_*)
+│   ├── pulser.pio              # 4-pin pulser (P+/P-/PDAMP/OE)
+│   ├── dac.c/.h                # spi1 MCP4812 gain DAC (u4rk_dac_*)
+│   └── u4rk.h                  # pins, sample counts, protocol structs
+├── dsp/                # DSP-only (-DDSP): dsp/pipeline/protocol + raw TinyUSB
+│   ├── dsp.c/.h pipeline.c/.h protocol.c/.h
+│   └── usb_transport.* usb_descriptors.c tusb_config.h
 ├── max/                # MAX14866 HV mux driver (SPI bit-bang via PIO)
 │   ├── max14866.c / max14866.h / max14866.pio
-├── rp2040.uf2          # prebuilt (Pico / RP2040)
-├── rp2350.uf2          # prebuilt (Pico 2 / RP2350)
-└── build2040/ build2350/   # build trees (gitignored)
+├── rp2040.uf2 / rp2350.uf2   # prebuilt (mux, non-DSP) defaults
+└── build*/ dist/       # build trees / outputs (gitignored)
 ```
 
 ## What it does
@@ -33,9 +39,9 @@ then loops printing a `run> ` prompt and reading a line. `main.c`'s
 
 | Command | Handler | Purpose |
 |---|---|---|
-| `start acq` | `pulse_adc_trigger` | Fire the pulser + trigger an ADC/DMA acquisition |
-| `read` | `adc` | Dump the captured ADC samples |
-| `write dac <v>` | `dac` | Write the gain DAC (MCP4812) |
+| `start acq [pon] [poff] [damp]` | `start_acq_cmd` | Configure+arm shared pulser, capture 8000 samples |
+| `read` | `read_cmd` | Dump the captured 8000 ADC samples (hex) |
+| `write dac <v>` | `write_dac_cmd` | Write the gain DAC (MCP4812, spi1) |
 | `version` | `version_cmd` | Print version, changes, board/chip, mux, git hash, release URL |
 | `reboot-dfu` | `reboot_dfu_cmd` | Reboot into the USB bootloader (BOOTSEL) via `reset_usb_boot` |
 | `write mux <v>` | `max14866` | Write the MAX14866 mux word *(MUX builds only)* |
@@ -48,11 +54,13 @@ human-oriented `printf` text, not framed binary.
 
 ## Key constants
 
-- `adc/adc.h`: `PIN_BASE 0`, `SAMPLE_COUNT 8000`, `ADC_CLK 120 MHz`,
-  `PULSE_CLK 125 MHz`, pulser pins `GPIO11` & `GPIO16`, `DMA_TIMEOUT_MS 3000`.
+- `hw/u4rk.h`: `U4RK_SAMPLE_COUNT 4096` (FFT), `U4RK_RAW_SAMPLE_COUNT 8000`
+  (raw), sample rate 60 MHz; pins: ADC clk 0 / data 1–10, DAC CS/SCK/MOSI
+  13/14/15, pulser P+ 11 / P- 12 / PDAMP 16 / OE 17.
+- `hw/acquisition.c`: ADC PIO 120 MHz, pulse PIO 125 MHz, 8 ns tick (min 5),
+  2 ms DMA timeout.
 - `max/max14866.h`: SPI bit-bang pins `DIN 18`, `SCLK 19`, `LE 20`, `SET 21`,
-  `CLR 28`, `MAX14866_CLK 2 MHz`. (These are exactly the GPIOs the onboard_dsp
-  build leaves uninitialised.)
+  `CLR 28`, `MAX14866_CLK 2 MHz`.
 
 ## Build / flash
 
@@ -151,6 +159,11 @@ cd firmware && ./build.sh          # builds FOUR variants into firmware/dist/:
 - 2026-09-13: v0.1.7 — **P4a**: two-length acquisition — `read_raw` (8000 raw)
   / `read_fft` (4096 envelope); per-job sample_count threaded through
   acquisition/pipeline/dsp. Verified frame sizes on hardware.
+- 2026-09-13: v0.1.8 — **P4b**: unified HW drivers. Moved the USB-free
+  acquisition+pulser+spi1 DAC to `firmware/hw/` (shared by both builds); the
+  stdio build's `start acq`/`write dac`/`read` now use them (raw 8000). Retired
+  `adc/` (PIO pulser) and `max/dac.c` (PIO DAC). Verified on RP2350 hardware
+  (stdio: write dac, 8000-sample start acq + read).
 - 2026-09-13: v0.1.6 — **P3**: first runnable DSP build. `main_dsp.c` (raw
   TinyUSB command loop, selected under `if(DSP)`; stdio OFF) links `p0rk_dsp` +
   `usb_transport`/`usb_descriptors`; adds `version`/`reboot-dfu`/`write-set-clear
