@@ -8,6 +8,14 @@ This file and `version.yaml` are the version record — editing them does not
 itself trigger a version bump. Every firmware version bump must add an entry
 here (see `docs/claude/README.md`).
 
+## 0.1.11 — 2026-09-13
+- **Fix MUX/pulser PIO1 state-machine conflict (no-echo on MUX builds):**
+  `max14866_init` hardcoded PIO1 `sm0`, but the shared pulser
+  (`u4rk_acquisition_init`) claims PIO1 `sm0`/`sm1` first — so the mux init
+  clobbered the pulser drive SM and no transmit pulse fired (only digital
+  crosstalk, no echo). `max14866_init` now claims an unused SM. Confirmed on
+  hardware: nomux builds already echoed; this restores echoes on MUX builds.
+
 ## 0.1.10 — 2026-09-13
 - **Pulser fix (echo regression):** fire the bipolar pulse (both polarities
   back-to-back) **then** damp, matching the original stdio firmware (v0.1.0).

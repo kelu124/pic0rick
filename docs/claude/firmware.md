@@ -162,6 +162,11 @@ cd firmware && ./build.sh          # builds SIX variants into firmware/dist/:
 - 2026-09-13: v0.1.7 — **P4a**: two-length acquisition — `read_raw` (8000 raw)
   / `read_fft` (4096 envelope); per-job sample_count threaded through
   acquisition/pipeline/dsp. Verified frame sizes on hardware.
+- 2026-09-13: v0.1.11 — **fix MUX/pulser PIO1 SM conflict (the real no-echo
+  bug)**: `max14866_init` hardcoded pio1 sm0, clobbering the pulser drive SM
+  (pio1 sm0). Now claims an unused SM. Echoes restored on MUX builds — verified
+  vs the v0.1.1 baseline (`var[2000:3000]` 0.4 → ~52k at gain 300). **Watch out
+  for hardcoded PIO SM indices** now that pulser+mux share PIO1.
 - 2026-09-13: v0.1.10 — **pulser echo fix**: `hw/acquisition.c` `queue_pulse`
   now fires the bipolar pulse (both polarities back-to-back) **then** damps, as
   in v0.1.0. The shared `pulser.pio` path (P4b) had put PDAMP *between* the

@@ -7,6 +7,11 @@ finished. Each entry links to its commit log in `docs/claude/commits/`.
 
 ## 2026-09-13
 
+- **MUX/pulser PIO1 SM conflict fix — echoes restored (fw v0.1.11).**
+  `max14866_init` hardcoded pio1 sm0, clobbering the pulser drive SM; now claims
+  an unused SM. Verified on the user's piezo: mux build echo `var[2000:3000]`
+  0.4 → ~52k (matches v0.1.1 baseline). Root cause of the "no echo" report. See
+  `commits/2026-09-13-mux-pulser-sm-conflict-fix.md`.
 - **Pulser echo regression fix (fw v0.1.10).** `queue_pulse` now fires the
   bipolar pulse back-to-back then damps (was: damp between polarities, a P4b
   regression that killed echoes). Not OE (that's correct/active-high). Transmit

@@ -28,7 +28,10 @@ uint sm4;
 void max14866_init()
 {
     pio_max = pio1;
-    sm4 = 0;
+    // Claim an unused PIO1 SM instead of hardcoding sm0: the shared pulser
+    // (u4rk_acquisition_init) claims pio1 sm0/sm1 first, so a hardcoded sm0 here
+    // would clobber the pulser drive SM and kill the transmit pulse.
+    sm4 = pio_claim_unused_sm(pio_max, true);
     uint offset = pio_add_program(pio_max, &max14866_program);
     max14866_program_init(pio_max, sm4, offset, MAX14866_SPI_DIN, MAX14866_SPI_SCLK, MAX14866_CLK);
     gpio_init(MAX14866_SPI_LE);
