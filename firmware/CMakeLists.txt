@@ -48,10 +48,58 @@ if(NOT FW_VERSION)
     message(FATAL_ERROR "Could not parse 'version:' from version.yaml")
 endif()
 message(STATUS "pic0rick firmware version: ${FW_VERSION}")
+
+# ---- Board / chip string (PICO_BOARD: pico -> RP2040, pico2 -> RP2350) ----
+if(PICO_BOARD STREQUAL "pico2")
+    set(FW_CHIP "RP2350")
+elseif(PICO_BOARD STREQUAL "pico")
+    set(FW_CHIP "RP2040")
+else()
+    set(FW_CHIP "${PICO_BOARD}")
+endif()
+
+# ---- Release URL, derived from the git remote + fw-v<version> tag scheme ----
+execute_process(
+    COMMAND git config --get remote.origin.url
+    WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}
+    OUTPUT_VARIABLE _git_remote
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+    ERROR_QUIET
+)
+string(REGEX REPLACE "^git@github.com:" "" _slug "${_git_remote}")
+string(REGEX REPLACE "^https://github.com/" "" _slug "${_slug}")
+string(REGEX REPLACE "\\.git$" "" _slug "${_slug}")
+if(_slug MATCHES "^[^/]+/[^/]+$")
+    set(FW_RELEASE_URL "https://github.com/${_slug}/releases/tag/fw-v${FW_VERSION}")
+else()
+    set(FW_RELEASE_URL "n/a")
+endif()
+
 configure_file(
     ${CMAKE_CURRENT_LIST_DIR}/version.h.in
     ${CMAKE_CURRENT_BINARY_DIR}/generated/version.h
     @ONLY
+)
+
+# ---- Git build hash: version_git.h, regenerated on every build ----
+set(_git_hdr_out ${CMAKE_CURRENT_BINARY_DIR}/generated/version_git.h)
+# Generate once now so the header exists at configure time.
+execute_process(COMMAND ${CMAKE_COMMAND}
+    -DGIT_SRC_DIR=${CMAKE_CURRENT_LIST_DIR}
+    -DGIT_HDR_IN=${CMAKE_CURRENT_LIST_DIR}/version_git.h.in
+    -DGIT_HDR_OUT=${_git_hdr_out}
+    -P ${CMAKE_CURRENT_LIST_DIR}/cmake/git_version.cmake
+)
+# Refresh it on every build.
+add_custom_target(gen_git_version
+    COMMAND ${CMAKE_COMMAND}
+        -DGIT_SRC_DIR=${CMAKE_CURRENT_LIST_DIR}
+        -DGIT_HDR_IN=${CMAKE_CURRENT_LIST_DIR}/version_git.h.in
+        -DGIT_HDR_OUT=${_git_hdr_out}
+        -P ${CMAKE_CURRENT_LIST_DIR}/cmake/git_version.cmake
+    BYPRODUCTS ${_git_hdr_out}
+    COMMENT "Capturing git build hash"
+    VERBATIM
 )
 
 # ---- MUX (MAX14866 plug-in module board) toggle ----
@@ -64,6 +112,9 @@ add_executable(adc-pulse)
 
 pico_set_program_name(adc-pulse "adc-pulse")
 pico_set_program_version(adc-pulse "${FW_VERSION}")
+
+# Ensure the git hash header is refreshed before adc-pulse compiles.
+add_dependencies(adc-pulse gen_git_version)
 
 # Modify the below lines to enable/disable output over UART/USB
 pico_enable_stdio_uart(adc-pulse 0)

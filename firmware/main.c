@@ -4,6 +4,7 @@
 #include "adc/adc.h"
 #include "max/dac.h"
 #include "version.h"
+#include "version_git.h"
 #ifdef MUX
 #include "max/max14866.h"
 #endif
@@ -27,11 +28,14 @@ void version_cmd(const char *args)
 {
     printf("pic0rick firmware v%s\n", FW_VERSION);
     printf("changes: %s\n", FW_CHANGES);
+    printf("board:   %s (%s)\n", FW_BOARD, FW_CHIP);
 #ifdef MUX
-    printf("mux: enabled (MAX14866)\n");
+    printf("mux:     enabled (MAX14866)\n");
 #else
-    printf("mux: disabled\n");
+    printf("mux:     disabled\n");
 #endif
+    printf("build:   %s\n", FW_GIT_HASH);
+    printf("release: %s\n", FW_RELEASE_URL);
 }
 
 command_t command_list[] = {

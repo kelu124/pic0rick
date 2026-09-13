@@ -1,13 +1,18 @@
 //!
 //! \file       version.h
-//! \brief      Firmware version, generated from version.yaml by CMake.
-//!             DO NOT EDIT the generated version.h; edit version.yaml instead.
+//! \brief      Firmware version + build metadata, generated from version.yaml
+//!             and the CMake build config. DO NOT EDIT the generated version.h;
+//!             edit version.yaml (version/changes) instead. The git hash lives
+//!             in the separately (build-time) generated version_git.h.
 //!
 
 #ifndef VERSION_H
 #define VERSION_H
 
-#define FW_VERSION "@FW_VERSION@"
-#define FW_CHANGES "@FW_CHANGES@"
+#define FW_VERSION     "@FW_VERSION@"
+#define FW_CHANGES     "@FW_CHANGES@"
+#define FW_BOARD       "@PICO_BOARD@"
+#define FW_CHIP        "@FW_CHIP@"
+#define FW_RELEASE_URL "@FW_RELEASE_URL@"
 
 #endif

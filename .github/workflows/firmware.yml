@@ -47,18 +47,31 @@ jobs:
           cd firmware
           ./build.sh
 
-      - name: Read firmware version
+      - name: Read versions
         id: fw
         run: |
-          v=$(grep -E '^version:' firmware/version.yaml | sed -E 's/version:[[:space:]]*"?([0-9.]+)"?.*/\1/')
-          c=$(grep -E '^changes:' firmware/version.yaml | sed -E 's/changes:[[:space:]]*"(.*)"[[:space:]]*$/\1/')
-          echo "version=$v" >> "$GITHUB_OUTPUT"
+          read_yaml() {  # $1 = yaml path, $2 = key
+            grep -E "^$2:" "$1" | sed -E "s/$2:[[:space:]]*\"?(.*[^\"])\"?[[:space:]]*$/\1/"
+          }
+          fw_v=$(read_yaml firmware/version.yaml version)
+          fw_c=$(read_yaml firmware/version.yaml changes)
+          py_v=$(read_yaml python/pic0rick/version.yaml version)
+          py_c=$(read_yaml python/pic0rick/version.yaml changes)
+          echo "version=$fw_v" >> "$GITHUB_OUTPUT"
+          echo "Firmware v$fw_v / Python v$py_v"
+          # Compose the release body (firmware + python) into a file.
           {
-            echo "changes<<__EOF__"
-            echo "$c"
-            echo "__EOF__"
-          } >> "$GITHUB_OUTPUT"
-          echo "Firmware version: $v"
+            echo "**firmware v$fw_v · python library v$py_v**"
+            echo ""
+            echo "### Firmware changes"
+            echo "$fw_c"
+            echo ""
+            echo "### Python library changes"
+            echo "$py_c"
+            echo ""
+            echo "Artifacts: rp2040/rp2350 × mux/nomux \`.uf2\`."
+          } > release_body.md
+          cat release_body.md
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
@@ -85,5 +98,5 @@ jobs:
         with:
           tag_name: fw-v${{ steps.fw.outputs.version }}
           name: firmware v${{ steps.fw.outputs.version }}
-          body: ${{ steps.fw.outputs.changes }}
+          body_path: release_body.md
           files: firmware/dist/*.uf2

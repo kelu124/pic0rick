@@ -1,0 +1,12 @@
+//!
+//! \file       version_git.h
+//! \brief      Git build hash, regenerated on EVERY build by
+//!             cmake/git_version.cmake. Do not edit.
+//!
+
+#ifndef VERSION_GIT_H
+#define VERSION_GIT_H
+
+#define FW_GIT_HASH "@FW_GIT_HASH@"
+
+#endif
