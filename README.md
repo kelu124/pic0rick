@@ -31,6 +31,16 @@ I _know_ the PMODs aren't strictly speaking PMODs, I needed to have 5V facility 
 
 And if you want to discuss the project - [meet us on our chat](https://matrix.to/#/!dEbJSiragnEvzVBdUa:matrix.org?via=matrix.org).
 
+# Repository layout
+
+| Path | Contents |
+|------|----------|
+| `firmware/` | The unified RP2040/RP2350 firmware (CMake project `adc-pulse`). One source tree with `-DMUX` / `-DDSP` build options. `hw/` = shared acquisition + pulser + spi1 DAC; `dsp/` = RP2350 DSP (CMSIS-DSP Hilbert envelope + binary protocol); `max/` = MAX14866 mux. `version.yaml` + `CHANGELOG.md` track the firmware version; `build.sh` builds all 6 variants into `dist/`. |
+| `python/` | Host stack (`pic0rick` package): `device.py` (serial driver), `dsp.py` (binary frame protocol), `ndt_acquisition.py` (echo/thickness analysis + HDF5), and the `example_*.ipynb` notebooks. |
+| `hardware/` | KiCad design files and `build.sh` fabrication outputs — main board (`adc/`), pulser + HV (`pulser/`), MUX (`mux/`), VGA (`vga/`), PSRAM (`psram/`). |
+| `docs/` | Documentation: `dsp_output_formats.md`, `dsp_test_guide.md`, `images/`, `data/`, `fw_history/` (maintainer-curated reference `.uf2` baselines), and `claude/` (cross-session engineering notes). |
+| `.github/workflows/` | CI: builds all firmware variants and publishes a release on push to `main`. |
+
 # Getting Started
 
 ## Prerequisites
@@ -72,21 +82,35 @@ Clone this repo and add `python/` to your path, or run notebooks from the `pytho
 
 ## Quick start
 
+The examples below target the **DSP build** (`-DDSP`, RP2350) — the recommended
+firmware, which streams CRC-checked binary frames. For the plain **stdio build**
+see [Serial commands](#serial-commands-stdio--non-dsp-build).
+
 ```python
 from pic0rick.device import Pic0rick
 from pic0rick.ndt_acquisition import UltrasonicAcquisition
 
-probe = Pic0rick()           # auto-detects USB serial port
+probe = Pic0rick()           # auto-detects the USB serial port
+print(probe.version()['raw'])
 
 # Set TGC gain (raw DAC value 0–1023; higher = more gain)
-probe.dac(300)
+probe.set_gain(300)
 
-# Trigger a pulse and read 8000 samples at 60 Msps
-probe.pulse_adc_trigger(pon=70, poff=70, damp=6000)
-raw = probe.read()
+# Configure and arm the pulser so the capture transmits
+probe.configure_pulse(negative_ns=200, damp_ns=2000, positive_ns=200,
+                      order="pos-first")
+probe.arm_pulser()
+
+frame = probe.read_raw()     # 8000-sample raw ADC frame (CRC-checked)
+signal = frame.samples()     # numpy uint16, 0..1023
+# envelope = probe.read_fft().samples()   # 4096-sample Hilbert envelope
+probe.disarm_pulser()
 ```
 
-Or use the higher-level acquisition wrapper:
+> On the **stdio (non-DSP)** build instead use `probe.dac(gain)`,
+> `probe.pulse_adc_trigger(pon, poff, damp)`, `probe.read()`.
+
+Or use the higher-level acquisition wrapper (drives the DSP build for you):
 
 ```python
 acq = UltrasonicAcquisition.from_probe(
@@ -101,20 +125,23 @@ acq = UltrasonicAcquisition.from_probe(
 acq.plot()
 ```
 
-## Serial command reference
+## Serial commands (stdio / non-DSP build)
 
-The firmware exposes a text protocol at 115,200 baud (USB CDC):
+The stdio build exposes a text protocol at 115,200 baud (USB CDC), with a `run>`
+prompt:
 
 | Command | Arguments | Description |
 |---------|-----------|-------------|
 | `start acq <pon> <poff> <damp>` | nanoseconds | Fire pulse, DMA-capture 8000 samples |
 | `write dac <N>` | 0–1023 | Set TGC gain (MCP4812 10-bit DAC) |
-| `write mux <N>` | bitmask | Write MAX14866 multiplexer register |
-| `set mux <N>` | channel | Enable a multiplexer channel |
-| `clear mux <N>` | channel | Disable a multiplexer channel |
-| `read` | — | Return last captured buffer (hex, one 10-bit value per line) |
+| `read` | — | Return last captured buffer (hex, comma-separated 10-bit values) |
+| `write mux <hex>` | hex word | Write the MAX14866 shift register *(MUX builds)* |
+| `set mux` / `clear mux` | — | Pulse the MAX14866 SET / CLR line *(MUX builds)* |
 | `version` | — | Print firmware version, board/chip, options, git hash, release URL |
 | `reboot-dfu` | — | Reboot into the USB bootloader (BOOTSEL) for reflashing |
+
+> The **DSP build** uses different commands (`dac write`, `read_raw`, `read_fft`,
+> …) and a binary protocol — see [DSP build](#dsp-build-rp2350).
 
 ### Parameter details
 
@@ -131,17 +158,24 @@ protocol (64-byte header + CRC32) with two capture modes:
 - **`read_raw`** — 8000 raw ADC samples (no FFT).
 - **`read_fft`** — 4096-sample Hilbert envelope.
 
-plus `acq raw|envelope|alaw`, `stream`, `dsp scale|selftest`, `pulser`,
-`status`, `version`, `reboot-dfu`. Drive it from Python with `pic0rick.dsp` and
-`Pic0rick.status()/read_fft()/read_raw()/capture()`. The frame and status
-formats are documented in [`docs/dsp_output_formats.md`](docs/dsp_output_formats.md).
+plus `acq raw|envelope|alaw`, `stream start|stop`, `dsp scale|selftest`,
+`dac write <0..1023>`, `pulse config <neg_ns> <damp_ns> <pos_ns> <neg-first|pos-first>`,
+`pulser arm|disarm`, `status`, `help`, `version`, `reboot-dfu`.
+
+Drive it from Python with `pic0rick.dsp` and these `Pic0rick` methods:
+`version()`, `status()`, `set_gain(n)`, `configure_pulse(...)`,
+`arm_pulser()`/`disarm_pulser()`, `read_raw()`, `read_fft()`, `capture(payload)`.
+The frame and status formats are documented in
+[`docs/dsp_output_formats.md`](docs/dsp_output_formats.md); see
+[`docs/dsp_test_guide.md`](docs/dsp_test_guide.md) and the
+`python/example_dsp.ipynb` / `python/example_simple.ipynb` notebooks.
 
 ## Signal chain
 
 ```
 Transducer
    │
-   ├──► TX path: RP2040 PIO GPIO11/GPIO16 → MD1210 + TC6320 → ±25V three-level pulse
+   ├──► TX path: PIO pulser GPIO11/12 (P+/P-) + GPIO16/17 (PDAMP/OE) → MD1213 + TC6320 → ±25V three-level pulse
    │
    └──► RX path: T/R protection → AD8331 TGC (gain set by MCP4812 DAC)
                   → 60 Msps 10-bit ADC (PIO + DMA, 8000 samples/acquisition)

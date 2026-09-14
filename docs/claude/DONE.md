@@ -7,6 +7,11 @@ finished. Each entry links to its commit log in `docs/claude/commits/`.
 
 ## 2026-09-14
 
+- **README refresh (on main).** Quick start + command tables updated for the DSP
+  build (stdio commands no longer the default), pulser pins fixed, Repository
+  layout table added. API references verified against code. See
+  `commits/2026-09-14-readme-refresh.md`.
+
 - **example_simple + ndt_acquisition on the DSP CLI (py v0.1.8).** New
   `Pic0rick.set_gain/configure_pulse/arm_pulser/disarm_pulser`; `example_simple.ipynb`
   and `ndt_acquisition.from_probe()` now use `read_raw` (binary) instead of the
