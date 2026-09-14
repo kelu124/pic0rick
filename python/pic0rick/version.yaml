@@ -7,5 +7,5 @@
 #
 # `changes` is a short, single-line, double-quoted summary of what changed vs
 # the previous version. Exposed as pic0rick.__changes__.
-version: "0.1.7"
-changes: "Rework example_dsp.ipynb: pulser armed from the start; add A-law capture + decode-vs-envelope plot; DSP self-test; pulser-order check; per-capture file saving (captures/<name>/<payload>.npy + header.json + status.txt). Add dsp.SELFTEST_NAMES."
+version: "0.1.8"
+changes: "Migrate example_simple.ipynb and ndt_acquisition.from_probe() to the DSP-build CLI: new Pic0rick.set_gain()/configure_pulse()/arm_pulser()/disarm_pulser() + read_raw() (binary frame) replace the stdio dac/pulse_adc_trigger/read text path."

@@ -7,11 +7,16 @@ estimate thickness, and store to HDF5. Full user-facing description lives in
 
 ## What targets what (important)
 
-`python/` speaks to the **mainline `adc-pulse` firmware** (repo-root
-`firmware/`) via its **text** commands `write dac` / `start acq` / `read`. It is
-The DSP (`-DDSP`) firmware's binary framed protocol is handled by
-`pic0rick/dsp.py` + `Pic0rick.status()/capture()/read_fft()/read_raw()` (added
-2026-09-13 when the onboard_dsp experiment was folded into the mainline tree).
+`python/` drives the unified `firmware/` in two ways:
+- **stdio (non-DSP) build:** text commands `write dac` / `start acq` / `read`
+  via `Pic0rick.dac()` / `pulse_adc_trigger()` / `read()`.
+- **DSP (`-DDSP`) build:** binary framed protocol via `pic0rick/dsp.py` +
+  `Pic0rick.status()/capture()/read_fft()/read_raw()` and the gain/pulse helpers
+  `set_gain()/configure_pulse()/arm_pulser()/disarm_pulser()`.
+
+As of 2026-09-14 `example_simple.ipynb` and `ndt_acquisition.from_probe()` use
+the **DSP-build** path (`set_gain` + `configure_pulse` + `arm_pulser` +
+`read_raw`).
 
 ## Files
 
@@ -28,6 +33,9 @@ The DSP (`-DDSP`) firmware's binary framed protocol is handled by
   - `version()` sends the firmware `version` command and parses the reply into a
     dict (`version`, `changes`, `board`, `chip`, `mux`, `mux_enabled`, `build`,
     `release`, `raw`); tolerates REPL echo/prompt lines.
+  - **DSP-build gain/pulse helpers:** `set_gain(n)` (`dac write`),
+    `configure_pulse(neg,damp,pos,order)`, `arm_pulser()`, `disarm_pulser()` —
+    used by `example_simple.ipynb` and `ndt_acquisition.from_probe()`.
 - `pic0rick/ndt_acquisition.py` — the real logic. `UltrasonicAcquisition`
   dataclass + `from_probe`, `detect_echoes`, `calibrate`, `amplitude`, `plot`,
   `info`, and HDF5 `save_h5`/`load_h5`. Hardware import is **lazy** (`get_probe`)
@@ -40,9 +48,10 @@ The DSP (`-DDSP`) firmware's binary framed protocol is handled by
 
 ## Notable details
 
-- Signal decode in `from_probe`: `read()` returns comma-separated **hex** ADC
-  codes; it parses the 3rd serial line (`C[2]`), maps each to
-  `(int(code,16) - 512) / 512.0` → normalized `[-1, 1]` float32.
+- Signal decode in `from_probe` (2026-09-14): uses the DSP build — `set_gain`,
+  `configure_pulse(negative_ns=poff, damp_ns=damp, positive_ns=pon, pos-first)`,
+  `arm_pulser`, then `read_raw()` → `frame.samples()` (uint16 0..1023), mapped to
+  `(x - 512) / 512` → normalized `[-1, 1]` float32 (8000 samples).
 - HDF5 dedup key: `(gain, pon, poff, damp, target, piezo_id)`. A cache hit in
   `from_probe(h5_path=...)` skips the hardware unless `overwrite=True`.
 - Notebooks read `../docs/data/calibration_block_5steps_1018steel.h5`.

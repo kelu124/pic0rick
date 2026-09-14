@@ -202,3 +202,30 @@ class Pic0rick:
         """One-shot 8000-sample raw ADC capture as a frame (DSP firmware)."""
         return self.capture("raw")
 
+    def set_gain(self, value):
+        """Set the TGC gain DAC, 0..1023 (DSP build: `dac write <n>`).
+
+        (The stdio build uses `write dac`, i.e. `Pic0rick.dac()`.)
+        """
+        self.ser.write(("dac write %d\n" % int(value)).encode("ascii"))
+        return self.sread()
+
+    def configure_pulse(self, negative_ns, damp_ns, positive_ns,
+                        order="pos-first"):
+        """Configure the pulser (DSP build: `pulse config ...`)."""
+        self.ser.write(
+            ("pulse config %d %d %d %s\n"
+             % (int(negative_ns), int(damp_ns), int(positive_ns), order))
+            .encode("ascii"))
+        return self.sread()
+
+    def arm_pulser(self):
+        """Arm the pulser so the next capture transmits (DSP build)."""
+        self.ser.write(b"pulser arm\n")
+        return self.sread()
+
+    def disarm_pulser(self):
+        """Disarm the pulser (DSP build)."""
+        self.ser.write(b"pulser disarm\n")
+        return self.sread()
+

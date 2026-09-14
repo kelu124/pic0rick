@@ -7,6 +7,12 @@ finished. Each entry links to its commit log in `docs/claude/commits/`.
 
 ## 2026-09-14
 
+- **example_simple + ndt_acquisition on the DSP CLI (py v0.1.8).** New
+  `Pic0rick.set_gain/configure_pulse/arm_pulser/disarm_pulser`; `example_simple.ipynb`
+  and `ndt_acquisition.from_probe()` now use `read_raw` (binary) instead of the
+  stdio hex path. Hardware-verified (from_probe echoes present). See
+  `commits/2026-09-14-example-simple-ndt-dsp-cli.md`.
+
 - **example_dsp.ipynb: A-law + self-test + file saving, armed from start (py v0.1.7).**
   A-law decode-vs-envelope plot, DSP self-test summary, pulser-order check,
   per-capture saving to `captures/<name>/`. Hardware-verified. See
