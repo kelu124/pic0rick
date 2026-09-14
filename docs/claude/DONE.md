@@ -108,6 +108,11 @@ finished. Each entry links to its commit log in `docs/claude/commits/`.
 
 ## 2026-09-12
 
+- **hardware: panel_adc_pulser_hv board.** Registered the new
+  `panel_adc_pulser_hv` board (`3_in_1_Panel`) in `hardware/build.sh` and
+  generated its JLCPCB production outputs. See
+  `commits/2026-09-14-hardware-panel-adc-pulser-hv.md`.
+
 - **Firmware↔Python command parity.** Audited the 6 firmware serial commands
   against `python/pic0rick`; added the 3 missing MUX methods (`write_mux`,
   `set_mux`, `clear_mux`) to `Pic0rick`. See
