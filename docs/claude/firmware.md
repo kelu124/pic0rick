@@ -1,27 +1,32 @@
 # firmware/ (root) — working notes
 
-Scope: the repo-root **`firmware/`** folder. This is the **original / mainline**
-pic0rick Pico firmware — CMake project **`adc-pulse`**, version `0.1`, authored by
-Abdelrahman Ali. Do **not** confuse it with `experiments/onboard_dsp/firmware/`
-(the newer RP2350A envelope/A-law DSP build). Key difference at a glance: this
-mainline build **uses the MAX14866** HV mux; the onboard_dsp experiment
-deliberately drops it.
+Scope: the repo-root **`firmware/`** folder — the **unified** pic0rick Pico
+firmware (CMake project `adc-pulse`). One tree with build variants: `-DMUX`
+(MAX14866 mux, default on) and `-DDSP` (RP2350 Hilbert-envelope DSP + binary
+protocol, off by default). The former `experiments/onboard_dsp/` firmware was
+merged in here on 2026-09-13 (see `onboard-dsp-firmware.md`).
 
 ## First-glance layout
 
 ```
 firmware/
-├── main.c              # tiny USB-stdio REPL + command dispatch
-├── CMakeLists.txt      # project adc-pulse; PICO_BOARD default = pico (rp2040)
-├── build.sh            # builds BOTH rp2040 and rp2350 targets
-├── pico_sdk_import.cmake
-├── adc/                # ADC capture over PIO + DMA, and the pulser
-│   ├── adc.c / adc.h / adc.pio
+├── main.c              # stdio REPL (non-DSP builds) + command dispatch
+├── main_dsp.c          # raw-TinyUSB command loop (-DDSP builds)
+├── CMakeLists.txt      # project adc-pulse; -DDSP / -DMUX / PICO_BOARD toggles
+├── build.sh            # builds all 4 non-DSP variants into dist/
+├── version.yaml        # single source of truth for the version
+├── hw/                 # SHARED, USB-free drivers (both builds)
+│   ├── acquisition.c/.h/.pio   # ADC capture + pulser (u4rk_*)
+│   ├── pulser.pio              # 4-pin pulser (P+/P-/PDAMP/OE)
+│   ├── dac.c/.h                # spi1 MCP4812 gain DAC (u4rk_dac_*)
+│   └── u4rk.h                  # pins, sample counts, protocol structs
+├── dsp/                # DSP-only (-DDSP): dsp/pipeline/protocol + raw TinyUSB
+│   ├── dsp.c/.h pipeline.c/.h protocol.c/.h
+│   └── usb_transport.* usb_descriptors.c tusb_config.h
 ├── max/                # MAX14866 HV mux driver (SPI bit-bang via PIO)
 │   ├── max14866.c / max14866.h / max14866.pio
-├── rp2040.uf2          # prebuilt (Pico / RP2040)
-├── rp2350.uf2          # prebuilt (Pico 2 / RP2350)
-└── build2040/ build2350/   # build trees (gitignored)
+├── rp2040.uf2 / rp2350.uf2   # prebuilt (mux, non-DSP) defaults
+└── build*/ dist/       # build trees / outputs (gitignored)
 ```
 
 ## What it does
@@ -33,10 +38,11 @@ then loops printing a `run> ` prompt and reading a line. `main.c`'s
 
 | Command | Handler | Purpose |
 |---|---|---|
-| `start acq` | `pulse_adc_trigger` | Fire the pulser + trigger an ADC/DMA acquisition |
-| `read` | `adc` | Dump the captured ADC samples |
-| `write dac <v>` | `dac` | Write the gain DAC (MCP4812) |
+| `start acq [pon] [poff] [damp]` | `start_acq_cmd` | Configure+arm shared pulser, capture 8000 samples |
+| `read` | `read_cmd` | Dump the captured 8000 ADC samples (hex) |
+| `write dac <v>` | `write_dac_cmd` | Write the gain DAC (MCP4812, spi1) |
 | `version` | `version_cmd` | Print version, changes, board/chip, mux, git hash, release URL |
+| `reboot-dfu` | `reboot_dfu_cmd` | Reboot into the USB bootloader (BOOTSEL) via `reset_usb_boot` |
 | `write mux <v>` | `max14866` | Write the MAX14866 mux word *(MUX builds only)* |
 | `set mux` | `max14866_set` | MAX14866 SET *(MUX builds only)* |
 | `clear mux` | `max14866_clear` | MAX14866 CLEAR *(MUX builds only)* |
@@ -47,22 +53,27 @@ human-oriented `printf` text, not framed binary.
 
 ## Key constants
 
-- `adc/adc.h`: `PIN_BASE 0`, `SAMPLE_COUNT 8000`, `ADC_CLK 120 MHz`,
-  `PULSE_CLK 125 MHz`, pulser pins `GPIO11` & `GPIO16`, `DMA_TIMEOUT_MS 3000`.
+- `hw/u4rk.h`: `U4RK_SAMPLE_COUNT 4096` (FFT), `U4RK_RAW_SAMPLE_COUNT 8000`
+  (raw), sample rate 60 MHz; pins: ADC clk 0 / data 1–10, DAC CS/SCK/MOSI
+  13/14/15, pulser P+ 11 / P- 12 / PDAMP 16 / OE 17.
+- `hw/acquisition.c`: ADC PIO 120 MHz, pulse PIO 125 MHz, 8 ns tick (min 5),
+  2 ms DMA timeout.
 - `max/max14866.h`: SPI bit-bang pins `DIN 18`, `SCLK 19`, `LE 20`, `SET 21`,
-  `CLR 28`, `MAX14866_CLK 2 MHz`. (These are exactly the GPIOs the onboard_dsp
-  build leaves uninitialised.)
+  `CLR 28`, `MAX14866_CLK 2 MHz`.
 
 ## Build / flash
 
 ```
-cd firmware && ./build.sh          # builds FOUR variants into firmware/dist/:
-#   rp2040-mux, rp2040-nomux, rp2350-mux, rp2350-nomux
-#   + copies the two mux builds to rp2040.uf2 / rp2350.uf2 (historical names)
+cd firmware && ./build.sh          # builds SIX variants into firmware/dist/:
+#   rp2040-mux, rp2040-nomux, rp2350-mux, rp2350-nomux    (stdio / non-DSP)
+#   rp2350-mux-dsp, rp2350-nomux-dsp                      (raw-TinyUSB DSP)
+#   + copies the two rp2350/rp2040 mux non-DSP builds to rp2040.uf2 / rp2350.uf2
+# DSP builds share one CMSIS-DSP clone in firmware/.deps (gitignored).
 ```
-- SDK **2.2.0**, toolchain **14_2_Rel1** (per CMakeLists; note onboard_dsp uses
-  the newer SDK 2.3.0). SDK resolved via the pico-vscode cmake include, else
-  `PICO_SDK_PATH` (that's what CI uses).
+- SDK **2.3.0**, toolchain **14_2_Rel1** (per CMakeLists; bumped from 2.2.0 in
+  fw v0.1.3 on the unify branch — needed for the onboard-DSP/CMSIS-DSP merge).
+  SDK resolved via the pico-vscode cmake include, else `PICO_SDK_PATH` (that's
+  what CI uses; the workflow checks out pico-sdk `2.3.0`).
 - `PICO_BOARD` defaults to `pico` (RP2040) if not passed.
 - **`-DMUX=ON` (default) / `-DMUX=OFF`** toggles the MAX14866 mux module. It
   gates `max/max14866.c` in/out of the build and defines/undefines `MUX`, which
@@ -70,6 +81,9 @@ cd firmware && ./build.sh          # builds FOUR variants into firmware/dist/:
   `max14866_init()` call. The gain DAC lives in `max/dac.c` and is **always**
   built (it reuses the `max14866.pio` SPI-shifter program, always generated).
 - To build just one: `cmake -B build2350 -DPICO_BOARD=pico2 -DMUX=OFF && cmake --build build2350`.
+- **`-DDSP=ON`** (RP2350/`pico2` only; guarded with a FATAL_ERROR otherwise)
+  enables the onboard-DSP feature set. As of P1 it only sets up the option +
+  CMSIS-DSP (`cmsisdsp_p0rk` static lib); firmware sources land in later phases.
 
 ## Versioning & CI
 
@@ -102,16 +116,18 @@ cd firmware && ./build.sh          # builds FOUR variants into firmware/dist/:
   If a `firmware/.env` reappears, it's a local-only secret — do not commit it.
 - Two prebuilt UF2s (`rp2040.uf2`, `rp2350.uf2`) — pick by target board. These
   are the **mux** builds; nomux variants come from CI releases / `dist/`.
-- There is a `version` command now (see Versioning above); still **no**
-  `status`/`help` handshake like onboard_dsp. No host-side capture tool lives
-  with it.
+- There is a `version` command now (see Versioning above); the stdio build has
+  **no** `status`/`help` handshake (those live in the DSP build's `main_dsp.c`).
 
-## Relationship to other firmware
+## The two build flavours (one tree)
 
-- `experiments/onboard_dsp/firmware/` — see `onboard-dsp-firmware.md`. Newer,
-  RP2350A-only, binary framed protocol, real-FFT Hilbert envelope, no MAX14866,
-  its own `status` line (documented in
-  `experiments/onboard_dsp/understanding_figures.md`).
+- **stdio / non-DSP** (`main.c`): text REPL over SDK `stdio_usb`; RP2040 or
+  RP2350. `start acq` / `write dac` / `read` (raw 8000).
+- **DSP** (`main_dsp.c`, `-DDSP`, RP2350 only): raw-TinyUSB command loop with the
+  binary framed protocol + Hilbert envelope; adds `read_fft` (4096), `read_raw`
+  (8000), `acq`/`stream`/`dsp`/`status`. Frame/status formats:
+  `docs/dsp_output_formats.md`. Host side: `pic0rick.dsp` (see
+  `python-host-tools.md`).
 
 ## Work log
 
@@ -128,3 +144,46 @@ cd firmware && ./build.sh          # builds FOUR variants into firmware/dist/:
   `-dirty` when firmware/ is dirty) and the derived release URL. CI release body
   now lists both firmware + python versions. Verified generated headers per
   variant.
+- 2026-09-13: v0.1.2 — added `reboot-dfu` (reset_usb_boot → BOOTSEL; links
+  `pico_bootrom`). **Flashed + tested on real RP2350A/Pico 2 W hardware**:
+  `version` and the flash→run→`reboot-dfu`→BOOTSEL loop confirmed. See
+  `hardware-testing.md`. (On branch `feature/unify-firmware-dsp`.)
+- 2026-09-13: v0.1.3 — **P0 of the unify plan**: SDK 2.2.0→2.3.0 (CMakeLists +
+  CI workflow ref). All 4 variants build; flashed rp2350 to hardware via the
+  reboot-dfu loop and confirmed v0.1.3 runs. Toolchain kept at 14_2_Rel1 (the
+  one installed; onboard_dsp nominally used 15_2 but 14_2 builds SDK 2.3.0 fine).
+- 2026-09-13: v0.1.4 — **P1**: `-DDSP` option scaffolding (pico2-guarded) +
+  CMSIS-DSP `cmsisdsp_p0rk` lib. No firmware sources yet; default builds
+  unchanged. Verified guard + CMSIS-DSP fetch/build.
+- 2026-09-13: v0.1.5 — **P2**: landed onboard-DSP modules in `firmware/dsp/`;
+  built the USB-free set as the `p0rk_dsp` static lib (under `if(DSP)`). USB
+  transport files copied but not compiled (P3). Default builds unchanged;
+  `libp0rk_dsp.a` verified.
+- 2026-09-13: v0.1.7 — **P4a**: two-length acquisition — `read_raw` (8000 raw)
+  / `read_fft` (4096 envelope); per-job sample_count threaded through
+  acquisition/pipeline/dsp. Verified frame sizes on hardware.
+- 2026-09-13: v0.1.11 — **fix MUX/pulser PIO1 SM conflict (the real no-echo
+  bug)**: `max14866_init` hardcoded pio1 sm0, clobbering the pulser drive SM
+  (pio1 sm0). Now claims an unused SM. Echoes restored on MUX builds — verified
+  vs the v0.1.1 baseline (`var[2000:3000]` 0.4 → ~52k at gain 300). **Watch out
+  for hardcoded PIO SM indices** now that pulser+mux share PIO1.
+- 2026-09-13: v0.1.10 — **pulser echo fix**: `hw/acquisition.c` `queue_pulse`
+  now fires the bipolar pulse (both polarities back-to-back) **then** damps, as
+  in v0.1.0. The shared `pulser.pio` path (P4b) had put PDAMP *between* the
+  polarities, splitting the excitation (regression — user lost echoes). Transmit
+  confirmed strong on hardware (~200 counts at sample ~31); echo-vs-target
+  confirmation is up to the user's setup.
+- 2026-09-13: v0.1.9 — **P6**: `build.sh` builds all 6 variants (adds the two
+  rp2350 DSP builds) into `dist/`, sharing one CMSIS-DSP cache (`firmware/.deps`);
+  CI caches it and builds/releases all 6.
+- 2026-09-13: v0.1.8 — **P4b**: unified HW drivers. Moved the USB-free
+  acquisition+pulser+spi1 DAC to `firmware/hw/` (shared by both builds); the
+  stdio build's `start acq`/`write dac`/`read` now use them (raw 8000). Retired
+  `adc/` (PIO pulser) and `max/dac.c` (PIO DAC). Verified on RP2350 hardware
+  (stdio: write dac, 8000-sample start acq + read).
+- 2026-09-13: v0.1.6 — **P3**: first runnable DSP build. `main_dsp.c` (raw
+  TinyUSB command loop, selected under `if(DSP)`; stdio OFF) links `p0rk_dsp` +
+  `usb_transport`/`usb_descriptors`; adds `version`/`reboot-dfu`/`write-set-clear
+  mux`. Non-DSP `main.c` unchanged. **Tested on RP2350A hardware**:
+  version/help/status + `acq raw` (8256-byte frame) all good. See
+  `hardware-testing.md` (DSP CDC = raw TinyUSB, OK/ERR text + binary frames).

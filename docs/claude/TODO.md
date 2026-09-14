@@ -67,6 +67,14 @@ discoveries logged since.
 
 ## Discoveries (logged by Claude)
 
+- [x] **[claude]** DSP **test guide** (`docs/dsp_test_guide.md`) and `python/`
+  example (`python/example_dsp.py`) rewritten against the new API and
+  hardware-tested (2026-09-13). *(A notebook version could still be added if the
+  maintainer prefers one over the script.)*
+- [ ] **[claude]** Optional: port the old capture tool's CLI (self-test
+  validation, `save_frames`) onto `pic0rick.dsp` if a standalone DSP capture CLI
+  is wanted (2026-09-13).
+
 - [ ] **[mixed]** MUX not wired into the high-level acquisition flow.
   `device.py` now exposes `write_mux` / `set_mux` / `clear_mux`, but
   `ndt_acquisition.py` (`UltrasonicAcquisition`) never selects a mux channel.

@@ -1,1 +1,0 @@
-OK board=pic0rick package=RP2350A firmware=1.6 dsp_backend=f32-rfft-hilbert samples=4096 sample_rate=60000000 pulser=disarmed pulse=96/6000/96/pos-first dac=1023 scale=512.000 stream=off/1 drops=0 stages_us=538/4392/137/4751/1066/689 dsp_us=11579 worst_us=12069 performance=over-budget envelope_max_rate=50 alaw_max_rate=70 cmsis=1.17.0

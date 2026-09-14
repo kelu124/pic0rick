@@ -8,5 +8,5 @@
 # `changes` is a short, single-line, double-quoted summary of what changed vs
 # the previous version. It is embedded in the binary (the `version` CLI command)
 # and used as the GitHub release body by .github/workflows/firmware.yml.
-version: "0.1.1"
-changes: "`version` command now also reports board/chip, MUX state, the git build hash (with -dirty) and the GitHub release URL. CI release notes list both firmware and python library versions."
+version: "0.1.11"
+changes: "Fix MUX/pulser PIO1 conflict: max14866_init hardcoded sm0, clobbering the pulser drive SM (pio1 sm0) claimed by the acquisition -- so MUX builds produced no transmit pulse / no echo. Now claims an unused SM. Restores echoes on MUX builds."

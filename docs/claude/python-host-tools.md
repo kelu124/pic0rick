@@ -7,11 +7,16 @@ estimate thickness, and store to HDF5. Full user-facing description lives in
 
 ## What targets what (important)
 
-`python/` speaks to the **mainline `adc-pulse` firmware** (repo-root
-`firmware/`) via its **text** commands `write dac` / `start acq` / `read`. It is
-**not** the onboard_dsp stack — that firmware uses a binary framed protocol and
-ships its own host tool (`experiments/onboard_dsp/tools/pic0rick_capture.py`).
-Two independent host paths coexist; don't cross-wire them.
+`python/` drives the unified `firmware/` in two ways:
+- **stdio (non-DSP) build:** text commands `write dac` / `start acq` / `read`
+  via `Pic0rick.dac()` / `pulse_adc_trigger()` / `read()`.
+- **DSP (`-DDSP`) build:** binary framed protocol via `pic0rick/dsp.py` +
+  `Pic0rick.status()/capture()/read_fft()/read_raw()` and the gain/pulse helpers
+  `set_gain()/configure_pulse()/arm_pulser()/disarm_pulser()`.
+
+As of 2026-09-14 `example_simple.ipynb` and `ndt_acquisition.from_probe()` use
+the **DSP-build** path (`set_gain` + `configure_pulse` + `arm_pulser` +
+`read_raw`).
 
 ## Files
 
@@ -28,6 +33,9 @@ Two independent host paths coexist; don't cross-wire them.
   - `version()` sends the firmware `version` command and parses the reply into a
     dict (`version`, `changes`, `board`, `chip`, `mux`, `mux_enabled`, `build`,
     `release`, `raw`); tolerates REPL echo/prompt lines.
+  - **DSP-build gain/pulse helpers:** `set_gain(n)` (`dac write`),
+    `configure_pulse(neg,damp,pos,order)`, `arm_pulser()`, `disarm_pulser()` —
+    used by `example_simple.ipynb` and `ndt_acquisition.from_probe()`.
 - `pic0rick/ndt_acquisition.py` — the real logic. `UltrasonicAcquisition`
   dataclass + `from_probe`, `detect_echoes`, `calibrate`, `amplitude`, `plot`,
   `info`, and HDF5 `save_h5`/`load_h5`. Hardware import is **lazy** (`get_probe`)
@@ -40,9 +48,10 @@ Two independent host paths coexist; don't cross-wire them.
 
 ## Notable details
 
-- Signal decode in `from_probe`: `read()` returns comma-separated **hex** ADC
-  codes; it parses the 3rd serial line (`C[2]`), maps each to
-  `(int(code,16) - 512) / 512.0` → normalized `[-1, 1]` float32.
+- Signal decode in `from_probe` (2026-09-14): uses the DSP build — `set_gain`,
+  `configure_pulse(negative_ns=poff, damp_ns=damp, positive_ns=pon, pos-first)`,
+  `arm_pulser`, then `read_raw()` → `frame.samples()` (uint16 0..1023), mapped to
+  `(x - 512) / 512` → normalized `[-1, 1]` float32 (8000 samples).
 - HDF5 dedup key: `(gain, pon, poff, damp, target, piezo_id)`. A cache hit in
   `from_probe(h5_path=...)` skips the hardware unless `overwrite=True`.
 - Notebooks read `../docs/data/calibration_block_5steps_1018steel.h5`.
@@ -57,3 +66,19 @@ Two independent host paths coexist; don't cross-wire them.
   parity); added versioning (`__init__.py` + `version.yaml`, v0.1.0).
 - 2026-09-13: v0.1.1 — added `Pic0rick.version()` parsing the firmware `version`
   report into a dict.
+- 2026-09-14: v0.1.7 — example_dsp.ipynb reworked: pulser armed from start,
+  A-law capture+decode plot, DSP self-test, pulser-order check, per-capture file
+  saving (captures/<name>/); added dsp.SELFTEST_NAMES. Hardware-verified.
+- 2026-09-14: v0.1.6 — surface Pico text replies: `dsp.describe_status()`,
+  `status()['raw']`, `capture().last_reply`; DSP notebook prints replies + DSP µs
+  stage times. Hardware-verified.
+- 2026-09-13: v0.1.5 — added `python/example_dsp.ipynb` (step-by-step notebook;
+  executed via nbconvert against the RP2350A) and fixed the DAC command in
+  `example_dsp.py` (DSP build uses `dac write`, not `write dac`).
+- 2026-09-13: v0.1.4 — added `python/example_dsp.py` (end-to-end DSP example) +
+  `docs/dsp_test_guide.md`; hardware-tested. (v0.1.3 = docs-only after onboard_dsp
+  retirement.)
+- 2026-09-13: v0.1.2 — added `pic0rick/dsp.py` (DSP-build binary frame protocol:
+  FrameReader+CRC, A-law decode, parse_status; length-agnostic for read_raw 8000
+  / read_fft 4096) and `Pic0rick.status()/capture()/read_fft()/read_raw()`.
+  Dropped the onboard tool's hard EXPECTED_FIRMWARE gate. Verified on hardware.

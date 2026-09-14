@@ -15,9 +15,9 @@ if(WIN32)
 else()
     set(USERHOME $ENV{HOME})
 endif()
-set(sdkVersion 2.2.0)
+set(sdkVersion 2.3.0)
 set(toolchainVersion 14_2_Rel1)
-set(picotoolVersion 2.2.0)
+set(picotoolVersion 2.3.0)
 set(picoVscode ${USERHOME}/.pico-sdk/cmake/pico-vscode.cmake)
 if (EXISTS ${picoVscode})
     include(${picoVscode})
@@ -106,6 +106,101 @@ add_custom_target(gen_git_version
 # Enable/disable at configure time: -DMUX=ON (default) or -DMUX=OFF.
 option(MUX "Build with MAX14866 HV mux module board support" ON)
 
+# ---- Onboard-DSP feature (RP2350 only) toggle ----
+# Enable with -DDSP=ON (requires -DPICO_BOARD=pico2). Pulls in CMSIS-DSP for the
+# float32 Hilbert-envelope / A-law pipeline. Firmware sources are wired in a
+# later phase; P1 only sets up the option, the RP2350 guard and the CMSIS-DSP
+# static library (cmsisdsp_p0rk).
+option(DSP "Build with the onboard-DSP feature set (RP2350/pico2 only)" OFF)
+if(DSP AND NOT PICO_BOARD STREQUAL "pico2")
+    message(FATAL_ERROR
+        "DSP=ON requires -DPICO_BOARD=pico2 (RP2350): the DSP pipeline needs the "
+        "RP2350 FPU. Reconfigure with -DPICO_BOARD=pico2 or drop -DDSP.")
+endif()
+
+if(DSP)
+    message(STATUS "Onboard-DSP feature: ENABLED (fetching CMSIS-DSP v1.17.0)")
+    include(FetchContent)
+    FetchContent_Declare(
+        CMSISDSP
+        GIT_REPOSITORY https://github.com/ARM-software/CMSIS-DSP.git
+        GIT_TAG v1.17.0
+        GIT_SHALLOW TRUE
+    )
+    set(CMSISCORE
+        ${PICO_SDK_PATH}/src/rp2_common/cmsis/stub/CMSIS/Core
+        CACHE PATH "CMSIS Core headers" FORCE
+    )
+    set(DISABLEFLOAT16 ON CACHE BOOL "Disable CMSIS-DSP float16" FORCE)
+    FetchContent_MakeAvailable(CMSISDSP)
+
+    # Build only the float32 transform sources the Hilbert backend needs, not the
+    # whole CMSIS-DSP archive.
+    set_property(TARGET CMSISDSP PROPERTY EXCLUDE_FROM_ALL TRUE)
+    add_library(cmsisdsp_p0rk STATIC
+        ${cmsisdsp_SOURCE_DIR}/Source/TransformFunctions/arm_bitreversal2.c
+        ${cmsisdsp_SOURCE_DIR}/Source/TransformFunctions/arm_cfft_f32.c
+        ${cmsisdsp_SOURCE_DIR}/Source/TransformFunctions/arm_cfft_init_f32.c
+        ${cmsisdsp_SOURCE_DIR}/Source/TransformFunctions/arm_cfft_radix8_f32.c
+        ${cmsisdsp_SOURCE_DIR}/Source/TransformFunctions/arm_rfft_fast_f32.c
+        ${cmsisdsp_SOURCE_DIR}/Source/TransformFunctions/arm_rfft_fast_init_f32.c
+        ${cmsisdsp_SOURCE_DIR}/Source/CommonTables/arm_common_tables.c
+        ${cmsisdsp_SOURCE_DIR}/Source/CommonTables/arm_const_structs.c
+    )
+    target_include_directories(cmsisdsp_p0rk PUBLIC
+        ${cmsisdsp_SOURCE_DIR}/Include
+        ${CMSISCORE}/Include
+    )
+    target_include_directories(cmsisdsp_p0rk PRIVATE
+        ${cmsisdsp_SOURCE_DIR}/PrivateInclude
+    )
+    target_compile_definitions(cmsisdsp_p0rk PUBLIC
+        ARM_MATH_CM33
+        DISABLEFLOAT16
+    )
+    target_compile_options(cmsisdsp_p0rk PRIVATE
+        -O3
+        -ffast-math
+        -ffunction-sections
+        -fdata-sections
+    )
+
+    # ---- p0rk_dsp: the onboard-DSP modules (firmware/dsp/) as a static lib ----
+    # P2 lands the USB-free compute/hardware modules. The USB transport
+    # (usb_transport.c / usb_descriptors.c) is wired in P3 together with the
+    # raw-TinyUSB command loop, since it conflicts with the stdio_usb REPL.
+    add_library(p0rk_dsp STATIC
+        ${CMAKE_CURRENT_LIST_DIR}/dsp/dsp.c
+        ${CMAKE_CURRENT_LIST_DIR}/dsp/pipeline.c
+        ${CMAKE_CURRENT_LIST_DIR}/dsp/protocol.c
+        ${CMAKE_CURRENT_LIST_DIR}/hw/acquisition.c
+        ${CMAKE_CURRENT_LIST_DIR}/hw/dac.c
+    )
+    pico_generate_pio_header(p0rk_dsp ${CMAKE_CURRENT_LIST_DIR}/hw/acquisition.pio)
+    pico_generate_pio_header(p0rk_dsp ${CMAKE_CURRENT_LIST_DIR}/hw/pulser.pio)
+    target_include_directories(p0rk_dsp PUBLIC
+        ${CMAKE_CURRENT_LIST_DIR}/dsp
+        ${CMAKE_CURRENT_LIST_DIR}/hw
+    )
+    target_compile_definitions(p0rk_dsp PUBLIC
+        ARM_MATH_CM33
+        DISABLEFLOAT16
+    )
+    target_link_libraries(p0rk_dsp PUBLIC
+        pico_stdlib
+        pico_multicore
+        pico_util
+        hardware_pio
+        hardware_dma
+        hardware_clocks
+        hardware_gpio
+        hardware_spi
+        cmsisdsp_p0rk
+    )
+else()
+    message(STATUS "Onboard-DSP feature: disabled")
+endif()
+
 # Add executable. Default name is the project name.
 
 add_executable(adc-pulse)
@@ -116,44 +211,85 @@ pico_set_program_version(adc-pulse "${FW_VERSION}")
 # Ensure the git hash header is refreshed before adc-pulse compiles.
 add_dependencies(adc-pulse gen_git_version)
 
-# Modify the below lines to enable/disable output over UART/USB
 pico_enable_stdio_uart(adc-pulse 0)
-pico_enable_stdio_usb(adc-pulse 1)
 
-pico_generate_pio_header(adc-pulse ${CMAKE_CURRENT_LIST_DIR}/adc/adc.pio)
-# max14866.pio is the generic SPI-shifter program; the DAC uses it too, so it is
-# always generated regardless of MUX.
-pico_generate_pio_header(adc-pulse ${CMAKE_CURRENT_LIST_DIR}/max/max14866.pio)
-
-# Always-built sources (DAC gain control lives in max/dac.c).
-target_sources(adc-pulse PRIVATE
-    ${CMAKE_CURRENT_LIST_DIR}/main.c
-    ${CMAKE_CURRENT_LIST_DIR}/adc/adc.c
-    ${CMAKE_CURRENT_LIST_DIR}/max/dac.c
-)
-
-# MUX-only sources + define, included when -DMUX=ON.
-if(MUX)
-    target_sources(adc-pulse PRIVATE ${CMAKE_CURRENT_LIST_DIR}/max/max14866.c)
-    target_compile_definitions(adc-pulse PRIVATE MUX=1)
-    message(STATUS "MUX (MAX14866) support: ENABLED")
-else()
-    message(STATUS "MUX (MAX14866) support: DISABLED")
-endif()
-
-# Add the standard include files to the build
+# Common include dirs (firmware root for max/*, and the generated version headers)
 target_include_directories(adc-pulse PRIVATE
     ${CMAKE_CURRENT_LIST_DIR}
     ${CMAKE_CURRENT_BINARY_DIR}/generated
 )
 
-target_link_libraries(adc-pulse PRIVATE
-    pico_stdlib
-    hardware_pio
-    hardware_dma
-    hardware_clocks
-    hardware_gpio
-    hardware_irq
-)
+if(DSP)
+    # ---- RP2350 DSP build: raw-TinyUSB command loop (main_dsp.c) ----
+    # SDK stdio is OFF; usb_transport/usb_descriptors drive TinyUSB directly so
+    # text + binary frames share one CDC.
+    pico_enable_stdio_usb(adc-pulse 0)
+    target_sources(adc-pulse PRIVATE
+        ${CMAKE_CURRENT_LIST_DIR}/main_dsp.c
+        ${CMAKE_CURRENT_LIST_DIR}/dsp/usb_transport.c
+        ${CMAKE_CURRENT_LIST_DIR}/dsp/usb_descriptors.c
+    )
+    target_include_directories(adc-pulse PRIVATE
+        ${CMAKE_CURRENT_LIST_DIR}/dsp
+        ${CMAKE_CURRENT_LIST_DIR}/hw
+    )
+    target_compile_definitions(adc-pulse PRIVATE
+        DSP=1
+        U4RK_CMSIS_DSP_VERSION="1.17.0"
+    )
+    target_link_libraries(adc-pulse PRIVATE
+        pico_stdlib
+        pico_bootrom
+        pico_multicore
+        pico_util
+        hardware_pio
+        hardware_dma
+        hardware_clocks
+        hardware_gpio
+        hardware_spi
+        tinyusb_device
+        p0rk_dsp
+    )
+    # In the DSP build the gain DAC is the spi1 driver inside p0rk_dsp; the PIO
+    # DAC (max/dac.c) and the mainline PIO ADC/pulser (adc/adc.c) are not used.
+    if(MUX)
+        pico_generate_pio_header(adc-pulse ${CMAKE_CURRENT_LIST_DIR}/max/max14866.pio)
+        target_sources(adc-pulse PRIVATE ${CMAKE_CURRENT_LIST_DIR}/max/max14866.c)
+        target_compile_definitions(adc-pulse PRIVATE MUX=1)
+        message(STATUS "MUX (MAX14866) support: ENABLED (DSP build)")
+    else()
+        message(STATUS "MUX (MAX14866) support: DISABLED (DSP build)")
+    endif()
+else()
+    # ---- stdio REPL build (RP2040, or RP2350 without DSP) ----
+    # Uses the SAME shared acquisition + pulser + spi1 DAC as the DSP build
+    # (firmware/hw), in raw-8000 mode. No FFT/CMSIS.
+    pico_enable_stdio_usb(adc-pulse 1)
+    pico_generate_pio_header(adc-pulse ${CMAKE_CURRENT_LIST_DIR}/hw/acquisition.pio)
+    pico_generate_pio_header(adc-pulse ${CMAKE_CURRENT_LIST_DIR}/hw/pulser.pio)
+    target_sources(adc-pulse PRIVATE
+        ${CMAKE_CURRENT_LIST_DIR}/main.c
+        ${CMAKE_CURRENT_LIST_DIR}/hw/acquisition.c
+        ${CMAKE_CURRENT_LIST_DIR}/hw/dac.c
+    )
+    target_include_directories(adc-pulse PRIVATE ${CMAKE_CURRENT_LIST_DIR}/hw)
+    if(MUX)
+        pico_generate_pio_header(adc-pulse ${CMAKE_CURRENT_LIST_DIR}/max/max14866.pio)
+        target_sources(adc-pulse PRIVATE ${CMAKE_CURRENT_LIST_DIR}/max/max14866.c)
+        target_compile_definitions(adc-pulse PRIVATE MUX=1)
+        message(STATUS "MUX (MAX14866) support: ENABLED")
+    else()
+        message(STATUS "MUX (MAX14866) support: DISABLED")
+    endif()
+    target_link_libraries(adc-pulse PRIVATE
+        pico_stdlib
+        pico_bootrom
+        hardware_pio
+        hardware_dma
+        hardware_clocks
+        hardware_gpio
+        hardware_spi
+    )
+endif()
 
 pico_add_extra_outputs(adc-pulse)

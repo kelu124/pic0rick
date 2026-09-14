@@ -43,7 +43,7 @@ GROUP="${2:-all}"
 
 # Registry of boards in this repo, for the "all" target. Each has a .kicad_pcb
 # under hardware/<name>/; pulser_panel is a schematic-less panel (fab + 3D only).
-BOARDS=(adc mux psram vga pulser_panel)
+BOARDS=(adc mux psram vga pulser_panel panel_adc_pulser_hv)
 
 # "./build.sh all [group]" regenerates every registered board's outputs so the
 # whole repo stays consistent. Recurses into this same script once per board.

@@ -40,11 +40,27 @@ And if you want to discuss the project - [meet us on our chat](https://matrix.to
 * Python 3.9+
 * A piezoelectric transducer (e.g. 5 MHz single-element contact probe)
 
+## Building the firmware
+
+The firmware is a single source tree (`firmware/`) with build options:
+
+- **`-DMUX`** (default on) — MAX14866 HV multiplexer support.
+- **`-DDSP`** (RP2350/`pico2` only) — on-board Hilbert-envelope DSP + binary
+  protocol (see [DSP build](#dsp-build-rp2350) below).
+
+```bash
+cd firmware && ./build.sh          # builds all 6 variants into firmware/dist/:
+#   rp2040-{mux,nomux}, rp2350-{mux,nomux}, rp2350-{mux,nomux}-dsp
+```
+
+Prebuilt `firmware/rp2040.uf2` / `firmware/rp2350.uf2` are the default (mux,
+non-DSP) builds. CI publishes all variants as release assets.
+
 ## Flashing the firmware
 
-1. Hold the **BOOTSEL** button on the RP2040/RP2350 while connecting USB — the board mounts as a USB mass-storage device.
-2. Copy the compiled `.uf2` file from `firmware/` into the drive. The board reboots automatically.
-3. Verify: open a serial terminal at 115,200 baud. You should see the `run>` prompt.
+1. Hold the **BOOTSEL** button on the RP2040/RP2350 while connecting USB — the board mounts as a USB mass-storage device. *(After the first flash you can instead send the `reboot-dfu` command over serial to re-enter the bootloader without the button.)*
+2. Copy the compiled `.uf2` file into the drive. The board reboots automatically.
+3. Verify: open a serial terminal at 115,200 baud. You should see the `run>` prompt (stdio build). Send `version` to confirm the firmware version, board and options.
 
 ## Installing the Python library
 
@@ -97,12 +113,28 @@ The firmware exposes a text protocol at 115,200 baud (USB CDC):
 | `set mux <N>` | channel | Enable a multiplexer channel |
 | `clear mux <N>` | channel | Disable a multiplexer channel |
 | `read` | — | Return last captured buffer (hex, one 10-bit value per line) |
+| `version` | — | Print firmware version, board/chip, options, git hash, release URL |
+| `reboot-dfu` | — | Reboot into the USB bootloader (BOOTSEL) for reflashing |
 
 ### Parameter details
 
 **`pon` / `poff` / `damp`** — expressed in **nanoseconds** from Python. The firmware converts them to 125 MHz clock cycles internally (divides by 8).
 
 **`gain`** — raw 10-bit DAC value (0–1023) controlling the VGAIN pin of the AD8331 TGC amplifier (7.5 dB to 55.5 dB range). The example notebook uses values in the 0–500 range.
+
+### DSP build (RP2350)
+
+Building with `-DDSP=ON` (RP2350/`pico2`) adds an on-board DSP path: a float32
+CMSIS-DSP Hilbert envelope. Instead of the text REPL it speaks a binary framed
+protocol (64-byte header + CRC32) with two capture modes:
+
+- **`read_raw`** — 8000 raw ADC samples (no FFT).
+- **`read_fft`** — 4096-sample Hilbert envelope.
+
+plus `acq raw|envelope|alaw`, `stream`, `dsp scale|selftest`, `pulser`,
+`status`, `version`, `reboot-dfu`. Drive it from Python with `pic0rick.dsp` and
+`Pic0rick.status()/read_fft()/read_raw()/capture()`. The frame and status
+formats are documented in [`docs/dsp_output_formats.md`](docs/dsp_output_formats.md).
 
 ## Signal chain
 

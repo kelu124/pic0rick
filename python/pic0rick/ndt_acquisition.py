@@ -383,13 +383,17 @@ class UltrasonicAcquisition:
 
         if probe is None:
             probe = get_probe()
-        probe.dac(gain)
-        probe.pulse_adc_trigger(pon=pon, poff=poff, damp=damp)
-        C = probe.read()
-        raw = [x.replace("b'", "") for x in str(C[2]).split(",") if len(x)]
-        signal = np.array(
-            [(int(x, 16) - 512) / 512.0 for x in raw[:-1]], dtype=np.float32
-        )
+        # DSP-build (-DDSP) commands: set gain, configure + arm the pulser, then
+        # a raw capture (8000 samples). pon/poff map to the P+/P- durations, so
+        # positive_ns=pon, negative_ns=poff, fired positive-first.
+        probe.set_gain(gain)
+        probe.configure_pulse(negative_ns=poff, damp_ns=damp,
+                              positive_ns=pon, order="pos-first")
+        probe.arm_pulser()
+        frame = probe.read_raw()
+        probe.disarm_pulser()
+        # Raw samples are 10-bit ADC codes (0..1023); normalize to [-1, 1].
+        signal = (frame.samples().astype(np.float32) - 512.0) / 512.0
         a = cls(
             signal=signal, Fech=Fech,
             pon=pon, poff=poff, damp=damp,

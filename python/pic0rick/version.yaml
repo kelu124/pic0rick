@@ -7,5 +7,5 @@
 #
 # `changes` is a short, single-line, double-quoted summary of what changed vs
 # the previous version. Exposed as pic0rick.__changes__.
-version: "0.1.1"
-changes: "Add Pic0rick.version(): queries the firmware `version` command and parses it into a dict (version/changes/board/chip/mux/build/release)."
+version: "0.1.8"
+changes: "Migrate example_simple.ipynb and ndt_acquisition.from_probe() to the DSP-build CLI: new Pic0rick.set_gain()/configure_pulse()/arm_pulser()/disarm_pulser() + read_raw() (binary frame) replace the stdio dac/pulse_adc_trigger/read text path."

@@ -157,3 +157,75 @@ class Pic0rick:
         ans = self.sread()
         return ans
 
+    # ------------------------------------------------------------------
+    # DSP-build (-DDSP, RP2350) helpers. These speak the binary framed
+    # protocol; use them only against a DSP firmware build (see status()).
+    # ------------------------------------------------------------------
+
+    def status(self):
+        """Query the DSP-build `status` line and return it parsed (dict).
+
+        Raises ValueError against a non-DSP firmware (no status line).
+        """
+        from pic0rick import dsp
+        self.ser.reset_input_buffer()
+        self.ser.write(b"status\n")
+        line = self.ser.readline().decode("utf-8", "replace")
+        info = dsp.parse_status(line)
+        info["raw"] = line.strip()  # the Pico's exact status text
+        return info
+
+    def capture(self, payload="envelope"):
+        """Trigger a one-shot DSP capture and return the parsed `dsp.Frame`.
+
+        Args:
+            payload: 'raw' (read_raw, 8000 samples), 'envelope' (read_fft, 4096)
+                     or 'alaw' (4096). DSP firmware only.
+        """
+        from pic0rick import dsp
+        command = {"raw": "read_raw", "envelope": "read_fft",
+                   "alaw": "acq alaw"}.get(payload)
+        if command is None:
+            raise ValueError("payload must be raw, envelope or alaw")
+        self.ser.reset_input_buffer()
+        self.ser.write((command + "\n").encode("ascii"))
+        # The firmware sends an "OK capture started ..." text line before the
+        # binary frame; capture it (self.last_reply) so callers can display it.
+        self.last_reply = self.ser.readline().decode("utf-8", "replace").strip()
+        return dsp.FrameReader(self.ser).read_frame()
+
+    def read_fft(self):
+        """One-shot 4096-sample Hilbert-envelope capture (DSP firmware)."""
+        return self.capture("envelope")
+
+    def read_raw(self):
+        """One-shot 8000-sample raw ADC capture as a frame (DSP firmware)."""
+        return self.capture("raw")
+
+    def set_gain(self, value):
+        """Set the TGC gain DAC, 0..1023 (DSP build: `dac write <n>`).
+
+        (The stdio build uses `write dac`, i.e. `Pic0rick.dac()`.)
+        """
+        self.ser.write(("dac write %d\n" % int(value)).encode("ascii"))
+        return self.sread()
+
+    def configure_pulse(self, negative_ns, damp_ns, positive_ns,
+                        order="pos-first"):
+        """Configure the pulser (DSP build: `pulse config ...`)."""
+        self.ser.write(
+            ("pulse config %d %d %d %s\n"
+             % (int(negative_ns), int(damp_ns), int(positive_ns), order))
+            .encode("ascii"))
+        return self.sread()
+
+    def arm_pulser(self):
+        """Arm the pulser so the next capture transmits (DSP build)."""
+        self.ser.write(b"pulser arm\n")
+        return self.sread()
+
+    def disarm_pulser(self):
+        """Disarm the pulser (DSP build)."""
+        self.ser.write(b"pulser disarm\n")
+        return self.sread()
+

@@ -7,13 +7,25 @@ future instance would waste time rediscovering.
 
 - `firmware.md` — the repo-root `firmware/` folder: the original mainline
   `adc-pulse` Pico firmware (uses the MAX14866; RP2040 + RP2350 builds).
-- `onboard-dsp-firmware.md` — the `experiments/onboard_dsp/` RP2350A envelope/
-  A-law firmware experiment: layout, outputs, gotchas, and the work done so far.
+- `onboard-dsp-firmware.md` — **retired**: the old `experiments/onboard_dsp/`
+  firmware is now the mainline `-DDSP` build (`firmware/dsp` + `firmware/hw`);
+  this note is now a pointer to where everything went.
+- `dsp_output_formats.md` (in `docs/`, not here) — the DSP binary frame / status
+  format reference (moved from onboard_dsp's `understanding_figures.md`).
 - `python-host-tools.md` — the repo-root `python/` NDT stack (serial driver +
   echo/thickness analysis + HDF5) that drives the mainline firmware.
 - `hardware-build.md` — `hardware/build.sh`: KiBot + kicad-cli production
   outputs (gerbers/CPL/BOM/STEP + 3D renders), build groups incl. the fast
   `fab-fast` path, and the venv/3D-model gotchas.
+- `hardware-testing.md` — flashing a connected board (UF2 → BOOTSEL mass storage)
+  and talking to the REPL over `/dev/ttyACM0`; the `reboot-dfu` iterate loop.
+
+## `docs/fw_history/` — maintainer-only firmware baselines
+
+`docs/fw_history/` holds known-good reference `.uf2` binaries (regression
+baselines). **Claude must never add/copy/build/commit `.uf2` files there** — only
+the maintainer curates them. Claude may edit its README and *flash* them for
+diagnostics. Claude build output goes to `firmware/dist/` (gitignored) + releases.
 
 ## Task tracking & commit logs
 
@@ -32,6 +44,10 @@ Firmware and the Python library each carry `A.B.C` in their own `version.yaml`
   C 0-999. **The maintainer owns major/minor — never change them.**
 - Always update that file's one-line, double-quoted `changes:` summary; the CI
   release body and the firmware `version` command read it.
+- **On every firmware version bump, add a matching entry to
+  `firmware/CHANGELOG.md`** (`## A.B.C — YYYY-MM-DD`, newest first). `version.yaml`
+  and `CHANGELOG.md` are the version record — editing only those does not trigger
+  a bump.
 
 > These are working memories, not authoritative docs. Verify a claim against the
 > code before relying on it — file/line references can drift.
