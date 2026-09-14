@@ -5,7 +5,6 @@ __pycache__
 .venv
 .env
 signals.npz
-captures/
 python/raw.npy
 python/envelope.npy
 .venv-kibot
@@ -16,3 +15,5 @@ build2040
 
 .claude
 .vscode
+
+python/captures/*

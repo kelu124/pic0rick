@@ -1,0 +1,20 @@
+pic0rick status
+  board/package    pic0rick / RP2350A
+  firmware         0.1.11
+  dsp backend      f32-rfft-hilbert
+  cmsis-dsp        1.17.0
+  acquisition      4096 samples @ 60 MS/s
+  pulser           armed
+  pulse (ns)       neg 96 / damp 6000 / pos 96, neg-first
+  dac / scale      50 / 512.0
+  stream           off @ 0 Hz
+  dropped frames   0
+  DSP stage times (us):
+      preprocess   0
+      forward_fft  0
+      mask         0
+      inverse_fft  0
+      magnitude    0
+      alaw         0
+  dsp_us / worst   0 / 0 (ok)
+  max rates (Hz)   envelope 50, alaw 70
