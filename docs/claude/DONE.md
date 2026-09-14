@@ -7,6 +7,11 @@ finished. Each entry links to its commit log in `docs/claude/commits/`.
 
 ## 2026-09-14
 
+- **example_dsp.ipynb: A-law + self-test + file saving, armed from start (py v0.1.7).**
+  A-law decode-vs-envelope plot, DSP self-test summary, pulser-order check,
+  per-capture saving to `captures/<name>/`. Hardware-verified. See
+  `commits/2026-09-14-dsp-notebook-alaw-selftest-save.md`.
+
 - **DSP notebook shows Pico text replies + us times (py v0.1.6).** Added
   `dsp.describe_status()`, `status()['raw']`, `capture().last_reply`; the notebook
   now prints version/status/OK replies and per-stage DSP µs. Hardware-verified.

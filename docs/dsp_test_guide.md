@@ -78,8 +78,13 @@ python example_dsp.py --save out/     # + raw.npy / envelope.npy
 python example_dsp.py --plot out/     # + capture.png (needs matplotlib)
 ```
 
-For an interactive, step-by-step version with inline plots, open the notebook
+For an interactive, step-by-step version, open the notebook
 `python/example_dsp.ipynb` and run the cells top to bottom (set `PORT` in cell 2).
+It arms the pulser from the start and covers **raw / Hilbert envelope / A-law**
+(with `alaw_decode` overlaid on the envelope), the **DSP self-test**, a
+**pulser-order** check, shows every Pico text reply + per-stage DSP µs times, and
+**saves each capture** to `captures/<name>/` (`<payload>.npy` + `header.json` +
+`status.txt`). `captures/` is gitignored.
 
 Expected output resembles:
 

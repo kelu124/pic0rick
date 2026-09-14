@@ -30,6 +30,9 @@ FLAG_USB_DROP = 1 << 2
 FLAG_SELFTEST = 1 << 3
 FLAG_PULSER_ARMED = 1 << 4
 SELFTEST_CASE_SHIFT = 8
+SELFTEST_NAMES = (
+    "zero", "dc", "sinusoid", "am", "two-bursts", "impulse", "clipping",
+)
 
 MAX_SAMPLE_COUNT = 8000  # raw depth; envelope/alaw use 4096
 
