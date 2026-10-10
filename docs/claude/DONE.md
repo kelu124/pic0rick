@@ -5,6 +5,12 @@ finished. Each entry links to its commit log in `docs/claude/commits/`.
 
 ---
 
+## 2026-10-10
+
+- **Substack series, arc 1.** Four draft articles + generated notebooks +
+  editorial plan in `docs/substack/`; project skill
+  `pic0rick-substack-article`. See `commits/2026-10-10-substack-articles.md`.
+
 ## 2026-09-14
 
 - **README refresh (on main).** Quick start + command tables updated for the DSP

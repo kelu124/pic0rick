@@ -65,6 +65,13 @@ discoveries logged since.
 - [ ] **[maintainer]** Document tested transducer frequencies/types and whether
   immersion probes are supported (any hardware changes needed). (was Q14)
 
+- [ ] **[maintainer]** Substack: caliper the 25 mm step of the 1018 block (reads
+  24.3 mm consistently), re-shoot the 20 mm step with the probe centred, and
+  re-shoot `read_fft` on the 10 mm step at the RF settings — see
+  `docs/substack/plan.md` "to verify". Then review/publish articles 01–04.
+- [ ] **[claude]** Root `README.md` intro says the pulser uses MD1210; schematics
+  use **MD1213K6** (signal-chain section already says MD1213). Fix the intro.
+
 ## Discoveries (logged by Claude)
 
 - [x] **[claude]** DSP **test guide** (`docs/dsp_test_guide.md`) and `python/`

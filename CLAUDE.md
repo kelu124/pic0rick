@@ -24,6 +24,10 @@ Current topic notes:
 - `docs/claude/hardware-build.md` — `hardware/build.sh` production-output flow
   (KiBot + kicad-cli): build groups incl. the fast `fab-fast` path, the
   3D-always default, and the KiBot venv / 3D-model gotchas.
+- `docs/claude/substack.md` — the `docs/substack/` Substack article series
+  (articles + generated notebooks + `plan.md`). To write one, use the project
+  skill `pic0rick-substack-article` (`.claude/skills/`); for links to
+  un0rick.cc reference docs + GitHub, the `un0rick-links` skill.
 - `docs/claude/hardware-testing.md` — flashing a connected board + the
   `reboot-dfu` iterate loop; `docs/claude/unify-firmware-dsp-plan.md` — the
   firmware-unification plan/status.
