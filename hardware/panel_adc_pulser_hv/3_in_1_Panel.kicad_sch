@@ -93327,6 +93327,17 @@
 				)
 			)
 		)
+		(property "LCSC Part" "C3173345 "
+			(at 378.46 127 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "4c739ae6-a316-474d-a95e-220ca0ba6b99")
 		)
@@ -93809,7 +93820,7 @@
 				)
 			)
 		)
-		(property "Manufacturer" ""
+		(property "LCSC Part" "C24497"
 			(at 134.62 367.03 0)
 			(hide yes)
 			(show_name no)
@@ -94313,6 +94324,17 @@
 				)
 			)
 		)
+		(property "LCSC Part" "C92853"
+			(at 492.76 364.49 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "de624475-fa89-4b3a-a8d0-cf75b33b26d4")
 		)
@@ -94439,6 +94461,17 @@
 			)
 		)
 		(property "MPN" "WSL1206R1800FEA"
+			(at 425.45 398.78 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC Part" "C2933617 "
 			(at 425.45 398.78 0)
 			(hide yes)
 			(show_name no)
@@ -94585,7 +94618,7 @@
 				)
 			)
 		)
-		(property "Manufacturer" ""
+		(property "LCSC Part" "C24497"
 			(at 146.05 367.03 0)
 			(hide yes)
 			(show_name no)
@@ -94887,6 +94920,17 @@
 				)
 			)
 		)
+		(property "LCSC Part" "C521240"
+			(at 147.32 386.08 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "36221c3f-4b3c-4040-83af-df7c428510b7")
 		)
@@ -95012,7 +95056,7 @@
 				)
 			)
 		)
-		(property "MPN" "CR1206-FX-2800ELF"
+		(property "LCSC Part" "C3000528 "
 			(at 125.73 360.68 0)
 			(hide yes)
 			(show_name no)
@@ -95614,7 +95658,7 @@
 				)
 			)
 		)
-		(property "Manufacturer" ""
+		(property "LCSC Part" "C92853"
 			(at 353.06 351.79 0)
 			(hide yes)
 			(show_name no)
@@ -95718,65 +95762,6 @@
 				(justify left)
 			)
 		)
-		(property "Mouser Part Number" "81-BLM21B750S"
-			(at 130.81 441.96 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Mouser Price/Stock" "https://www.mouser.co.uk/ProductDetail/Murata-Electronics/BLM21BB750SN1D/?qs=Ncw4LTdqe05b2FdOdGUHhQ%3D%3D"
-			(at 130.81 444.5 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Manufacturer_Name" "Murata Electronics"
-			(at 130.81 447.04 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Manufacturer_Part_Number" "BLM21BB750SN1D"
-			(at 130.81 449.58 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "DATASHEET LINK" "https://www.vishay.com/doc?34102"
-			(at 129.54 421.64 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
 		(property "Size" "1206"
 			(at 129.54 421.64 0)
 			(hide yes)
@@ -95799,29 +95784,7 @@
 				)
 			)
 		)
-		(property "MPN" "BLM21BB750SN1D"
-			(at 129.54 421.64 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Digi-Key_PN" ""
-			(at 129.54 421.64 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Manufacturer" ""
+		(property "LCSC Part" "C2661688 "
 			(at 129.54 421.64 0)
 			(hide yes)
 			(show_name no)
@@ -95857,7 +95820,7 @@
 		(in_bom yes)
 		(on_board yes)
 		(in_pos_files yes)
-		(dnp no)
+		(dnp yes)
 		(uuid "18ad5d73-8485-482d-8cc5-b239a5302988")
 		(property "Reference" "J2"
 			(at 735.33 426.72 0)
@@ -95937,6 +95900,17 @@
 			)
 		)
 		(property "Manufacturer" ""
+			(at 732.79 426.72 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC Part" "C5731179  "
 			(at 732.79 426.72 0)
 			(hide yes)
 			(show_name no)
@@ -96083,7 +96057,7 @@
 				)
 			)
 		)
-		(property "Manufacturer" ""
+		(property "LCSC Part" "C24497"
 			(at 153.67 344.17 0)
 			(hide yes)
 			(show_name no)
@@ -96230,7 +96204,7 @@
 				)
 			)
 		)
-		(property "Manufacturer" ""
+		(property "LCSC Part" "C24497"
 			(at 95.25 355.6 0)
 			(hide yes)
 			(show_name no)
@@ -96343,7 +96317,7 @@
 				)
 			)
 		)
-		(property "Manufacturer" ""
+		(property "LCSC Part" "C41407547 "
 			(at 139.7 504.19 0)
 			(hide yes)
 			(show_name no)
@@ -96613,7 +96587,7 @@
 				)
 			)
 		)
-		(property "Manufacturer" ""
+		(property "LCSC Part" "C711001 "
 			(at 115.57 360.68 0)
 			(hide yes)
 			(show_name no)
@@ -97051,6 +97025,17 @@
 				)
 			)
 		)
+		(property "LCSC Part" "C24497"
+			(at 624.205 351.79 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "93f80781-7bc8-40a7-943d-d3a6a1e35475")
 		)
@@ -97187,7 +97172,7 @@
 		(in_bom yes)
 		(on_board yes)
 		(in_pos_files yes)
-		(dnp no)
+		(dnp yes)
 		(fields_autoplaced yes)
 		(uuid "285ea7b5-f24d-4cc5-b168-eea819787a2d")
 		(property "Reference" "J14"
@@ -97979,7 +97964,7 @@
 		(in_bom yes)
 		(on_board yes)
 		(in_pos_files yes)
-		(dnp no)
+		(dnp yes)
 		(fields_autoplaced yes)
 		(uuid "3aad0778-be4b-4a84-93c5-464d99dd78f2")
 		(property "Reference" "J9"
@@ -98274,7 +98259,7 @@
 				)
 			)
 		)
-		(property "Manufacturer" ""
+		(property "LCSC Part" "C24497"
 			(at 290.83 345.44 0)
 			(hide yes)
 			(show_name no)
@@ -98489,6 +98474,17 @@
 			)
 		)
 		(property "MPN" "VJ1206Y104KXQCW1BC"
+			(at 364.49 351.79 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC Part" "C24497"
 			(at 364.49 351.79 0)
 			(hide yes)
 			(show_name no)
@@ -98948,7 +98944,7 @@
 				)
 			)
 		)
-		(property "Manufacturer" ""
+		(property "LCSC Part" "C24497"
 			(at 198.12 386.08 0)
 			(hide yes)
 			(show_name no)
@@ -98984,7 +98980,7 @@
 		(in_bom yes)
 		(on_board yes)
 		(in_pos_files yes)
-		(dnp no)
+		(dnp yes)
 		(uuid "428b061b-067a-4587-953e-e668cf747008")
 		(property "Reference" "J6"
 			(at 683.006 477.52 0)
@@ -99123,7 +99119,7 @@
 				)
 			)
 		)
-		(property "Manufacturer" ""
+		(property "LCSC Part" "C492401  "
 			(at 671.83 469.9 0)
 			(hide yes)
 			(show_name no)
@@ -99546,7 +99542,7 @@
 				)
 			)
 		)
-		(property "Manufacturer_Part_Number" "Wurth Elektronik"
+		(property "LCSC Part" "C2907369 "
 			(at 273.05 365.76 0)
 			(hide yes)
 			(show_name no)
@@ -99660,30 +99656,8 @@
 				(justify right)
 			)
 		)
-		(property "Digi-Key_PN" ""
-			(at 431.8 387.35 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Manufacturer" "KYOCERA AVX"
-			(at 431.8 387.35 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "12062A500KAT2A"
-			(at 431.8 387.35 0)
+		(property "LCSC Part" "C5448992 "
+			(at 431.8 387.35 90)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -99819,6 +99793,17 @@
 			)
 		)
 		(property "MPN" "WSL1206R1800FEA"
+			(at 353.06 339.09 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC Part" "C2933617 "
 			(at 353.06 339.09 0)
 			(hide yes)
 			(show_name no)
@@ -100121,7 +100106,7 @@
 				)
 			)
 		)
-		(property "Manufacturer" ""
+		(property "LCSC Part" "C24497"
 			(at 151.13 431.8 0)
 			(hide yes)
 			(show_name no)
@@ -100258,6 +100243,17 @@
 			)
 		)
 		(property "MPN" "GRM31C5C3A102JWA3L"
+			(at 82.55 431.8 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC Part" "C521240 "
 			(at 82.55 431.8 0)
 			(hide yes)
 			(show_name no)
@@ -100540,7 +100536,7 @@
 				)
 			)
 		)
-		(property "Manufacturer" ""
+		(property "LCSC Part" "C629131 "
 			(at 46.99 355.6 0)
 			(hide yes)
 			(show_name no)
@@ -100769,7 +100765,7 @@
 				)
 			)
 		)
-		(property "Manufacturer_Part_Number" "Wurth Elektronik"
+		(property "LCSC Part" "C2907369 "
 			(at 274.32 345.44 0)
 			(hide yes)
 			(show_name no)
@@ -100805,7 +100801,7 @@
 		(in_bom yes)
 		(on_board yes)
 		(in_pos_files yes)
-		(dnp no)
+		(dnp yes)
 		(uuid "55cb2812-b969-4997-a121-73602df2e018")
 		(property "Reference" "J3"
 			(at 677.164 439.166 0)
@@ -100948,6 +100944,17 @@
 			)
 		)
 		(property "Manufacturer" ""
+			(at 673.1 429.26 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC Part" "C2897388 "
 			(at 673.1 429.26 0)
 			(hide yes)
 			(show_name no)
@@ -101184,6 +101191,17 @@
 				)
 			)
 		)
+		(property "LCSC Part" "C2933617 "
+			(at 436.88 398.78 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "2"
 			(uuid "b07cf407-f214-424e-a6e1-41a5d37eeb8a")
 		)
@@ -101320,7 +101338,7 @@
 				)
 			)
 		)
-		(property "Manufacturer" ""
+		(property "LCSC Part" "C107174 "
 			(at 102.87 368.3 0)
 			(hide yes)
 			(show_name no)
@@ -101467,7 +101485,7 @@
 				)
 			)
 		)
-		(property "Manufacturer" ""
+		(property "LCSC Part" "C24497"
 			(at 289.56 365.76 0)
 			(hide yes)
 			(show_name no)
@@ -101838,6 +101856,17 @@
 				)
 			)
 		)
+		(property "LCSC Part" "C24497"
+			(at 391.16 373.38 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "5065c966-0826-42fe-974d-72890b80c1d9")
 		)
@@ -102197,6 +102226,17 @@
 			)
 		)
 		(property "MPN" "VJ1206Y104KXQCW1BC"
+			(at 379.73 373.38 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC Part" "C24497"
 			(at 379.73 373.38 0)
 			(hide yes)
 			(show_name no)
@@ -102612,7 +102652,7 @@
 		(in_bom yes)
 		(on_board yes)
 		(in_pos_files yes)
-		(dnp no)
+		(dnp yes)
 		(uuid "71f46fa0-6f03-4daf-9023-93707c16045b")
 		(property "Reference" "J13"
 			(at 589.28 102.8699 0)
@@ -102901,7 +102941,7 @@
 				)
 			)
 		)
-		(property "Manufacturer" ""
+		(property "LCSC Part" "C578697 "
 			(at 162.56 353.06 0)
 			(hide yes)
 			(show_name no)
@@ -103249,65 +103289,6 @@
 				(justify left)
 			)
 		)
-		(property "Mouser Part Number" "81-BLM21B750S"
-			(at 107.95 441.96 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Mouser Price/Stock" "https://www.mouser.co.uk/ProductDetail/Murata-Electronics/BLM21BB750SN1D/?qs=Ncw4LTdqe05b2FdOdGUHhQ%3D%3D"
-			(at 107.95 444.5 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Manufacturer_Name" "Murata Electronics"
-			(at 107.95 447.04 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Manufacturer_Part_Number" "BLM21BB750SN1D"
-			(at 107.95 449.58 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "DATASHEET LINK" "https://www.vishay.com/doc?34102"
-			(at 106.68 421.64 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
 		(property "Size" "1206"
 			(at 106.68 421.64 0)
 			(hide yes)
@@ -103319,40 +103300,7 @@
 				)
 			)
 		)
-		(property "Tolerance" "25%"
-			(at 106.68 421.64 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "BLM21BB750SN1D"
-			(at 106.68 421.64 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Digi-Key_PN" ""
-			(at 106.68 421.64 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Manufacturer" ""
+		(property "LCSC Part" "C2661688 "
 			(at 106.68 421.64 0)
 			(hide yes)
 			(show_name no)
@@ -103546,65 +103494,6 @@
 				(justify left)
 			)
 		)
-		(property "Mouser Part Number" "81-BLM21B750S"
-			(at 275.59 372.11 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Mouser Price/Stock" "https://www.mouser.co.uk/ProductDetail/Murata-Electronics/BLM21BB750SN1D/?qs=Ncw4LTdqe05b2FdOdGUHhQ%3D%3D"
-			(at 275.59 374.65 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Manufacturer_Name" "Murata Electronics"
-			(at 275.59 377.19 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Manufacturer_Part_Number" "BLM21BB750SN1D"
-			(at 275.59 379.73 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "DATASHEET LINK" "https://www.vishay.com/doc?34102"
-			(at 274.32 351.79 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
 		(property "Size" "1206"
 			(at 274.32 351.79 0)
 			(hide yes)
@@ -103627,29 +103516,7 @@
 				)
 			)
 		)
-		(property "MPN" "BLM21BB750SN1D"
-			(at 274.32 351.79 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Digi-Key_PN" ""
-			(at 274.32 351.79 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Manufacturer" ""
+		(property "LCSC Part" "C2661688"
 			(at 274.32 351.79 0)
 			(hide yes)
 			(show_name no)
@@ -103685,7 +103552,7 @@
 		(in_bom yes)
 		(on_board yes)
 		(in_pos_files yes)
-		(dnp no)
+		(dnp yes)
 		(fields_autoplaced yes)
 		(uuid "7a008b63-53df-4f4f-a9aa-ec6696843857")
 		(property "Reference" "J11"
@@ -103980,6 +103847,17 @@
 			)
 		)
 		(property "MPN" "VJ1206Y104KXQCW1BC"
+			(at 411.48 373.38 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC Part" "C24497"
 			(at 411.48 373.38 0)
 			(hide yes)
 			(show_name no)
@@ -104579,100 +104457,7 @@
 				)
 			)
 		)
-		(property "Height" "1.05"
-			(at 86.36 373.38 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Mouser Part Number" "81-BLM21B750S"
-			(at 86.36 375.92 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Mouser Price/Stock" "https://www.mouser.co.uk/ProductDetail/Murata-Electronics/BLM21BB750SN1D/?qs=Ncw4LTdqe05b2FdOdGUHhQ%3D%3D"
-			(at 86.36 378.46 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Manufacturer_Name" "Murata Electronics"
-			(at 86.36 381 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Manufacturer_Part_Number" "BLM21BB750SN1D"
-			(at 86.36 383.54 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "DATASHEET LINK" "https://www.vishay.com/doc?34102"
-			(at 85.09 355.6 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
 		(property "Size" "1206"
-			(at 85.09 355.6 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Tolerance" "25%"
-			(at 85.09 355.6 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "BLM21BB750SN1D"
 			(at 85.09 355.6 0)
 			(hide yes)
 			(show_name no)
@@ -104695,6 +104480,17 @@
 			)
 		)
 		(property "Manufacturer" ""
+			(at 85.09 355.6 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC Part" "C2661688 "
 			(at 85.09 355.6 0)
 			(hide yes)
 			(show_name no)
@@ -104841,7 +104637,7 @@
 				)
 			)
 		)
-		(property "Manufacturer" ""
+		(property "LCSC Part" "C24497"
 			(at 220.98 382.27 0)
 			(hide yes)
 			(show_name no)
@@ -105031,7 +104827,7 @@
 		(in_bom yes)
 		(on_board yes)
 		(in_pos_files yes)
-		(dnp no)
+		(dnp yes)
 		(uuid "8f6506c1-985b-44c0-a6da-7f3a8ef5d6d9")
 		(property "Reference" "J8"
 			(at 520.446 191.008 0)
@@ -105294,7 +105090,7 @@
 				)
 			)
 		)
-		(property "MPN" "BLM21BB750SN1D"
+		(property "LCSC Part" "C2661688 "
 			(at 273.05 372.11 0)
 			(hide yes)
 			(show_name no)
@@ -105453,6 +105249,17 @@
 			)
 		)
 		(property "MPN" "VJ1206Y104KXQCW1BC"
+			(at 504.19 364.49 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC Part" "C24497"
 			(at 504.19 364.49 0)
 			(hide yes)
 			(show_name no)
@@ -106067,7 +105874,7 @@
 		(in_bom yes)
 		(on_board yes)
 		(in_pos_files yes)
-		(dnp no)
+		(dnp yes)
 		(uuid "a26faef7-a0b4-453f-b400-08504314b21d")
 		(property "Reference" "J4"
 			(at 60.198 515.874 0)
@@ -106204,7 +106011,7 @@
 				)
 			)
 		)
-		(property "Manufacturer" ""
+		(property "LCSC Part" "C2937625  "
 			(at 66.04 500.38 0)
 			(hide yes)
 			(show_name no)
@@ -106621,6 +106428,17 @@
 				)
 			)
 		)
+		(property "LCSC Part" "C219484 "
+			(at 660.4 344.17 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "8"
 			(uuid "8b154da2-1785-4127-8447-fb9fad4dfae1")
 		)
@@ -106819,29 +106637,7 @@
 				(justify left)
 			)
 		)
-		(property "Digi-Key_PN" ""
-			(at 612.775 351.79 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Manufacturer" "KYOCERA AVX"
-			(at 612.775 351.79 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "KAF31GR71C106KU"
+		(property "LCSC Part" "C89632 "
 			(at 612.775 351.79 0)
 			(hide yes)
 			(show_name no)
@@ -106877,7 +106673,7 @@
 		(in_bom yes)
 		(on_board yes)
 		(in_pos_files yes)
-		(dnp no)
+		(dnp yes)
 		(uuid "b082a6c3-c43f-4ffe-8c43-93c3be9e4f22")
 		(property "Reference" "J7"
 			(at 735.33 480.06 0)
@@ -106956,7 +106752,7 @@
 				)
 			)
 		)
-		(property "Manufacturer" ""
+		(property "LCSC Part" "C7499322  "
 			(at 732.79 480.06 0)
 			(hide yes)
 			(show_name no)
@@ -107209,7 +107005,7 @@
 				)
 			)
 		)
-		(property "Manufacturer" ""
+		(property "LCSC Part" "C3173345 "
 			(at 45.085 355.6 0)
 			(hide yes)
 			(show_name no)
@@ -107512,6 +107308,17 @@
 				)
 			)
 		)
+		(property "LCSC Part" "C24497"
+			(at 401.32 373.38 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "33f21da8-0b75-4e8f-a946-2b8c0da3406f")
 		)
@@ -107727,29 +107534,18 @@
 				(justify left)
 			)
 		)
-		(property "Digi-Key_PN" ""
-			(at 139.7 431.8 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Manufacturer" ""
-			(at 139.7 431.8 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
 		(property "MPN" "GRM31C5C3A102JWA3L"
+			(at 139.7 431.8 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC Part" "C521240 "
 			(at 139.7 431.8 0)
 			(hide yes)
 			(show_name no)
@@ -108300,6 +108096,17 @@
 				)
 			)
 		)
+		(property "LCSC Part" "C24497"
+			(at 92.71 431.8 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "74e1d3de-1d6b-42d3-9e57-eaa60e3640e3")
 		)
@@ -108478,7 +108285,7 @@
 				)
 			)
 		)
-		(property "Manufacturer" ""
+		(property "LCSC Part" "C106919"
 			(at 69.85 382.27 0)
 			(hide yes)
 			(show_name no)
@@ -108795,6 +108602,17 @@
 				)
 			)
 		)
+		(property "LCSC Part" "C2907370"
+			(at 234.95 359.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "2"
 			(uuid "3c2035bc-0770-485e-a164-7a1812e1c311")
 		)
@@ -108931,6 +108749,17 @@
 				)
 			)
 		)
+		(property "LCSC Part" "C2907370"
+			(at 227.33 359.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "2"
 			(uuid "e59f82df-59c0-49f9-9606-32ac46f75853")
 		)
@@ -108956,7 +108785,7 @@
 		(in_bom yes)
 		(on_board yes)
 		(in_pos_files yes)
-		(dnp no)
+		(dnp yes)
 		(uuid "cfd8c5ab-4790-4709-a688-28375660b3c2")
 		(property "Reference" "J5"
 			(at 735.33 452.12 0)
@@ -109035,7 +108864,7 @@
 				)
 			)
 		)
-		(property "Manufacturer" ""
+		(property "LCSC Part" "C22373889  "
 			(at 732.79 452.12 0)
 			(hide yes)
 			(show_name no)
@@ -109172,6 +109001,17 @@
 			)
 		)
 		(property "MPN" "1206W4F1002T5E"
+			(at 200.66 340.36 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC Part" "C2907370"
 			(at 200.66 340.36 0)
 			(hide yes)
 			(show_name no)
@@ -110257,7 +110097,7 @@
 				)
 			)
 		)
-		(property "MPN" "CR1206-FX-1202ELF"
+		(property "LCSC Part" "C2930406 "
 			(at 210.82 382.27 0)
 			(hide yes)
 			(show_name no)
@@ -110945,6 +110785,17 @@
 				)
 			)
 		)
+		(property "LCSC Part" "C2907370"
+			(at 208.28 340.36 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "2"
 			(uuid "1c642635-91ca-424c-af77-b6c0554d76be")
 		)
@@ -111526,7 +111377,7 @@
 		(in_bom yes)
 		(on_board yes)
 		(in_pos_files yes)
-		(dnp no)
+		(dnp yes)
 		(fields_autoplaced yes)
 		(uuid "f927e242-8492-432e-8847-3bf21749b9db")
 		(property "Reference" "J10"
@@ -112089,6 +111940,17 @@
 			)
 		)
 		(property "Manufacturer" ""
+			(at 439.42 344.17 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC Part" "C1542621 "
 			(at 439.42 344.17 0)
 			(hide yes)
 			(show_name no)
