@@ -118,6 +118,9 @@ cd firmware && ./build.sh          # builds SIX variants into firmware/dist/:
   are the **mux** builds; nomux variants come from CI releases / `dist/`.
 - There is a `version` command now (see Versioning above); the stdio build has
   **no** `status`/`help` handshake (those live in the DSP build's `main_dsp.c`).
+  Since fw 0.1.12 both builds print `uid:` (Pico unique ID, `pico_unique_id`)
+  in `version`; the stdio build also prints a one-line
+  `pic0rick firmware vX uid: ...` banner the first time the host opens the port.
 
 ## The two build flavours (one tree)
 

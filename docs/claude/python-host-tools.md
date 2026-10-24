@@ -18,6 +18,12 @@ As of 2026-09-14 `example_simple.ipynb` and `ndt_acquisition.from_probe()` use
 the **DSP-build** path (`set_gain` + `configure_pulse` + `arm_pulser` +
 `read_raw`).
 
+Since py 0.1.9 (2026-10-24) those helpers **work on both builds**: on connect
+`Pic0rick` probes `status` (`self.is_dsp`; stdio answers "Unknown command") and
+routes `set_gain`/`configure_pulse`/`arm_pulser`/`read_raw` to the matching CLI
+(stdio: pulse timings stored and sent with `start acq`, pos-first only). It also
+sets `self.uid` from the fw >= 0.1.12 connect banner or `version()["uid"]`.
+
 ## Files
 
 - `pic0rick/__init__.py` — exposes `pic0rick.__version__` / `__changes__`, parsed

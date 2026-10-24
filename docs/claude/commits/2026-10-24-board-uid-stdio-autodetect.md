@@ -12,3 +12,10 @@
 - Refreshed `docs/data/dsp_captures/*` and notebook outputs from the board.
 - `docs/claude/hardware-testing.md`: RP2350B board runs the `pico2` build.
 - KiCad `.kicad_prl` local-settings churn included (user asked to commit all).
+
+## Follow-up (same day)
+- Merged `substack-articles` into main; pruned merged branches
+  (`substack-articles`, `feature/unify-firmware-dsp`, `development`, remote
+  `questions`). Kept `VGA` and `wifi` (unmerged work).
+- Updated `docs/claude/python-host-tools.md` and `firmware.md` for the UID and
+  stdio/DSP auto-detect.
