@@ -5,6 +5,17 @@ finished. Each entry links to its commit log in `docs/claude/commits/`.
 
 ---
 
+## 2026-10-24
+
+- **Board UID + stdio/DSP auto-detect** (fw 0.1.12, py 0.1.9). See
+  `commits/2026-10-24-board-uid-stdio-autodetect.md`.
+
+## 2026-10-10
+
+- **Substack series, arc 1.** Four draft articles + generated notebooks +
+  editorial plan in `docs/substack/`; project skill
+  `pic0rick-substack-article`. See `commits/2026-10-10-substack-articles.md`.
+
 ## 2026-09-14
 
 - **README refresh (on main).** Quick start + command tables updated for the DSP

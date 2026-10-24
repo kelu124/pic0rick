@@ -17,6 +17,9 @@ future instance would waste time rediscovering.
 - `hardware-build.md` — `hardware/build.sh`: KiBot + kicad-cli production
   outputs (gerbers/CPL/BOM/STEP + 3D renders), build groups incl. the fast
   `fab-fast` path, and the venv/3D-model gotchas.
+- `substack.md` — `docs/substack/` Substack article series (drafts + generated
+  notebooks + editorial plan); workflow in the project skill
+  `.claude/skills/pic0rick-substack-article/`.
 - `hardware-testing.md` — flashing a connected board (UF2 → BOOTSEL mass storage)
   and talking to the REPL over `/dev/ttyACM0`; the `reboot-dfu` iterate loop.
 

@@ -8,6 +8,7 @@
 #include "pico/binary_info.h"
 #include "pico/bootrom.h"
 #include "pico/stdlib.h"
+#include "pico/unique_id.h"
 
 #include "acquisition.h"
 #include "dac.h"
@@ -401,10 +402,14 @@ static void stop_stream(void) {
     stop_pending = true;
 }
 
+/* Unique board ID (64-bit flash/OTP ID, as 16 hex chars). */
+static char board_uid[2 * PICO_UNIQUE_BOARD_ID_SIZE_BYTES + 1];
+
 static void send_version(void) {
     char buf[512];
     int n = snprintf(buf, sizeof(buf),
         "pic0rick firmware v%s\r\n"
+        "uid:     %s\r\n"
         "changes: %s\r\n"
         "board:   %s (%s)\r\n"
 #ifdef MUX
@@ -414,7 +419,8 @@ static void send_version(void) {
 #endif
         "build:   %s\r\n"
         "release: %s\r\n",
-        FW_VERSION, FW_CHANGES, FW_BOARD, FW_CHIP, FW_GIT_HASH, FW_RELEASE_URL);
+        FW_VERSION, board_uid, FW_CHANGES, FW_BOARD, FW_CHIP, FW_GIT_HASH,
+        FW_RELEASE_URL);
     if (n > 0) {
         u4rk_usb_write_blocking(buf, (size_t)n, U4RK_CONTROL_TIMEOUT_MS);
     }
@@ -907,6 +913,7 @@ int main(void) {
 #ifdef MUX
     max14866_init();
 #endif
+    pico_get_unique_board_id_string(board_uid, sizeof(board_uid));
     if (!u4rk_pipeline_init()) {
         u4rk_pulser_disarm();
         while (true) {

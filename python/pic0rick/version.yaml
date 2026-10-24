@@ -7,5 +7,5 @@
 #
 # `changes` is a short, single-line, double-quoted summary of what changed vs
 # the previous version. Exposed as pic0rick.__changes__.
-version: "0.1.8"
-changes: "Migrate example_simple.ipynb and ndt_acquisition.from_probe() to the DSP-build CLI: new Pic0rick.set_gain()/configure_pulse()/arm_pulser()/disarm_pulser() + read_raw() (binary frame) replace the stdio dac/pulse_adc_trigger/read text path."
+version: "0.1.9"
+changes: "Pic0rick helpers (set_gain/configure_pulse/arm_pulser/read_raw) now auto-detect stdio vs DSP firmware, so example_simple.ipynb runs on the default stdio UF2 again; parse + print the board unique ID (fw >= 0.1.12)."

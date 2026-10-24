@@ -8,5 +8,5 @@
 # `changes` is a short, single-line, double-quoted summary of what changed vs
 # the previous version. It is embedded in the binary (the `version` CLI command)
 # and used as the GitHub release body by .github/workflows/firmware.yml.
-version: "0.1.11"
-changes: "Fix MUX/pulser PIO1 conflict: max14866_init hardcoded sm0, clobbering the pulser drive SM (pio1 sm0) claimed by the acquisition -- so MUX builds produced no transmit pulse / no echo. Now claims an unused SM. Restores echoes on MUX builds."
+version: "0.1.12"
+changes: "Report the Pico unique board ID: new uid: line in `version`, and (stdio build) a connect banner `pic0rick firmware vX uid: ...` printed once when the host first opens the port."

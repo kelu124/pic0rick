@@ -240,6 +240,7 @@ if(DSP)
     target_link_libraries(adc-pulse PRIVATE
         pico_stdlib
         pico_bootrom
+        pico_unique_id
         pico_multicore
         pico_util
         hardware_pio
@@ -284,6 +285,7 @@ else()
     target_link_libraries(adc-pulse PRIVATE
         pico_stdlib
         pico_bootrom
+        pico_unique_id
         hardware_pio
         hardware_dma
         hardware_clocks
