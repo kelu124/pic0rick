@@ -15,6 +15,11 @@ and the verified flash/DFU iterate loop. Written 2026-09-13 against a connected
   - BOOTSEL / bootloader ("DFU"): `2e8a:000f` ("RP2350 Boot"), a mass-storage
     device that **auto-mounts at `/media/kelu/RP2350`**.
 
+- 2026-10-12: an **RP2350B** board was flashed with the same `pico2` build
+  (`pic0rick-v0.1.11-rp2350-mux.uf2`) and ran fine (`version` OK). Same USB IDs,
+  same `/media/kelu/RP2350` mount. A `pico2` build only uses GPIO0–29; a
+  dedicated RP2350B board config would only be needed for GPIO30–47.
+
 ## Flashing (UF2 → mass storage)
 
 Device must be in BOOTSEL first (see reboot-dfu below, or hold BOOTSEL on power-up).

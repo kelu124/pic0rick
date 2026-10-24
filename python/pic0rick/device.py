@@ -5,6 +5,7 @@ import sys
 import glob
 import time
 import struct
+import zlib
 # Third party
 import serial
 import numpy as np
@@ -60,9 +61,35 @@ class Pic0rick:
         self.ser = serial.Serial(port_device, 115200, timeout=0.2)
         self.ser.baudrate = 115200
         time.sleep(1)  # wait for the serial connection to initialize
-        self.sread()
+        # Firmware >= 0.1.12 prints "pic0rick firmware vX uid: <id>" on connect.
+        banner = pprint(self.sread())
+        m = re.search(r"uid:\s*([0-9A-Fa-f]+)", banner)
+        self.uid = m.group(1) if m else None
 
         self.Fech = 60e6  # ADC sampling frequency (Hz)
+
+        # Which firmware flavour is running: the DSP build (-DDSP) answers
+        # `status`; the default stdio build (rp2040.uf2 / rp2350.uf2) does not.
+        # The high-level helpers below (set_gain, configure_pulse, arm_pulser,
+        # read_raw, ...) work on both, picking the right CLI.
+        self.is_dsp = self._detect_dsp()
+        self._pulse = (200, 2000, 200)  # stdio: (negative, damp, positive) ns
+        self._armed = False
+        self.last_reply = ""
+        print("Firmware flavour:", "DSP" if self.is_dsp else "stdio")
+        if self.uid is None:  # banner already consumed by an earlier session
+            self.uid = self.version().get("uid")
+        print("Board UID:", self.uid or "unknown (firmware < 0.1.12)")
+
+    def _detect_dsp(self):
+        # A freshly enumerated port may already hold a partial junk line on the
+        # device (e.g. host modem probing); terminate and discard it first.
+        self.ser.write(b"\n")
+        self.sread()
+        self.ser.reset_input_buffer()
+        self.ser.write(b"status\n")
+        text = pprint(self.sread())
+        return "Unknown command" not in text and "status" in text.lower()
 
 
     def dac(self, N):
@@ -86,6 +113,7 @@ class Pic0rick:
         Returns a dict with whatever the firmware reported. Keys (all optional,
         present only if the firmware emits the corresponding line):
             version : firmware version string, e.g. "0.1.1"
+            uid     : Pico unique board ID, 16 hex chars (fw >= 0.1.12)
             changes : one-line change summary
             board   : PICO_BOARD, e.g. "pico2"
             chip    : e.g. "RP2350"
@@ -105,7 +133,9 @@ class Pic0rick:
 
         for line in text.splitlines():
             line = line.strip()
-            if line.startswith("changes:"):
+            if line.startswith("uid:"):
+                info["uid"] = line.split(":", 1)[1].strip()
+            elif line.startswith("changes:"):
                 info["changes"] = line.split(":", 1)[1].strip()
             elif line.startswith("board:"):
                 rest = line.split(":", 1)[1].strip()
@@ -199,20 +229,37 @@ class Pic0rick:
         return self.capture("envelope")
 
     def read_raw(self):
-        """One-shot 8000-sample raw ADC capture as a frame (DSP firmware)."""
+        """One-shot 8000-sample raw ADC capture as a `dsp.Frame`.
+
+        Works on both builds (stdio: `start acq` + `read`).
+        """
+        if not self.is_dsp:
+            return self._stdio_read_raw()
         return self.capture("raw")
 
     def set_gain(self, value):
-        """Set the TGC gain DAC, 0..1023 (DSP build: `dac write <n>`).
+        """Set the TGC gain DAC, 0..1023.
 
-        (The stdio build uses `write dac`, i.e. `Pic0rick.dac()`.)
+        DSP build: `dac write <n>`; stdio build: `write dac <n>`.
         """
+        if not self.is_dsp:
+            return self.dac(int(value))
         self.ser.write(("dac write %d\n" % int(value)).encode("ascii"))
         return self.sread()
 
     def configure_pulse(self, negative_ns, damp_ns, positive_ns,
                         order="pos-first"):
-        """Configure the pulser (DSP build: `pulse config ...`)."""
+        """Configure the pulser.
+
+        DSP build: `pulse config ...`. The stdio build has no separate config
+        command, so the timings are stored and sent with the next `start acq`
+        (stdio is always positive-first).
+        """
+        if not self.is_dsp:
+            if order != "pos-first":
+                raise ValueError("stdio firmware only supports order='pos-first'")
+            self._pulse = (int(negative_ns), int(damp_ns), int(positive_ns))
+            return []
         self.ser.write(
             ("pulse config %d %d %d %s\n"
              % (int(negative_ns), int(damp_ns), int(positive_ns), order))
@@ -220,12 +267,52 @@ class Pic0rick:
         return self.sread()
 
     def arm_pulser(self):
-        """Arm the pulser so the next capture transmits (DSP build)."""
+        """Arm the pulser so the next capture transmits."""
+        self._armed = True
+        if not self.is_dsp:
+            return []  # stdio `start acq` arms + disarms around each capture
         self.ser.write(b"pulser arm\n")
         return self.sread()
 
     def disarm_pulser(self):
-        """Disarm the pulser (DSP build)."""
+        """Disarm the pulser."""
+        self._armed = False
+        if not self.is_dsp:
+            return []
         self.ser.write(b"pulser disarm\n")
         return self.sread()
 
+    def _stdio_read_raw(self):
+        """stdio build: `start acq` + `read`, wrapped as a raw `dsp.Frame`."""
+        from pic0rick import dsp
+        negative_ns, damp_ns, positive_ns = self._pulse
+        self.ser.reset_input_buffer()
+        self.ser.write(("start acq %d %d %d\n"
+                        % (positive_ns, negative_ns, damp_ns)).encode("ascii"))
+        text = pprint(self.sread())
+        if "Acquisition ended" not in text:
+            raise RuntimeError("acquisition failed: " + text.strip())
+        self.last_reply = "Acquisition ended"
+
+        self.ser.write(b"read\n")
+        lines, deadline = [], time.time() + 5
+        while time.time() < deadline:
+            line = self.ser.readline().decode("utf-8", "replace")
+            if "End of ACQ" in line:
+                break
+            lines.append(line)
+        else:
+            raise TimeoutError("no end-of-acquisition marker from `read`")
+        data = "".join(lines).split("Start of ACQ")[-1].strip("-\r\n ")
+        samples = np.array([int(x, 16) for x in data.split(",") if x.strip()],
+                           dtype="<u2")
+        payload = samples.tobytes()
+        header = dsp.FrameHeader(
+            version=dsp.PROTOCOL_VERSION, payload_type=1, flags=0, sequence=0,
+            sample_count=len(samples), sample_rate_hz=int(self.Fech),
+            payload_bytes=len(payload), capture_timestamp_us=0,
+            adc_dc_mean=float(samples.mean()) if len(samples) else 0.0,
+            envelope_peak=0.0, alaw_reference=0.0, negative_ns=negative_ns,
+            damp_ns=damp_ns, positive_ns=positive_ns, dropped_frames=0,
+            payload_crc32=zlib.crc32(payload))
+        return dsp.Frame(header=header, payload=payload)

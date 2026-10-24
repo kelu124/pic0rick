@@ -7,6 +7,7 @@
 
 #include "pico/stdlib.h"
 #include "pico/bootrom.h"
+#include "pico/unique_id.h"
 
 #include "acquisition.h"   // shared pulser + ADC capture (firmware/hw)
 #include "dac.h"           // shared spi1 MCP4812 DAC (firmware/hw)
@@ -34,11 +35,17 @@ static uint16_t capture_buf[U4RK_RAW_SAMPLE_COUNT];
 static bool capture_valid;
 
 //---------------------------------------------------------------------------
+// UNIQUE BOARD ID (64-bit flash/OTP ID, as 16 hex chars)
+//--------------------------------------------------------------------------
+static char board_uid[2 * PICO_UNIQUE_BOARD_ID_SIZE_BYTES + 1];
+
+//---------------------------------------------------------------------------
 // VERSION COMMAND
 //--------------------------------------------------------------------------
 void version_cmd(const char *args)
 {
     printf("pic0rick firmware v%s\n", FW_VERSION);
+    printf("uid:     %s\n", board_uid);
     printf("changes: %s\n", FW_CHANGES);
     printf("board:   %s (%s)\n", FW_BOARD, FW_CHIP);
 #ifdef MUX
@@ -227,12 +234,15 @@ void read_input(char *buffer, int max_len)
 int main()
 {
     stdio_init_all();
+    pico_get_unique_board_id_string(board_uid, sizeof(board_uid));
 
     while (!stdio_usb_connected())
     {
         tight_loop_contents();
     }
     sleep_ms(100);
+    // Connect banner: identify this board as soon as the host opens the port.
+    printf("pic0rick firmware v%s uid: %s\n", FW_VERSION, board_uid);
     u4rk_acquisition_init();
     sleep_ms(100);
     u4rk_dac_init();
