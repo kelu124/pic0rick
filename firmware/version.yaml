@@ -8,5 +8,5 @@
 # `changes` is a short, single-line, double-quoted summary of what changed vs
 # the previous version. It is embedded in the binary (the `version` CLI command)
 # and used as the GitHub release body by .github/workflows/firmware.yml.
-version: "0.1.12"
-changes: "Report the Pico unique board ID: new uid: line in `version`, and (stdio build) a connect banner `pic0rick firmware vX uid: ...` printed once when the host first opens the port."
+version: "0.1.13"
+changes: "Start the ADC capture and the pulser on the same clock edge (RP2350: one cross-PIO enable; RP2040: interrupts off, from RAM). Before, the trace jumped by ~0.33 us between shots and by ~-1.1 us on the first shot after idle."

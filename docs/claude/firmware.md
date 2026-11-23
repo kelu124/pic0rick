@@ -190,3 +190,12 @@ cd firmware && ./build.sh          # builds SIX variants into firmware/dist/:
   mux`. Non-DSP `main.c` unchanged. **Tested on RP2350A hardware**:
   version/help/status + `acq raw` (8256-byte frame) all good. See
   `hardware-testing.md` (DSP CDC = raw TinyUSB, OK/ERR text + binary frames).
+- 2026-11-21: v0.1.13 — **deterministic acquisition start**: `u4rk_capture_start`
+  enabled the pulser (pio1) and ADC (pio0) with two CPU calls, so the trace
+  moved ±0.33 µs between shots and ~−1.1 µs on the first shot after idle.
+  Now `start_adc_and_pulser_in_sync` (RAM, IRQs off) uses
+  `pio_enable_sm_multi_mask_in_sync` on RP2350 (pio1 = pio0's next PIO) and
+  two back-to-back in-sync enables on RP2040. Verified on board 2 (RP2350,
+  nomux): ±0.017 µs over 15 shots incl. after 20 s idle; constant +0.38 µs vs
+  the old typical offset (probe delay calibrations shift). RP2040 build
+  compiles; not yet tested on RP2040 hardware.
