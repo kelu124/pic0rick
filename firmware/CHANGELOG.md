@@ -8,6 +8,18 @@ This file and `version.yaml` are the version record — editing them does not
 itself trigger a version bump. Every firmware version bump must add an entry
 here (see `docs/claude/README.md`).
 
+## 0.1.13 — 2026-11-21
+- **Deterministic acquisition start:** the ADC capture (pio0) and the pulser
+  (pio1) were enabled by two separate CPU calls, so the time between the
+  transmit pulse and the first sample varied: the whole trace (pulse, probe
+  ringing, echoes) moved in steps of ~0.33 µs between shots and by ~−1.1 µs on
+  the first shot after idle (bench series 2026-11-21, glass 78 mm: single shots
+  read up to 190 mm instead of 78 mm). Now `u4rk_capture_start` enables all
+  three state machines with one write (`pio_enable_sm_multi_mask_in_sync`,
+  RP2350); on RP2040 it runs from RAM with interrupts off. The fixed offset
+  between pulse and capture may differ from the old typical one: **recheck the
+  probe delay calibration** after flashing.
+
 ## 0.1.11 — 2026-09-13
 - **Fix MUX/pulser PIO1 state-machine conflict (no-echo on MUX builds):**
   `max14866_init` hardcoded PIO1 `sm0`, but the shared pulser

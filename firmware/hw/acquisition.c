@@ -5,6 +5,7 @@
 #include "hardware/clocks.h"
 #include "hardware/dma.h"
 #include "hardware/pio.h"
+#include "hardware/sync.h"
 #include "pico/stdlib.h"
 
 #include "acquisition.pio.h"
@@ -172,6 +173,35 @@ static void queue_pulse(void) {
     queue_state(pulser_gate_sm, 3u, damp_ticks);  /* OE + PDAMP damping */
 }
 
+/* Start the ADC capture and the pulser at a fixed, repeatable offset.
+ *
+ * They used to be enabled by two separate CPU calls (pulser, then ADC). The gap
+ * between them varied from shot to shot -- interrupts, flash/XIP cache misses --
+ * so the whole trace (main bang, probe ringing and every echo) moved in steps of
+ * ~0.33 us, and the first shot after idle by ~-1.1 us (bench data 2026-11-21).
+ * Echo times are measured from the start of the capture, so that showed up
+ * directly as thickness error.
+ *
+ * RP2350 (PIO version 1): ADC is on pio0 and the pulser on pio1 = pio0's "next"
+ * PIO, so one CTRL write enables (and restarts the clock dividers of) all three
+ * state machines on the same system clock edge.
+ * RP2040: no cross-PIO enable; run from RAM with interrupts off so the gap is a
+ * constant few cycles. */
+static void __not_in_flash_func(start_adc_and_pulser_in_sync)(void) {
+    uint32_t pulser_mask = pulser_armed
+        ? (1u << pulser_drive_sm) | (1u << pulser_gate_sm) : 0u;
+    uint32_t irq = save_and_disable_interrupts();
+#if PICO_PIO_VERSION > 0
+    pio_enable_sm_multi_mask_in_sync(adc_pio, 0u, 1u << adc_sm, pulser_mask);
+#else
+    if (pulser_mask) {
+        pio_enable_sm_mask_in_sync(pulser_pio, pulser_mask);
+    }
+    pio_enable_sm_mask_in_sync(adc_pio, 1u << adc_sm);
+#endif
+    restore_interrupts(irq);
+}
+
 bool u4rk_capture_start(uint16_t *destination, uint32_t sample_count) {
     if (capture_active || destination == NULL || sample_count == 0u ||
         sample_count > U4RK_MAX_SAMPLE_COUNT) {
@@ -196,12 +226,7 @@ bool u4rk_capture_start(uint16_t *destination, uint32_t sample_count) {
     }
 
     dma_start_channel_mask(1u << dma_channel);
-    if (pulser_armed) {
-        uint32_t pulser_mask =
-            (1u << pulser_drive_sm) | (1u << pulser_gate_sm);
-        pio_enable_sm_mask_in_sync(pulser_pio, pulser_mask);
-    }
-    pio_sm_set_enabled(adc_pio, adc_sm, true);
+    start_adc_and_pulser_in_sync();
     capture_started_us = time_us_64();
     capture_active = true;
     return true;
